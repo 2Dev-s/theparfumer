@@ -32,7 +32,13 @@ import { Head } from '@inertiajs/vue3';
             </div>
         </section>
 
-        <section class="bg-gray-950 min-h-screen py-12">
+        <section class="bg-gray-950 py-12" v-if="!perfumes || perfumes.length === 0" data-aos="fade-in" data-aos-delay="400">
+            <div class="text-center text-amber-500 text-lg font-cinzel py-12">
+                Momentan nu sunt parfumuri disponibile. Revenim în curând cu produse exclusiviste!
+            </div>
+        </section>
+
+        <section v-else class="bg-gray-950 min-h-screen py-12">
             <!-- Container Responsiv -->
             <div class="container mx-auto px-4">
                 <!-- Sidebar filtrări -->

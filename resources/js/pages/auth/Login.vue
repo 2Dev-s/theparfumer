@@ -28,8 +28,8 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthBase title="Log in to your account" description="Enter your email and password below to log in">
-        <Head title="Log in" />
+    <AuthBase title="Logare cont" description="Introdu datele de logare">
+        <Head title="Logare" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
             {{ status }}
@@ -37,9 +37,8 @@ const submit = () => {
 
         <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
-                <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
-                    <Input
+                <div class="grid gap-2" data-aos="fade-in" data-aos-delay="300">
+                    <input
                         id="email"
                         type="email"
                         required
@@ -47,47 +46,66 @@ const submit = () => {
                         :tabindex="1"
                         autocomplete="email"
                         v-model="form.email"
-                        placeholder="email@example.com"
+                        placeholder="email@exemplu.com"
+                        class="bg-gray-950 py-4 border-yellow-500 border px-4 focus:border-yellow-700 outline-0 font-cinzel"
                     />
-                    <InputError :message="form.errors.email" />
+                    <InputError class="font-cinzel" :message="form.errors.email" />
                 </div>
 
-                <div class="grid gap-2">
-                    <div class="flex items-center justify-between">
-                        <Label for="password">Password</Label>
-                        <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm" :tabindex="5">
-                            Forgot password?
-                        </TextLink>
-                    </div>
-                    <Input
+                <div class="grid gap-2" data-aos="fade-in" data-aos-delay="400">
+                    <input
                         id="password"
                         type="password"
                         required
                         :tabindex="2"
                         autocomplete="current-password"
                         v-model="form.password"
-                        placeholder="Password"
+                        placeholder="Parolă"
+                        class="bg-gray-950 py-4 border-yellow-500 border px-4 focus:border-yellow-700 outline-0 font-cinzel"
                     />
-                    <InputError :message="form.errors.password" />
+                    <InputError class="font-cinzel" :message="form.errors.password" />
                 </div>
 
-                <div class="flex items-center justify-between">
-                    <Label for="remember" class="flex items-center space-x-3">
+                <div class="flex items-center justify-between" data-aos="fade-in" data-aos-delay="600">
+                    <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm font-cinzel" :tabindex="5">
+                        Ai uitat parola?
+                    </TextLink>
+                </div>
+
+                <div class="flex items-center justify-between" data-aos="fade-in" data-aos-delay="700">
+                    <Label for="remember" class="flex items-center space-x-3 font-cinzel">
                         <Checkbox id="remember" v-model="form.remember" :tabindex="3" />
-                        <span>Remember me</span>
+                        <span>Ține-mă minte</span>
                     </Label>
                 </div>
 
-                <Button type="submit" class="mt-4 w-full" :tabindex="4" :disabled="form.processing">
+                <button
+                    type="submit"
+                    data-aos="fade-in"
+                    data-aos-delay="800"
+                    class="mt-8 w-full hover:cursor-pointer bg-amber-500 hover:bg-amber-600 text-black font-bold font-cinzel py-3 px-6 uppercase tracking-wider transition-colors duration-300 flex items-center justify-center gap-2"
+                    :tabindex="4"
+                    :disabled="form.processing"
+                >
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                    Log in
-                </Button>
+                    <span v-if="!form.processing">Autentificare</span>
+                    <span v-else class="opacity-70">Se încarcă...</span>
+                </button>
             </div>
 
-            <div class="text-center text-sm text-muted-foreground">
-                Don't have an account?
-                <TextLink :href="route('register')" :tabindex="5">Sign up</TextLink>
+            <div class="text-center text-sm text-muted-foreground font-cinzel" data-aos="fade-in" data-aos-delay="900">
+                Nu ai un cont?
+                <TextLink :href="route('register')" :tabindex="5">Înregistrează-te</TextLink>
             </div>
+
         </form>
     </AuthBase>
 </template>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
+
+.font-cinzel {
+    font-family: 'Cinzel', serif;
+}
+</style>

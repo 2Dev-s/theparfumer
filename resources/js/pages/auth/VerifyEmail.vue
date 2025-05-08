@@ -17,20 +17,28 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthLayout title="Verify email" description="Please verify your email address by clicking on the link we just emailed to you.">
-        <Head title="Email verification" />
+    <AuthLayout title="Verificare email" description="Te rugăm să îți verifici adresa de email făcând clic pe linkul pe care ți l-am trimis prin email.">
+        <Head title="Verificare email" />
 
         <div v-if="status === 'verification-link-sent'" class="mb-4 text-center text-sm font-medium text-green-600">
-            A new verification link has been sent to the email address you provided during registration.
+            Un nou link de verificare a fost trimis la adresa de email pe care ai furnizat-o la înregistrare.
         </div>
 
         <form @submit.prevent="submit" class="space-y-6 text-center">
-            <Button :disabled="form.processing" variant="secondary">
+            <button
+                type="submit"
+                data-aos="fade-in"
+                data-aos-delay="800"
+                class="mt-8 w-full hover:cursor-pointer bg-amber-500 hover:bg-amber-600 text-black font-bold font-cinzel py-3 px-6 uppercase tracking-wider transition-colors duration-300 flex items-center justify-center gap-2"
+                :tabindex="4"
+                :disabled="form.processing"
+            >
                 <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                Resend verification email
-            </Button>
+                <span v-if="!form.processing">Verifiă email</span>
+                <span v-else class="opacity-70">Se încarcă...</span>
+            </button>
 
-            <TextLink :href="route('logout')" method="post" as="button" class="mx-auto block text-sm"> Log out </TextLink>
+            <TextLink :href="route('logout')" method="post" as="button" class="mx-auto block text-sm font-cinzel"> Deconectare </TextLink>
         </form>
     </AuthLayout>
 </template>

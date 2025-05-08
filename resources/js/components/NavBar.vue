@@ -30,7 +30,36 @@
                 </div>
 
                 <!-- Iconuri Dreapta - Diamante -->
-                <div class="flex items-center space-x-6" data-aos="fade-in" data-aos-delay="500">
+                <div class="flex items-center" data-aos="fade-in" data-aos-delay="500">
+                    <!-- User Dropdown (shown when logged in) -->
+                    <div v-if="$page.props.auth.user" class="relative group hidden lg:block">
+                        <button class="p-2 hover:cursor-pointer hover:scale-105 rounded-full transition-all duration-300">
+                            <svg class="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div class="absolute right-0 mt-2 w-48 bg-gray-950 backdrop-blur-sm border border-amber-800/30 py-1 z-50 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <Link :href="route('dashboard')" class="font-cinzel block px-4 py-2 text-sm text-amber-200 hover:bg-amber-900/20 transition-colors">
+                                Profil
+                            </Link>
+                            <Link :href="route('logout')" method="post" as="button" class="font-cinzel hover:cursor-pointer w-full text-left px-4 py-2 text-sm text-amber-200 hover:bg-amber-900/20 transition-colors">
+                                Deconectare
+                            </Link>
+                        </div>
+                    </div>
+
+                    <!-- Regular User Button (shown when not logged in) -->
+                    <Link v-else :href="route('login')" class="p-2 hover:cursor-pointer hover:scale-105 rounded-full transition-all duration-300">
+                        <svg class="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </Link>
+
+                    <!-- Shopping Cart Button -->
                     <button @click="toggleCart"
                             class="relative p-2 hover:cursor-pointer hover:scale-105 rounded-full transition-all duration-300">
                         <svg class="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -43,7 +72,7 @@
                         </span>
                     </button>
 
-                    <!-- Hamburger Icon - Mobil -->
+                    <!-- Hamburger Icon - Mobile -->
                     <button @click="toggleMobileMenu" v-if="!isMobileMenuOpen"
                             class="lg:hidden p-2 hover:cursor-pointer text-yellow-500 hover:scale-105 rounded-full transition-all duration-300">
                         <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -64,33 +93,75 @@
                 leave-from-class="opacity-100 translate-y-0"
                 leave-to-class="opacity-0 -translate-y-4"
             >
-                <div v-show="isMobileMenuOpen" class="lg:hidden fixed inset-0 z-50 bg-gray-900">
-                    <div class="container h-screen flex flex-col justify-center items-center relative">
-                        <div class="absolute top-8 right-8">
-                            <button @click="toggleMobileMenu" class="text-yellow-500 hover:text-yellow-300">
-                                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                          d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
+                <div v-show="isMobileMenuOpen" class="lg:hidden fixed inset-0 z-50 bg-gray-950/50 backdrop-blur-sm">
+                    <div class="h-screen flex flex-col justify-between items-center p-6 relative overflow-y-auto">
+                        <!-- Close Button -->
+                        <button
+                            @click="toggleMobileMenu"
+                            class="absolute top-6 right-6 text-yellow-500 hover:text-yellow-300 transition-colors"
+                            aria-label="Close menu"
+                        >
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                      d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        <!-- Main Menu Items -->
+                        <div class="flex-1 flex flex-col justify-center items-center w-full">
+                            <div class="space-y-6 w-full max-w-xs mx-auto">
+                                <Link
+                                    v-for="(item, index) in menuItems"
+                                    :key="index"
+                                    :href="item.href"
+                                    @click="toggleMobileMenu"
+                                    class="block py-3 text-2xl sm:text-3xl font-cinzel text-white hover:text-yellow-300 transition-colors duration-300 text-center"
+                                    :class="{ 'border-b border-amber-800/30': index < menuItems.length - 1 }"
+                                >
+                                    {{ item.label }}
+                                </Link>
+                            </div>
                         </div>
 
-                        <div class="space-y-8 text-center">
-                            <Link v-for="(item, index) in menuItems" :key="index" :href="item.href"
-                               class="block text-3xl font-cinzel text-white hover:text-yellow-300 transition-colors duration-300">
-                                {{ item.label }}
-                            </Link>
-                        </div>
-
-                        <div class="absolute bottom-12 text-yellow-500 text-sm">
-                            PARFUMÉR
+                        <!-- Bottom Auth Buttons -->
+                        <div class="w-full max-w-xs mx-auto py-6 border-t border-amber-800/30">
+                            <template v-if="$page.props.auth.user">
+                                <Link
+                                    :href="route('dashboard')"
+                                    class="block mb-4 font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"
+                                >
+                                    Profil
+                                </Link>
+                                <Link
+                                    :href="route('logout')"
+                                    method="post"
+                                    as="button"
+                                    class="block w-full font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"
+                                >
+                                    Deconectare
+                                </Link>
+                            </template>
+                            <template v-else>
+                                <Link
+                                    :href="route('login')"
+                                    class="block mb-4 font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"
+                                >
+                                    Autentificare
+                                </Link>
+                                <Link
+                                    :href="route('register')"
+                                    class="block w-full font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"
+                                >
+                                    Înregistrare
+                                </Link>
+                            </template>
                         </div>
                     </div>
                 </div>
             </transition>
         </div>
 
-        <!-- Componenta Cart Redesign -->
+        <!-- Componenta Cart -->
         <Cart
             :isOpen="isCartOpen"
             :items="cartItems"
