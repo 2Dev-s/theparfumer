@@ -115,7 +115,7 @@ class PerfumeResource extends Resource
             ->columns([
                 TextColumn::make('name')->label('Name'),
                 TextColumn::make('brand.name')->label('Brand'),
-                TextColumn::make('description')->label('Description'),
+//                TextColumn::make('description')->label('Description'),
                 TextColumn::make('price')
                     ->label('Price')
                     ->formatStateUsing(fn($state) => $state . ' RON'),
@@ -138,7 +138,7 @@ class PerfumeResource extends Resource
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['name'],
-                            fn (Builder $query, $name) => $query->where('name', 'like', "%{$name}%")
+                            fn(Builder $query, $name) => $query->where('name', 'like', "%{$name}%")
                         );
                     }),
 
@@ -158,7 +158,7 @@ class PerfumeResource extends Resource
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['description'],
-                            fn (Builder $query, $description) => $query->where('description', 'like', "%{$description}%")
+                            fn(Builder $query, $description) => $query->where('description', 'like', "%{$description}%")
                         );
                     }),
 
@@ -175,11 +175,11 @@ class PerfumeResource extends Resource
                         return $query
                             ->when(
                                 $data['min_price'],
-                                fn (Builder $query, $minPrice) => $query->where('price', '>=', $minPrice)
+                                fn(Builder $query, $minPrice) => $query->where('price', '>=', $minPrice)
                             )
                             ->when(
                                 $data['max_price'],
-                                fn (Builder $query, $maxPrice) => $query->where('price', '<=', $maxPrice)
+                                fn(Builder $query, $maxPrice) => $query->where('price', '<=', $maxPrice)
                             );
                     }),
 
@@ -197,11 +197,11 @@ class PerfumeResource extends Resource
                         return $query
                             ->when(
                                 $data['min_stock'],
-                                fn (Builder $query, $minStock) => $query->where('stock', '>=', $minStock)
+                                fn(Builder $query, $minStock) => $query->where('stock', '>=', $minStock)
                             )
                             ->when(
                                 $data['max_stock'],
-                                fn (Builder $query, $maxStock) => $query->where('stock', '<=', $maxStock)
+                                fn(Builder $query, $maxStock) => $query->where('stock', '<=', $maxStock)
                             );
                     }),
 
@@ -223,7 +223,7 @@ class PerfumeResource extends Resource
                 // Filter by media presence
                 Filter::make('has_media')
                     ->label('Has Image')
-                    ->query(fn (Builder $query): Builder => $query->whereHas('media')),
+                    ->query(fn(Builder $query): Builder => $query->whereHas('media')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

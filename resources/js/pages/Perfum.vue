@@ -114,7 +114,8 @@ const showLightbox = (index: number) => {
                             </div>
                             <!-- Badge Collection -->
                             <div class="absolute top-4 left-4">
-                                <span class="font-cinzel cursor-default text-white text-center bg-black/80 px-3 py-1 text-xs font-bold uppercase tracking-wide rounded">
+                                <span
+                                    class="font-cinzel cursor-default text-white text-center bg-black/80 px-3 py-1 text-xs font-bold uppercase tracking-wide rounded">
                                     PARFUMÉR
                                 </span>
                             </div>
@@ -172,11 +173,14 @@ const showLightbox = (index: number) => {
                                 <!-- Piramida de Note - Versiune Lux -->
                                 <div class="mb-10">
                                     <div class="flex items-center my-6 md:my-10">
-                                        <div class="flex-grow h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
-                                        <span class="mx-3 sm:mx-6 font-cinzel text-amber-400 text-sm sm:text-base md:text-xl tracking-widest px-2 sm:px-4">
-        COMPOZIȚIA AROMATICĂ
-    </span>
-                                        <div class="flex-grow h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
+                                        <div
+                                            class="flex-grow h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
+                                        <span
+                                            class="mx-3 sm:mx-6 font-cinzel text-amber-400 text-sm sm:text-base md:text-xl tracking-widest px-2 sm:px-4">
+                                            COMPOZIȚIA AROMATICĂ
+                                        </span>
+                                        <div
+                                            class="flex-grow h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -319,31 +323,34 @@ const showLightbox = (index: number) => {
             </div>
         </section>
 
-        <section  class="relative py-32 bg-[url('https://img.freepik.com/premium-psd/perfume-bottle-sand_23-2148961294.jpg?w=740')] bg-cover bg-fixed bg-center">
-            <div class="absolute inset-0 bg-gradient-to-b from-black/85 via-black/70 to-black/90" ></div>
+        <section
+            class="relative py-32 bg-[url('https://img.freepik.com/premium-psd/perfume-bottle-sand_23-2148961294.jpg?w=740')] bg-cover bg-fixed bg-center">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/85 via-black/70 to-black/90"></div>
 
             <div class="relative z-10 max-w-5xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-16" >
-                    <h2 class="font-serif text-4xl text-amber-100 mt-6 mb-4"  data-aos="zoom-in-up" data-aos-delay="300">
+                <div class="text-center mb-16">
+                    <h2 class="font-serif text-4xl text-amber-100 mt-6 mb-4" data-aos="zoom-in-up" data-aos-delay="300">
                         <span class="block font-cinzel">Acces Exclusiv</span>
                         <span class="text-amber-300 font-cinzel">Pentru Cunoscători</span>
                     </h2>
-                    <div class="border-t border-amber-500/30 w-24 mx-auto my-6"  data-aos="zoom-in-up" data-aos-delay="300"></div>
-                    <p class="text-lg text-amber-200/80 max-w-2xl mx-auto"  data-aos="zoom-in-up" data-aos-delay="300">
+                    <div class="border-t border-amber-500/30 w-24 mx-auto my-6" data-aos="zoom-in-up"
+                         data-aos-delay="300"></div>
+                    <p class="text-lg text-amber-200/80 max-w-2xl mx-auto" data-aos="zoom-in-up" data-aos-delay="300">
                         Abonează-te la newsletter-ul nostru pentru a primi invitații la lansări private,
                         istorii despre ingrediente rare și oferte personalizate.
                     </p>
                 </div>
 
                 <div class="mt-12 max-w-md mx-auto">
-                    <form class="space-y-6"  data-aos="zoom-in-up" data-aos-delay="300">
+                    <form class="space-y-6" data-aos="zoom-in-up" data-aos-delay="300">
                         <div class="relative">
                             <input
                                 type="email"
                                 placeholder="Adresa ta de email"
                                 class="w-full bg-transparent font-cinzel border-0 border-b border-amber-500/30 text-amber-100 placeholder-amber-500/50 focus:border-amber-300 focus:ring-0 py-4 px-0 font-light tracking-widest transition-all duration-300"
                             >
-                            <div class="absolute bottom-0 left-0 w-0 h-px bg-amber-300 transition-all duration-500 group-focus-within:w-full"></div>
+                            <div
+                                class="absolute bottom-0 left-0 w-0 h-px bg-amber-300 transition-all duration-500 group-focus-within:w-full"></div>
                         </div>
 
                         <div class="flex items-center justify-center space-x-4 pt-4">
@@ -352,12 +359,14 @@ const showLightbox = (index: number) => {
                                 class="relative hover:cursor-pointer overflow-hidden bg-transparent border border-amber-500/50 text-amber-200 px-10 py-3 rounded-full hover:bg-amber-500/10 transition-all font-serif tracking-widest text-sm group"
                             >
                                 <span class="relative font-cinzel font-bold z-10">ABONEAZĂ-TE</span>
-                                <span class="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                                <span
+                                    class="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                             </button>
                         </div>
                     </form>
 
-                    <p class="text-xs text-amber-500/60 text-center mt-8 max-w-xs mx-auto font-cinzel"  data-aos="zoom-in-up" data-aos-delay="300">
+                    <p class="text-xs text-amber-500/60 text-center mt-8 max-w-xs mx-auto font-cinzel"
+                       data-aos="zoom-in-up" data-aos-delay="300">
                         Vă promitem să nu vă inundăm inboxul. Doar conținut exclusiv, la fiecare lună.
                     </p>
                 </div>
