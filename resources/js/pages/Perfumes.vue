@@ -82,12 +82,9 @@ import { Head } from '@inertiajs/vue3';
 
             <div class="relative z-10 max-w-5xl mx-auto px-6 lg:px-8">
                 <div class="text-center mb-16" >
-                    <svg data-aos="zoom-in-up" data-aos-delay="300" class="w-16 h-16 mx-auto text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
                     <h2 class="font-serif text-4xl text-amber-100 mt-6 mb-4"  data-aos="zoom-in-up" data-aos-delay="300">
-                        <span class="block">Acces Exclusiv</span>
-                        <span class="text-amber-300">Pentru Cunoscători</span>
+                        <span class="block font-cinzel">Acces Exclusiv</span>
+                        <span class="text-amber-300 font-cinzel">Pentru Cunoscători</span>
                     </h2>
                     <div class="border-t border-amber-500/30 w-24 mx-auto my-6"  data-aos="zoom-in-up" data-aos-delay="300"></div>
                     <p class="text-lg text-amber-200/80 max-w-2xl mx-auto"  data-aos="zoom-in-up" data-aos-delay="300">
@@ -102,7 +99,7 @@ import { Head } from '@inertiajs/vue3';
                             <input
                                 type="email"
                                 placeholder="Adresa ta de email"
-                                class="w-full bg-transparent border-0 border-b border-amber-500/30 text-amber-100 placeholder-amber-500/50 focus:border-amber-300 focus:ring-0 py-4 px-0 font-light tracking-widest transition-all duration-300"
+                                class="w-full bg-transparent font-cinzel border-0 border-b border-amber-500/30 text-amber-100 placeholder-amber-500/50 focus:border-amber-300 focus:ring-0 py-4 px-0 font-light tracking-widest transition-all duration-300"
                             >
                             <div class="absolute bottom-0 left-0 w-0 h-px bg-amber-300 transition-all duration-500 group-focus-within:w-full"></div>
                         </div>
@@ -118,7 +115,7 @@ import { Head } from '@inertiajs/vue3';
                         </div>
                     </form>
 
-                    <p class="text-xs text-amber-500/60 text-center mt-8 max-w-xs mx-auto"  data-aos="zoom-in-up" data-aos-delay="300">
+                    <p class="text-xs text-amber-500/60 text-center mt-8 max-w-xs mx-auto font-cinzel"  data-aos="zoom-in-up" data-aos-delay="300">
                         Vă promitem să nu vă inundăm inboxul. Doar conținut exclusiv, la fiecare lună.
                     </p>
                 </div>

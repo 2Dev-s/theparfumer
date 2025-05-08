@@ -162,7 +162,6 @@ class PerfumeResource extends Resource
                         );
                     }),
 
-                // Price range filter
                 Filter::make('price')
                     ->form([
                         Forms\Components\TextInput::make('min_price')
@@ -239,7 +238,8 @@ class PerfumeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\BrandRelationManager::class,
+            RelationManagers\CategoryRelationManager::class
         ];
     }
 
@@ -252,5 +252,13 @@ class PerfumeResource extends Resource
         ];
     }
 
-    
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('active', true)->count();
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'The number of parfumes active';
+    }
 }

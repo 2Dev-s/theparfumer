@@ -400,33 +400,3 @@ export default {
     }
 };
 </script>
-
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
-
-.font-cinzel {
-    font-family: 'Cinzel', serif;
-}
-
-/* Smooth transitions for hover effects */
-.transition-smooth {
-    transition: all 0.3s ease-in-out;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .product-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .thumbnail-gallery {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 640px) {
-    .related-products {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-</style>
