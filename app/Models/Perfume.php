@@ -36,9 +36,6 @@ class Perfume extends Model implements HasMedia
         'category_id' => 'integer',
         'price' => 'float',
         'stock' => 'integer',
-        'top_notes' => 'array',
-        'middle_notes' => 'array',
-        'base_notes' => 'array',
     ];
 
     protected $appends = [
