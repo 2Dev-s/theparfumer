@@ -49,7 +49,7 @@ import { Head } from '@inertiajs/vue3';
                             <div class="relative overflow-hidden" data-aos="fade-in" data-aos-delay="300">
                                 <a :href="route('perfume.show', perfume.slug)">
                                     <img
-                                        src="https://img.freepik.com/premium-psd/fruit-perfume-bottle-mockup_23-2151411650.jpg?w=740"
+                                        :src="perfume.media?.[0]?.original_url "
                                         alt="Luxury Perfume"
                                         class="perfume-image"
                                     />
