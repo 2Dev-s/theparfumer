@@ -6,6 +6,10 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+    server: {
+        host: 'theparfumer.test',
+        port: 5173,
+    },
     plugins: [
         laravel({
             input: ['resources/js/app.ts'],

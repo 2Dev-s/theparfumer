@@ -6,6 +6,8 @@ import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
 import { initializeTheme } from './composables/useAppearance';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // Import AOS styles
 
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {
@@ -38,3 +40,9 @@ createInertiaApp({
 
 // This will set light / dark mode on page load...
 initializeTheme();
+
+AOS.init({
+    once: true,
+    duration: 700,
+    easing: "ease-out-cubic",
+});
