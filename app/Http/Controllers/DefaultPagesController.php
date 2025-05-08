@@ -36,7 +36,7 @@ class DefaultPagesController extends Controller
             ->where('category_id', $perfume->category->id)
             ->where('id', '!=', $perfume->id)
             ->inRandomOrder()
-            ->limit(3)
+            ->limit(4)
             ->get();
 
         return Inertia::render('Perfum', [

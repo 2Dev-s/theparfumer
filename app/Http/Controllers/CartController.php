@@ -18,9 +18,29 @@ class CartController extends Controller
         $product = $request->validate([
             'id' => 'required|integer',
             'name' => 'required|string',
+            'slug' => 'required|string',
+            'brand_id' => 'required|integer',
+            'brand' => 'required|array',
+            'brand.id' => 'required|integer',
+            'brand.name' => 'required|string',
+            'category_id' => 'required|integer',
+            'category' => 'required|array',
+            'category.id' => 'required|integer',
+            'category.name' => 'required|string',
+            'description' => 'required|string',
             'price' => 'required|numeric',
+            'size' => 'required|string',
+            'stock' => 'required|integer',
+            'concentration' => 'required|string',
+            'top_notes' => 'required|array',
+            'top_notes.*' => 'string',
+            'middle_notes' => 'required|array',
+            'middle_notes.*' => 'string',
+            'base_notes' => 'required|array',
+            'base_notes.*' => 'string',
             'quantity' => 'sometimes|integer|min:1',
-            'image' => 'sometimes|string'
+            'image' => 'sometimes|string',
+            'active' => 'required|boolean',
         ]);
 
         $cart = session()->get('cart', []);
@@ -29,12 +49,11 @@ class CartController extends Controller
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity'] += $product['quantity'] ?? 1;
         } else {
+
             $cart[$productId] = [
                 'id' => $productId,
-                'name' => $product['name'],
-                'price' => $product['price'],
+                'product' => $product,
                 'quantity' => $product['quantity'] ?? 1,
-                'image' => $product['image'] ?? ''
             ];
         }
 

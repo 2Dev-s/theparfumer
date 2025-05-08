@@ -204,10 +204,10 @@ const showLightbox = (index: number) => {
                         <h3 class="text-2xl md:text-3xl font-cinzel text-white mb-8 text-center">
                             S-ar putea să îți placă și
                         </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        <div v-if="relatedParfumes && relatedParfumes.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             <div
-                                v-for="(item, index) in 4"
-                                :key="index"
+                                v-for="perfume in relatedParfumes"
+                                :key="perfume.id"
                                 class="group relative overflow-hidden rounded-xl transition-all duration-500"
                                 data-aos="fade-in"
                                 data-aos-delay="300"
@@ -246,6 +246,10 @@ const showLightbox = (index: number) => {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div v-else class="text-center py-12">
+                            <p class="font-cinzel text-white text-lg italic">Momentan nu avem recomandări disponibile.</p>
                         </div>
                     </div>
                 </div>
