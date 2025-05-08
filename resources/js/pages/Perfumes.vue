@@ -34,7 +34,7 @@ import { Head } from '@inertiajs/vue3';
         </section>
 
         <section class="bg-gray-950 py-12" v-if="!perfumes || perfumes.length === 0" data-aos="fade-in" data-aos-delay="400">
-            <div class="text-center text-amber-500 text-lg font-cinzel py-12">
+            <div class="text-center text-amber-500 text-lg font-cinzel py-12 px-6">
                 Momentan nu sunt parfumuri disponibile. Revenim în curând cu produse exclusiviste!
             </div>
         </section>
