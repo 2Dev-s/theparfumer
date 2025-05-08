@@ -20,12 +20,13 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id'); // FK către categorii
 
             $table->text('description')->nullable(); // Descriere
-            $table->json('top_notes')->nullable(); // Note de vârf (JSON)
-            $table->json('middle_notes')->nullable(); // Note de mijloc (JSON)
-            $table->json('base_notes')->nullable(); // Note de bază (JSON)
+            $table->string('top_notes')->nullable(); // Note de vârf (JSON)
+            $table->string('middle_notes')->nullable(); // Note de mijloc (JSON)
+            $table->string('base_notes')->nullable(); // Note de bază (JSON)
 
             $table->decimal('price', 8, 2)->default(0); // Preț
             $table->string('size')->nullable(); // Ex: 100ml
+            $table->enum('sex', ['male', 'female', 'unisex'])->default('male');
             $table->string('concentration')->nullable(); // Ex: EDT, EDP
             $table->integer('stock')->default(0); // Stoc
             $table->boolean('active')->default(1);
