@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -84,5 +85,22 @@ class Perfume extends Model implements HasMedia
                 'thumb' => $media->getFullUrl('thumb'),
             ];
         })->toArray();
+    }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $value;
+
+        $slug = Str::slug($value);
+        $counter = 1;
+
+        while (static::where('slug', $slug)
+            ->where('id', '!=', $this->id ?? null)
+            ->exists()) {
+            $slug = Str::slug($value) . '-' . $counter;
+            $counter++;
+        }
+
+        $this->attributes['slug'] = $slug;
     }
 }
