@@ -171,14 +171,12 @@ const showLightbox = (index: number) => {
 
                                 <!-- Piramida de Note - Versiune Lux -->
                                 <div class="mb-10">
-                                    <div class="flex items-center my-10">
-                                        <div
-                                            class="flex-grow h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
-                                        <span class="mx-6 font-cinzel text-amber-400 text-xl tracking-widest px-4">
-                                            COMPOZIȚIA AROMATICĂ
-                                        </span>
-                                        <div
-                                            class="flex-grow h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
+                                    <div class="flex items-center my-6 md:my-10">
+                                        <div class="flex-grow h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
+                                        <span class="mx-3 sm:mx-6 font-cinzel text-amber-400 text-sm sm:text-base md:text-xl tracking-widest px-2 sm:px-4">
+        COMPOZIȚIA AROMATICĂ
+    </span>
+                                        <div class="flex-grow h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
