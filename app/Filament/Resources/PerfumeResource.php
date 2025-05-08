@@ -239,7 +239,8 @@ class PerfumeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\BrandRelationManager::class,
+            RelationManagers\CategoryRelationManager::class
         ];
     }
 
@@ -250,5 +251,15 @@ class PerfumeResource extends Resource
             'create' => Pages\CreatePerfume::route('/create'),
             'edit' => Pages\EditPerfume::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('active', true)->count();
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'The number of parfumes active';
     }
 }
