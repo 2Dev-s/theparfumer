@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DefaultPagesController::class, 'index'])->name('welcome');
 Route::get('/home', [DefaultPagesController::class, 'home'])->name('home');
-Route::get('/account', [AccountController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/perfumes', [DefaultPagesController::class, 'perfumes'])->name('perfumes');
 Route::get('/perfume/{perfume:slug}', [DefaultPagesController::class, 'show'])->name('perfume.show');

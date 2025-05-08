@@ -125,6 +125,7 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
 </template>
 
 <style scoped>
+
 /* Smooth transitions for interactive elements */
 nav a {
     transition: all 0.3s ease;

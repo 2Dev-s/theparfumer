@@ -1,5 +1,5 @@
 <template>
-    <nav class="sticky top-0 bg-gray-950 w-full z-50 shadow">
+    <nav :class="{'sticky top-0 w-full z-50 shadow': true, 'bg-gray-950': !isSettingsPage}">
         <div class="max-w-7xl mx-auto px-6 xl:px-8 py-6">
             <div class="flex justify-between items-center">
                 <!-- Logo Lux -->
@@ -195,6 +195,11 @@ export default {
 
             cartItems: []
         };
+    },
+    computed: {
+        isSettingsPage() {
+            return window.location.pathname.includes('settings');
+        }
     },
     mounted() {
         this.fetchCart();
