@@ -148,12 +148,12 @@
                                 >
                                     Autentificare
                                 </Link>
-                                <Link
-                                    :href="route('register')"
-                                    class="block w-full font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"
-                                >
-                                    Înregistrare
-                                </Link>
+<!--                                <Link-->
+<!--                                    :href="route('register')"-->
+<!--                                    class="block w-full font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"-->
+<!--                                >-->
+<!--                                    Înregistrare-->
+<!--                                </Link>-->
                             </template>
                         </div>
                     </div>
@@ -243,8 +243,20 @@ export default {
 
         async addToCart(product) {
             try {
-                const response = await axios.post('/cart/add', product);
-                this.cartItems = response.data.cart;
+                const response = await axios.post('/cart/add', {
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.media?.[0]?.original_url,
+                    size: product.size,
+                    concentration: product.concentration
+                });
+
+                // Make sure response.data.cart is an array
+                this.cartItems = Array.isArray(response.data.cart)
+                    ? response.data.cart
+                    : Object.values(response.data.cart || {});
+
                 this.isCartOpen = true;
             } catch (error) {
                 console.error('Error adding to cart:', error);
@@ -258,12 +270,3 @@ export default {
     }
 };
 </script>
-
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&display=swap');
-
-.font-cinzel {
-    font-family: 'Cinzel', serif;
-}
-</style>

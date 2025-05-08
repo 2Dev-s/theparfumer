@@ -73,18 +73,21 @@
                         <!-- Item produs -->
                         <div v-for="item in items" :key="item.id" class="group relative p-6 hover:bg-midnight-750 transition-colors">
                             <div class="flex gap-5">
-                                <!-- Imagine produs -->
+                                <!-- Product image - now using actual image if available -->
                                 <div class="relative flex-shrink-0">
-                                    <img src="https://img.freepik.com/premium-psd/fruit-perfume-bottle-mockup_23-2151411650.jpg?w=740" class="w-24 h-24 object-cover rounded-lg shadow-lg border border-gold-900/20">
+                                    <img
+                                        :src="item.image || 'https://img.freepik.com/premium-psd/fruit-perfume-bottle-mockup_23-2151411650.jpg?w=740'"
+                                        class="w-24 h-24 object-cover rounded-lg shadow-lg border border-gold-900/20"
+                                    >
                                     <div class="absolute inset-0 border-2 border-transparent group-hover:border-gold-500/30 rounded-lg transition-all"></div>
                                 </div>
 
-                                <!-- Detalii produs -->
+                                <!-- Product details - updated to match your cart structure -->
                                 <div class="flex-1 min-w-0">
-                                    <h4 class="font-cinzel text-gold-300 mb-1">{{item.product.name}}</h4>
-                                    <p class="text-sm text-gold-500/80 mb-3">{{ item.product.size }} ml • {{ item.product.concentration }}</p>
+                                    <h4 class="font-cinzel text-gold-300 mb-1">{{ item.name }}</h4>
+                                    <p v-if="item.size" class="text-sm text-gold-500/80 mb-3">{{ item.size }} ml • {{ item.concentration || 'Eau de Parfum' }}</p>
 
-                                    <!-- Control cantitate -->
+                                    <!-- Quantity controls -->
                                     <div class="flex items-center gap-3 mb-4">
                                         <button
                                             @click="updateQuantity(item.id, item.quantity - 1)"
@@ -102,9 +105,9 @@
                                         </button>
                                     </div>
 
-                                    <!-- Preț și acțiuni -->
+                                    <!-- Price and actions -->
                                     <div class="flex items-center justify-between">
-                                        <span class="font-semibold text-gold-400">{{ (item.quantity * item.product.price).toFixed(2) }} RON</span>
+                                        <span class="font-semibold text-yellow-500">{{ (item.quantity * item.price).toFixed(2) }} RON</span>
                                         <button
                                             @click="removeItem(item.id)"
                                             class="text-xs hover:text-yellow-500 hover:cursor-pointer uppercase tracking-widest text-gold-500/60 hover:text-gold-300 transition-colors"
@@ -140,46 +143,32 @@ export default {
     components: { Link },
     props: {
         isOpen: Boolean,
-        items: Array,
+        items: {
+            type: Array,
+            default: () => []
+        },
         isLoading: Boolean,
         error: String
     },
     methods: {
         updateQuantity(productId, newQuantity) {
-            if(newQuantity < 1) return
+            if(newQuantity < 1) return;
             this.$emit('update-quantity', {
                 id: productId,
                 quantity: newQuantity
-            })
+            });
         },
         removeItem(productId) {
-            this.$emit('remove-item', productId)
+            this.$emit('remove-item', productId);
         }
     },
     computed: {
         total() {
-            return this.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
+            return this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         }
     }
 }
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&display=swap');
 
-.font-cinzel {
-    font-family: 'Cinzel', serif;
-}
 
-.bg-midnight-800 {
-    background-color: #FFF;
-}
-
-.text-gold-400 {
-    color: #e5c687;
-}
-
-.shadow-gold {
-    box-shadow: 0 4px 24px -6px rgba(229, 198, 135, 0.15);
-}
-</style>

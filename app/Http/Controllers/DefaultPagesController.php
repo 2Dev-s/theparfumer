@@ -28,11 +28,11 @@ class DefaultPagesController extends Controller
 
     public function show($slug)
     {
-        $perfume = Perfume::with(['brand', 'category'])
+        $perfume = Perfume::with(['brand', 'category', 'media'])
             ->where('slug', $slug)
             ->firstOrFail();
 
-        $relatedParfumes = Perfume::with(['brand', 'category'])
+        $relatedParfumes = Perfume::with(['brand', 'category', 'media'])
             ->where('category_id', $perfume->category->id)
             ->where('id', '!=', $perfume->id)
             ->inRandomOrder()

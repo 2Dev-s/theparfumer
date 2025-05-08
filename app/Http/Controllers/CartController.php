@@ -15,51 +15,43 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-        $product = $request->validate([
+        $validated = $request->validate([
             'id' => 'required|integer',
             'name' => 'required|string',
-            'slug' => 'required|string',
-            'brand_id' => 'required|integer',
-            'brand' => 'required|array',
-            'brand.id' => 'required|integer',
-            'brand.name' => 'required|string',
-            'category_id' => 'required|integer',
-            'category' => 'required|array',
-            'category.id' => 'required|integer',
-            'category.name' => 'required|string',
-            'description' => 'required|string',
             'price' => 'required|numeric',
-            'size' => 'required|string',
-            'stock' => 'required|integer',
-            'concentration' => 'required|string',
-            'top_notes' => 'required|array',
-            'top_notes.*' => 'string',
-            'middle_notes' => 'required|array',
-            'middle_notes.*' => 'string',
-            'base_notes' => 'required|array',
-            'base_notes.*' => 'string',
             'quantity' => 'sometimes|integer|min:1',
+            // Make other fields optional or adjust as needed
+            'slug' => 'sometimes|string',
+            'brand' => 'sometimes|array',
+            'brand.name' => 'sometimes|string',
             'image' => 'sometimes|string',
-            'active' => 'required|boolean',
         ]);
 
         $cart = session()->get('cart', []);
-        $productId = $product['id'];
+        $productId = $validated['id'];
 
         if (isset($cart[$productId])) {
-            $cart[$productId]['quantity'] += $product['quantity'] ?? 1;
+            $cart[$productId]['quantity'] += $validated['quantity'] ?? 1;
         } else {
-
             $cart[$productId] = [
                 'id' => $productId,
-                'product' => $product,
-                'quantity' => $product['quantity'] ?? 1,
+                'name' => $validated['name'],
+                'price' => $validated['price'],
+                'quantity' => $validated['quantity'] ?? 1,
+                // Optional fields
+                'slug' => $validated['slug'] ?? null,
+                'brand' => $validated['brand'] ?? null,
+                'image' => $validated['image'] ?? null,
             ];
         }
 
         session()->put('cart', $cart);
 
-        return $this->getCart();
+        return response()->json([
+            'success' => true,
+            'cart' => $cart,
+            'count' => count($cart),
+        ]);
     }
 
     public function updateCart(Request $request, $productId)
