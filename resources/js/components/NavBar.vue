@@ -124,7 +124,7 @@
                         </div>
 
                         <!-- Bottom Auth Buttons -->
-                        <div class="w-full max-w-xs mx-auto py-6 border-t border-amber-800/30">
+                        <div class="w-full max-w-xs mx-auto py-6 mb-24 border-t border-amber-800/30">
                             <template v-if="$page.props.auth.user">
                                 <Link
                                     :href="route('dashboard')"
