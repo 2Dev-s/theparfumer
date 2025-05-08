@@ -87,7 +87,7 @@ const submit = () => {
             </div>
 
 
-            <div class="text-center text-sm text-muted-foreground font-cinzel" data-aos="fade-in" data-aos-delay="800">
+            <div class="text-center text-sm text-muted-foreground font-cinzel">
                 Ai deja un cont?
                 <TextLink :href="route('login')" class="underline underline-offset-4" :tabindex="6">Autentifică-te</TextLink>
             </div>
