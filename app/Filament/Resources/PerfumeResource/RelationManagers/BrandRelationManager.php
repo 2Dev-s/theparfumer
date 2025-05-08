@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\ParfumResource\RelationManagers;
+namespace App\Filament\Resources\PerfumeResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
-use Filament\Tables\Columns\BooleanColumn;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CategoryRelationManager extends RelationManager
+class BrandRelationManager extends RelationManager
 {
-    protected static string $relationship = 'category';
+    protected static string $relationship = 'brand';
 
     public function form(Form $form): Form
     {
@@ -31,11 +28,11 @@ class CategoryRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Name'),
-                BooleanColumn::make('active')->label('Active'),
-
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('created_at'),
             ])
             ->filters([
+                // Name filter with search
                 Filter::make('name')
                     ->form([
                         Forms\Components\TextInput::make('name')
@@ -56,7 +53,7 @@ class CategoryRelationManager extends RelationManager
                         '1' => 'Active',
                         '0' => 'Inactive',
                     ])
-                    ->indicator('Active Status'),
+                    ->indicator('Active Status'), // Shows filter indicator
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

@@ -14,7 +14,7 @@ class Brand extends Model
         'active',
     ];
 
-    public function parfums(): HasMany
+    public function perfumes(): HasMany
     {
         return $this->hasMany(Perfume::class);
     }
