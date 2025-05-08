@@ -40,11 +40,3 @@ defineProps<{
         </div>
     </div>
 </template>
-
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
-
-.font-cinzel {
-    font-family: 'Cinzel', serif;
-}
-</style>

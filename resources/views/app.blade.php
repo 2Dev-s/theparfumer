@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
         <script>
@@ -27,6 +28,10 @@
 
             html.dark {
                 background-color: oklch(0.145 0 0);
+            }
+
+            .font-cinzel {
+                font-family: 'Cinzel', serif;
             }
         </style>
 

@@ -87,18 +87,10 @@ const submit = () => {
             </div>
 
 
-            <div class="text-center text-sm text-muted-foreground font-cinzel" data-aos="fade-in" data-aos-delay="800">
+            <div class="text-center text-sm text-muted-foreground font-cinzel">
                 Ai deja un cont?
                 <TextLink :href="route('login')" class="underline underline-offset-4" :tabindex="6">Autentifică-te</TextLink>
             </div>
         </form>
     </AuthBase>
 </template>
-
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
-
-.font-cinzel {
-    font-family: 'Cinzel', serif;
-}
-</style>
