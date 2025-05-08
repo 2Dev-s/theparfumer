@@ -14,6 +14,7 @@ import { Head } from '@inertiajs/vue3';
                     autoplay
                     muted
                     loop
+                    playsinline
                     class="w-full h-full object-cover opacity-90"
                     src="https://videos.pexels.com/video-files/1705055/1705055-hd_1920_1080_30fps.mp4"
                 ></video>

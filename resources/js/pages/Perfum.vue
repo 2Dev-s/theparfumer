@@ -79,6 +79,7 @@ const showLightbox = (index: number) => {
                     autoplay
                     muted
                     loop
+                    playsinline
                     class="w-full h-full object-cover opacity-10"
                     src="https://videos.pexels.com/video-files/4154241/4154241-uhd_2732_1440_25fps.mp4"
                 ></video>

@@ -9,6 +9,7 @@
                     autoplay
                     muted
                     loop
+                    playsinline
                     class="w-full h-full object-cover opacity-90"
                     src="https://videos.pexels.com/video-files/4659830/4659830-uhd_2732_1440_25fps.mp4"
                 ></video>
