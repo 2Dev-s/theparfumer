@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Perfume;
 use Inertia\Inertia;
 
@@ -17,14 +18,22 @@ class DefaultPagesController extends Controller
         return Inertia::render('Home');
     }
 
-    public function perfumes()
+    public function perfumes(Request $request)
     {
-        $perfumes = Perfume::where('active', 1)->with(['brand', 'category'])->get();
+        $perfumes = Perfume::where('active', 1)->with(['brand', 'category']);
+
+        if ($request->has('collection')) {
+            $collection = $request->query('collection');
+            $perfumes = $perfumes->where('sex', $collection);
+        }
+
+        $perfumes = $perfumes->get();
 
         return Inertia::render('Perfumes', [
             'perfumes' => $perfumes,
         ]);
     }
+
 
     public function show($slug)
     {
