@@ -198,7 +198,8 @@ export default {
     },
     computed: {
         isSettingsPage() {
-            return window.location.pathname.includes('settings');
+            const path = window.location.pathname;
+            return path.includes('settings') || path.includes('cart/view');
         }
     },
     mounted() {
@@ -206,9 +207,13 @@ export default {
     },
     created() {
         eventBus.on('add-to-cart', this.addToCart);
+        eventBus.on('cart-updated', this.handleUpdateQuantity);
+        eventBus.on('remove-item', this.handleRemoveItem);
     },
     beforeUnmount() {
         eventBus.off('add-to-cart', this.addToCart);
+        eventBus.off('cart-updated', this.handleUpdateQuantity);
+        eventBus.off('remove-item', this.handleRemoveItem);
     },
     methods: {
         toggleMobileMenu() {
@@ -238,6 +243,7 @@ export default {
         },
 
         async handleRemoveItem(productId) {
+            console.log(productId);
             try {
                 const response = await axios.delete(`/cart/remove/${productId}`);
                 this.cartItems = response.data.cart;

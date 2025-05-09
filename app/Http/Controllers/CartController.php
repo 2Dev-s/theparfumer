@@ -3,9 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CartController extends Controller
 {
+    public function view()
+    {
+        // Get the cart array from the JsonResponse's original property
+        $cart = $this->getCart()->getData(true); // true ensures it returns the actual array data
+
+        return Inertia::render('Cart', [
+            'products' =>$cart['cart']
+        ]);
+    }
+
     public function getCart()
     {
         return response()->json([
@@ -20,9 +31,10 @@ class CartController extends Controller
             'name' => 'required|string',
             'price' => 'required|numeric',
             'quantity' => 'sometimes|integer|min:1',
-            // Make other fields optional or adjust as needed
             'slug' => 'sometimes|string',
-            'brand' => 'sometimes|array',
+            'size' => 'sometimes|numeric',
+            'concentration' => 'sometimes|string',
+            'brand' => 'sometimes|numeric',
             'brand.name' => 'sometimes|string',
             'image' => 'sometimes|string',
         ]);
@@ -38,7 +50,8 @@ class CartController extends Controller
                 'name' => $validated['name'],
                 'price' => $validated['price'],
                 'quantity' => $validated['quantity'] ?? 1,
-                // Optional fields
+                'size' => $validated['size'] ?? 0,
+                'concentration' => $validated['concentration'] ?? null,
                 'slug' => $validated['slug'] ?? null,
                 'brand' => $validated['brand'] ?? null,
                 'image' => $validated['image'] ?? null,

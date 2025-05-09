@@ -13,6 +13,7 @@ Route::get('/perfume/{perfume:slug}', [DefaultPagesController::class, 'show'])->
 
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'getCart']);
+    Route::get('/view', [CartController::class, 'view'])->name('cart.view');
     Route::post('/add', [CartController::class, 'addToCart']);
     Route::put('/update/{productId}', [CartController::class, 'updateCart']);
     Route::delete('/remove/{productId}', [CartController::class, 'removeFromCart']);

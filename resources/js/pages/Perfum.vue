@@ -144,14 +144,28 @@ const showLightbox = (index: number) => {
                                         <div class="absolute -bottom-1 left-0 right-0 h-px bg-amber-500/30"></div>
                                     </div>
 
-                                    <div v-if="perfume.stock > 0" class="flex items-center">
-                                        <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                                        <span class="text-xs text-gray-300 uppercase tracking-wider">In Stoc</span>
+                                    <div
+                                        class="flex items-center"
+                                        :class="{
+                                            'text-gray-300': perfume.stock > 0,
+                                            'text-gray-400': perfume.stock === 0,
+                                          }"
+                                                                            >
+                                          <span
+                                              :class="{
+                                              'w-2 h-2 rounded-full mr-2 animate-pulse': true,
+                                              'bg-green-400': perfume.stock > 10,
+                                              'bg-yellow-400': perfume.stock <= 10 && perfume.stock > 0,
+                                              'bg-red-400': perfume.stock === 0,
+                                            }"
+                                          ></span>
+                                            <span
+                                                class="text-xs uppercase tracking-wider"
+                                            >
+                                            {{ perfume.stock > 0 ? (perfume.stock > 10 ? 'In Stoc' : 'Stoc Limitat') : 'Stoc Epuizat' }}
+                                          </span>
                                     </div>
-                                    <div v-else class="flex items-center">
-                                        <span class="w-2 h-2 bg-red-400 rounded-full mr-2"></span>
-                                        <span class="text-xs text-gray-400 uppercase tracking-wider">Stoc Epuizat</span>
-                                    </div>
+
                                 </div>
 
                                 <!-- Descriere -->
@@ -249,11 +263,16 @@ const showLightbox = (index: number) => {
 
                             <!-- Add to Cart Button -->
                             <button
-                                class="mt-8 w-full hover:cursor-pointer bg-amber-500 hover:bg-amber-600 text-black font-bold font-cinzel py-3 px-6 uppercase tracking-wider transition-colors duration-300"
-                                @click="addToCart(perfume)"
+                                :class="[
+                                    'mt-8 w-full hover:cursor-pointer bg-amber-500 text-black font-bold font-cinzel py-3 px-6 uppercase tracking-wider transition-colors duration-300',
+                                    perfume.stock > 0 ? 'hover:bg-amber-600' : 'bg-gray-500 cursor-not-allowed'
+                                  ]"
+                                :disabled="perfume.stock <= 0"
+                                @click="perfume.stock > 0 && addToCart(perfume)"
                             >
-                                Adaugă în coș
+                                {{ perfume.stock > 0 ? 'Adaugă în coș' : 'Stoc epuizat' }}
                             </button>
+
                         </div>
                     </div>
 

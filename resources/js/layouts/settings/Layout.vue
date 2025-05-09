@@ -106,7 +106,7 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="font-cinzel text-sm sm:text-base text-amber-200">Membru NORMAL</h3>
+                            <h3 class="font-cinzel text-sm sm:text-base text-amber-200">Membru V.I.P</h3>
                             <p class="text-xs text-amber-500/80 mt-0.5 sm:mt-1">Privilegii exclusive</p>
                         </div>
                     </div>
