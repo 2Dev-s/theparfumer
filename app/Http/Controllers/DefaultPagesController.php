@@ -21,6 +21,16 @@ class DefaultPagesController extends Controller
         return Inertia::render('Home');
     }
 
+    public function tos()
+    {
+        return Inertia::render('TOS');
+    }
+
+    public function pdc()
+    {
+        return Inertia::render('PDC');
+    }
+
     public function perfumes(Request $request)
     {
         $sex = $request->get('collection');
