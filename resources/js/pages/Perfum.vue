@@ -116,7 +116,7 @@ const showLightbox = (index: number) => {
                             <div class="absolute top-4 left-4">
                                 <span
                                     class="font-cinzel cursor-default text-white text-center bg-black/80 px-3 py-1 text-xs font-bold uppercase tracking-wide rounded">
-                                    PARFUMÉR
+                                    PARFUMER
                                 </span>
                             </div>
                         </div>
@@ -306,13 +306,13 @@ const showLightbox = (index: number) => {
                                     <!-- Exclusive Badge -->
                                     <div class="absolute top-4 left-4">
                                         <span
-                                            class="font-cinzel cursor-default text-white text-center bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">PARFUMÉR</span>
+                                            class="font-cinzel cursor-default text-white text-center bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">PARFUMER</span>
                                     </div>
 
                                     <div class="absolute top-4 right-4">
                                         <button @click="addToCart(perfume)"
                                                 class="font-cinzel text-white text-center hover:cursor-pointer hover:scale-105 transition-all hover:bg-white hover:text-black bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">
-                                            ADAUGA IN COS
+                                            ADAUGĂ ÎN COȘ
                                         </button>
                                     </div>
                                 </div>

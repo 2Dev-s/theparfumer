@@ -7,12 +7,15 @@ import { Label } from '@/components/ui/label';
 import AuthBase from '@/layouts/AuthLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
-    password_confirmation: ''
+    password_confirmation: '',
+    newsletter: false,
+    tos: false
 });
 
 const submit = () => {
@@ -71,6 +74,26 @@ const submit = () => {
                     <InputError class="font-cinzel" :message="form.errors.password_confirmation" />
                 </div>
 
+                <div class="flex flex-col gap-4 mt-4" data-aos="fade-in" data-aos-delay="650">
+                    <Label for="tos" class="flex items-center space-x-3 font-cinzel">
+                        <Checkbox id="tos" v-model="form.tos" :tabindex="5" required />
+                        <span>
+                            Sunt de acord cu
+                            <TextLink href="/termeni-si-conditii" class="underline underline-offset-4">
+                                termenii și condițiile
+                            </TextLink>
+                        </span>
+                    </Label>
+                    <InputError class="font-cinzel" :message="form.errors.tos" />
+
+
+                    <Label for="newsletter" class="flex items-center space-x-3 font-cinzel">
+                        <Checkbox id="newsletter" v-model="form.newsletter" :tabindex="6" />
+                        <span>Doresc să primesc noutăți și oferte pe email</span>
+                    </Label>
+                </div>
+
+
                 <button
                     type="submit"
                     data-aos="fade-in"
@@ -89,7 +112,8 @@ const submit = () => {
 
             <div class="text-center text-sm text-muted-foreground font-cinzel">
                 Ai deja un cont?
-                <TextLink :href="route('login')" class="underline underline-offset-4" :tabindex="6">Autentifică-te</TextLink>
+                <TextLink :href="route('login')" class="underline underline-offset-4" :tabindex="6">Autentifică-te
+                </TextLink>
             </div>
         </form>
     </AuthBase>

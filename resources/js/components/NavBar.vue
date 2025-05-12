@@ -5,7 +5,7 @@
                 <!-- Logo Lux -->
                 <Link :href="route('home')" class="flex items-center group">
                     <div class="relative" data-aos="fade-in" data-aos-delay="500">
-                        <span class="font-cinzel text-3xl font-bold text-yellow-500 tracking-wider">PARFUMÉR</span>
+                        <span class="font-cinzel text-3xl font-bold text-yellow-500 tracking-wider">PARFUMER</span>
                         <div
                             class="absolute -bottom-2 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
                     </div>
@@ -187,10 +187,9 @@ export default {
             isLoading: false,
             menuItems: [
                 { label: 'Colecții', href: '/perfumes' },
-                { label: 'Amestec Privat', href: '#amestec-privat' },
-                { label: 'Boutique-uri', href: '#boutique-uri' },
-                { label: 'Lumea PARFUMÉR', href: '#lumea-parfumer' },
-                { label: 'Contact', href: '#contact' }
+                { label: 'FEMEI', href: '/perfumes?collection=female' },
+                { label: 'BARBATI', href: '/perfumes?collection=male' },
+                { label: 'UNISEX', href: '/perfumes?collection=unisex' },
             ],
 
             cartItems: []

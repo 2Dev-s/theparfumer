@@ -40,7 +40,7 @@
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center mb-20" data-aos="fade-down" data-aos-delay="300">
                     <span class="text-amber-500/80 tracking-widest">COLECȚII PRIVATE</span>
-                    <h2 class="font-cinzel text-4xl text-amber-200 mt-4">Semnătura PARFUMÉR</h2>
+                    <h2 class="font-cinzel text-4xl text-amber-200 mt-4">Semnătura PARFUMER</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">

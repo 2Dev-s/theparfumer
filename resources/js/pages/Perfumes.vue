@@ -59,20 +59,25 @@ import { Head } from '@inertiajs/vue3';
                                 <!-- Badge Collection -->
                                 <div class="absolute top-3 left-3">
                                     <span
-                                        class="font-cinzel cursor-default text-white text-center bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">PARFUMÉR</span>
+                                        class="font-cinzel cursor-default text-white text-center bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">PARFUMER</span>
                                 </div>
 
                                 <div class="absolute top-3 right-3">
                                     <button @click="addToCart(perfume)"
                                             class="font-cinzel text-white text-center hover:cursor-pointer hover:scale-105 transition-all hover:bg-white hover:text-black bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">
-                                        ADAUGA IN COS
+                                        ADAUGĂ ÎN COȘ
                                     </button>
                                 </div>
                             </div>
                             <div class="mt-4 text-center">
                                 <h1 class="text-white text-lg font-cinzel font-bold">{{ perfume.name }}</h1>
                                 <h1 class="text-gray-400 text-md font-cinzel">{{ perfume.brand.name }}</h1>
-                                <h1 class="text-gold-500 font-cinzel text-sm">{{ perfume.size }} ml</h1>
+                                <div class="flex items-center justify-center space-x-4">
+                                        <span class="text-amber-400 font-cinzel text-sm tracking-wider">{{ perfume.size
+                                            }} ml</span>
+                                    <span class="text-gray-500">|</span>
+                                    <span class="text-white font-cinzel text-sm tracking-wider">{{ perfume.price }} RON</span>
+                                </div>
                             </div>
                         </div>
                     </div>

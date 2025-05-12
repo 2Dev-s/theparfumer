@@ -25,7 +25,7 @@ defineProps<{
                 <div class="flex flex-col items-center gap-4">
                     <Link :href="route('home')" class="flex items-center group">
                         <div class="relative" data-aos="fade-in" data-aos-delay="100">
-                            <span class="font-cinzel text-5xl text-yellow-500 tracking-wider">PARFUMÉR</span>
+                            <span class="font-cinzel text-5xl text-yellow-500 tracking-wider">PARFUMER</span>
                             <div
                                 class="absolute -bottom-2 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
                         </div>
