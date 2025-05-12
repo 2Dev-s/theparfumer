@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import { LoaderCircle } from 'lucide-vue-next';
+import { Button } from '@/components/ui/button';
 </script>
 
 <template>
@@ -32,18 +34,99 @@ import { Head } from '@inertiajs/vue3';
             </div>
         </section>
 
-        <section class="bg-gray-950 py-12" v-if="!perfumes || perfumes.length === 0" data-aos="fade-in"
-                 data-aos-delay="400">
-            <div class="text-center text-amber-500 text-lg font-cinzel py-12 px-6">
-                Momentan nu sunt parfumuri disponibile. Revenim în curând cu produse exclusiviste!
-            </div>
-        </section>
-
-        <section v-else class="bg-gray-950 min-h-screen py-12">
+        <section class="bg-gray-950 min-h-screen py-12">
             <!-- Container Responsiv -->
             <div class="container mx-auto px-4">
+                <form @submit.prevent="submit" class="mb-12">
+                    <!-- Grid Container -->
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+                        <!-- Search Input (full width on mobile, spans 2 cols on sm, 3 cols on md, full width on lg) -->
+                        <div class="sm:col-span-2 md:col-span-3 lg:col-span-2">
+                            <input
+                                v-model="filters.search"
+                                type="text"
+                                placeholder="Căutare parfum..."
+                                class="w-full bg-gray-950 font-cinzel border border-yellow-500 focus:border-yellow-700 px-4 py-3 hover:border-gray-400 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                            />
+                        </div>
+
+                        <!-- Sort Select -->
+                        <div>
+                            <select
+                                v-model="filters.sort"
+                                class="w-full bg-gray-950 font-cinzel border border-yellow-500 focus:border-yellow-700 px-4 py-3 hover:border-gray-400 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                            >
+                                <option value="">Sortează</option>
+                                <option value="new_arrival">Cele mai noi</option>
+                                <option value="price_asc">Preț: crescător</option>
+                                <option value="price_desc">Preț: descrescător</option>
+                            </select>
+                        </div>
+
+                        <!-- Sex Select -->
+                        <div>
+                            <select
+                                v-model="filters.collection"
+                                class="w-full bg-gray-950 font-cinzel border border-yellow-500 focus:border-yellow-700 px-4 py-3 hover:border-gray-400 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                            >
+                                <option value="">Sortează după sex</option>
+                                <option value="female">Femei</option>
+                                <option value="male">Barbati</option>
+                                <option value="unisex">Unisex</option>
+                            </select>
+                        </div>
+
+                        <!-- Brand Select -->
+                        <div>
+                            <select
+                                v-model="filters.brand"
+                                class="w-full bg-gray-950 font-cinzel border border-yellow-500 focus:border-yellow-700 px-4 py-3 hover:border-gray-400 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                            >
+                                <option value="">Brand</option>
+                                <option v-for="brand in brands" :key="brand.id" :value="brand.id">{{ brand.name }}</option>
+                            </select>
+                        </div>
+
+                        <!-- Category Select -->
+                        <div>
+                            <select
+                                v-model="filters.category"
+                                class="w-full bg-gray-950 font-cinzel border border-yellow-500 focus:border-yellow-700 px-4 py-3 hover:border-gray-400 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                            >
+                                <option value="">Categorie</option>
+                                <option v-for="category in categories" :key="category.id" :value="category.id">
+                                    {{ category.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Search Button (full width on mobile, spans all cols on larger screens) -->
+                        <div class="sm:col-span-2 md:col-span-3 lg:col-span-1">
+                            <button
+                                type="submit"
+                                data-aos="fade-in"
+                                data-aos-delay="700"
+                                class="w-full font-cinzel hover:cursor-pointer bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 px-6 uppercase tracking-wider transition-colors duration-300 flex items-center justify-center gap-2"
+                                tabindex="5"
+                                :disabled="form.processing"
+                            >
+                                <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
+                                <span v-if="!form.processing">Caută</span>
+                                <span v-else class="opacity-70">Se încarcă...</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="bg-gray-950 py-12" v-if="!perfumes || perfumes.length === 0" data-aos="fade-in"
+                         data-aos-delay="400">
+                    <div class="text-center text-amber-500 text-lg font-cinzel py-12 px-6">
+                        Momentan nu sunt parfumuri disponibile. Revenim în curând cu produse exclusiviste!
+                    </div>
+                </div>
+
                 <!-- Sidebar filtrări -->
-                <div class="w-full py-12">
+                <div class="w-full py-12" v-else>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         <div v-for="perfume in perfumes" :href="route('home')" :key="perfume.id"
                              class="hover:scale-105 transition-all">
@@ -76,7 +159,8 @@ import { Head } from '@inertiajs/vue3';
                                         <span class="text-amber-400 font-cinzel text-sm tracking-wider">{{ perfume.size
                                             }} ml</span>
                                     <span class="text-gray-500">|</span>
-                                    <span class="text-white font-cinzel text-sm tracking-wider">{{ perfume.price }} RON</span>
+                                    <span class="text-white font-cinzel text-sm tracking-wider">{{ perfume.price
+                                        }} RON</span>
                                 </div>
                             </div>
                         </div>
@@ -138,20 +222,62 @@ import { Head } from '@inertiajs/vue3';
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue';
+import { ref } from 'vue';
 import eventBus from '@/lib/event-bus';
+import { useForm } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
 
 export default {
     props: {
-        perfumes: Array as PropType<Array<any>>
+        perfumes: Array,
+        brands: Array,
+        categories: Array
+    },
+    data() {
+        return {
+            filters: {
+                search: '',
+                sort: '',
+                collection: '',
+                brand: '',
+                category: ''
+            },
+            form: useForm(this.filters)
+        };
     },
     methods: {
+        submit() {
+            const parfumeCollection = ref<HTMLElement | null>(null);
+
+            const cleanParams = Object.entries(this.filters).reduce((acc, [key, value]) => {
+                if (value && value !== '') {
+                    acc[key] = value;
+                }
+                return acc;
+            }, {});
+
+            const queryParams = new URLSearchParams(cleanParams).toString();
+            const url = queryParams ? `${route('perfumes')}?${queryParams}` : route('perfumes');
+
+            this.form.post(url, {
+                onSuccess: () => {
+                    if (parfumeCollection.value) {
+                        parfumeCollection.value.scrollIntoView({ behavior: 'smooth' });
+                    }
+                },
+                onError: (errors) => {
+                    console.error(errors);
+                }
+            });
+        },
+
         addToCart(perfum) {
             eventBus.emit('add-to-cart', perfum);
         }
     }
 };
 </script>
+
 
 <style scoped>
 body {

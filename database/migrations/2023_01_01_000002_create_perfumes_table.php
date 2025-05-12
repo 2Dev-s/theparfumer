@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('middle_notes')->nullable(); // Note de mijloc (JSON)
             $table->string('base_notes')->nullable(); // Note de bază (JSON)
 
-            $table->decimal('price', 8, 2)->default(0); // Preț
+            $table->decimal('price')->default(0); // Preț
             $table->string('size')->nullable(); // Ex: 100ml
             $table->enum('sex', ['male', 'female', 'unisex'])->default('male');
             $table->string('concentration')->nullable(); // Ex: EDT, EDP
