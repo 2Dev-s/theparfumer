@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Models\Perfume;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,6 +39,24 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return to_route('profile.edit');
+    }
+
+    public function toggleFavourite(Request $request, Perfume $perfume)
+    {
+        $user = $request->user();
+
+        if ($user->favorites()->where('perfume_id', $perfume->id)->exists()) {
+            $user->favorites()->detach($perfume);
+            return response()->json(['status' => 'removed']);
+        } else {
+            $user->favorites()->attach($perfume);
+            return response()->json(['status' => 'added']);
+        }
+    }
+
+    public function userFavorites(Request $request)
+    {
+        return $request->user()->favorites()->with('brand')->get();
     }
 
     /**

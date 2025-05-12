@@ -151,6 +151,25 @@ import { Button } from '@/components/ui/button';
                                         ADAUGĂ ÎN COȘ
                                     </button>
                                 </div>
+
+                                <div class="absolute bottom-3 right-3" v-if="perfume.is_favorite">
+                                    <button
+                                        @click="toggleFavourite(perfume)"
+                                        class="font-cinzel text-white text-center hover:cursor-pointer hover:scale-105 transition-all hover:bg-white hover:text-black bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">
+                                        ADAUGA LA FAVORITE
+                                    </button>
+                                </div>
+
+                                <div v-else class="absolute bottom-3 right-3">
+                                    <button
+                                        @click="toggleFavourite(perfume)"
+                                        class="font-cinzel text-white text-center hover:cursor-pointer hover:scale-105 transition-all bg-amber-500 text-black hover:bg-amber-600 hover:text-black bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">
+                                        FAVORIT
+                                    </button>
+                                </div>
+
+                                <!-- Correct the method name and parameter typo in the button -->
+
                             </div>
                             <div class="mt-4 text-center">
                                 <h1 class="text-white text-lg font-cinzel font-bold">{{ perfume.name }}</h1>
@@ -225,7 +244,7 @@ import { Button } from '@/components/ui/button';
 import { ref } from 'vue';
 import eventBus from '@/lib/event-bus';
 import { useForm } from '@inertiajs/vue3';
-import { onMounted } from 'vue';
+import axios from 'axios';
 
 export default {
     props: {
@@ -242,7 +261,8 @@ export default {
                 brand: '',
                 category: ''
             },
-            form: useForm(this.filters)
+            form: useForm(this.filters),
+            isFavourite: ''
         };
     },
     methods: {
@@ -273,6 +293,29 @@ export default {
 
         addToCart(perfum) {
             eventBus.emit('add-to-cart', perfum);
+        },
+
+        async toggleFavourite(perfume) {
+            try {
+                // Optimistically update UI
+                const index = this.perfumes.findIndex(p => p.id === perfume.id);
+                this.perfumes[index].is_favorite = !this.perfumes[index].is_favorite;
+
+                // Make API call
+                const response = await axios.post(`/perfumes/${perfume.id}/favourite`);
+
+                // Sync with actual response if needed
+                if (response.data.status === 'removed') {
+                    this.perfumes[index].is_favorite = false;
+                } else {
+                    this.perfumes[index].is_favorite = true;
+                }
+            } catch (error) {
+                console.error('Error toggling favorite:', error);
+                // Revert UI on error
+                const index = this.perfumes.findIndex(p => p.id === perfume.id);
+                this.perfumes[index].is_favorite = !this.perfumes[index].is_favorite;
+            }
         }
     }
 };

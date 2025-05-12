@@ -208,11 +208,13 @@ export default {
         eventBus.on('add-to-cart', this.addToCart);
         eventBus.on('cart-updated', this.handleUpdateQuantity);
         eventBus.on('remove-item', this.handleRemoveItem);
+        eventBus.on('add-favourite', this.toggleFavorite);
     },
     beforeUnmount() {
         eventBus.off('add-to-cart', this.addToCart);
         eventBus.off('cart-updated', this.handleUpdateQuantity);
         eventBus.off('remove-item', this.handleRemoveItem);
+        eventBus.off('add-favourite', this.toggleFavorite);
     },
     methods: {
         toggleMobileMenu() {
@@ -270,6 +272,14 @@ export default {
                 this.isCartOpen = true;
             } catch (error) {
                 console.error('Error adding to cart:', error);
+            }
+        },
+
+        async toggleFavorite(perfume) {
+            try {
+                const response = await axios.post(`/perfumes/${perfume.id}/favourite`)
+            } catch (error) {
+                console.error('Error toggling favorite:', error)
             }
         },
 

@@ -6,6 +6,7 @@ namespace App\Models;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -60,6 +61,12 @@ class User extends Authenticatable implements FilamentUser
     public function defaultAddress(): HasOne
     {
         return $this->hasOne(Address::class)->where('is_default', true);
+    }
+
+    public function favorites(): BelongsToMany
+    {
+        return $this->belongsToMany(Perfume::class, 'favourites')
+            ->withTimestamps();
     }
 
     public function canAccessPanel(Panel $panel): bool

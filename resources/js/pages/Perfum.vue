@@ -3,6 +3,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import VueEasyLightbox from 'vue-easy-lightbox';
+import { Button } from '@/components/ui/button';
 
 const props = defineProps<{
     perfume: {
@@ -262,16 +263,39 @@ const showLightbox = (index: number) => {
                             </div>
 
                             <!-- Add to Cart Button -->
-                            <button
-                                :class="[
-                                    'mt-8 w-full hover:cursor-pointer bg-amber-500 text-black font-bold font-cinzel py-3 px-6 uppercase tracking-wider transition-colors duration-300',
-                                    perfume.stock > 0 ? 'hover:bg-amber-600' : 'bg-gray-500 cursor-not-allowed'
-                                  ]"
-                                :disabled="perfume.stock <= 0"
-                                @click="perfume.stock > 0 && addToCart(perfume)"
-                            >
-                                {{ perfume.stock > 0 ? 'Adaugă în coș' : 'Stoc epuizat' }}
-                            </button>
+                            <div class="relative w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-8">
+
+                                <!-- Add to Cart Button -->
+                                <button
+                                    :class="[
+                                        'flex-1 hover:cursor-pointer bg-amber-500 text-black font-bold font-cinzel py-3 px-6 uppercase tracking-wider transition-colors duration-300 text-center',
+                                        perfume.stock > 0 ? 'hover:bg-amber-600' : 'bg-gray-500 cursor-not-allowed'
+                                    ]"
+                                    :disabled="perfume.stock <= 0"
+                                    @click="perfume.stock > 0 && addToCart(perfume)"
+                                >
+                                    {{ perfume.stock > 0 ? 'Adaugă în coș' : 'Stoc epuizat' }}
+                                </button>
+
+                                <!-- Add to Favorites Button -->
+                                <button
+                                    v-if="!perfume.is_favorite"
+                                    @click="toggleFavourite(perfume)"
+                                    class="flex-1 font-cinzel text-white text-center hover:cursor-pointer hover:scale-105 transition-all bg-black hover:bg-white hover:text-black px-6 py-3 text-xs sm:text-sm font-bold uppercase tracking-wide"
+                                >
+                                    Adaugă la favorite
+                                </button>
+
+                                <button
+                                    v-else
+                                    @click="toggleFavourite(perfume)"
+                                    class="flex-1 font-cinzel text-black text-center hover:cursor-pointer hover:scale-105 transition-all bg-amber-500 hover:bg-amber-600 px-6 py-3 text-xs sm:text-sm font-bold uppercase tracking-wide"
+                                >
+                                    Favorit
+                                </button>
+                            </div>
+
+
 
                         </div>
                     </div>
@@ -403,6 +427,7 @@ const showLightbox = (index: number) => {
 
 <script lang="ts">
 import eventBus from '@/lib/event-bus';
+import axios from 'axios';
 
 export default {
     props: {
@@ -412,6 +437,27 @@ export default {
     methods: {
         addToCart(perfum) {
             eventBus.emit('add-to-cart', perfum);
+        },
+
+        async toggleFavourite(perfume) {
+            try {
+                // Optimistically update UI
+                this.perfume.is_favorite = !this.perfume.is_favorite;
+
+                // Make API call
+                const response = await axios.post(`/perfumes/${perfume.id}/favourite`);
+
+                // Sync with actual response if needed
+                if (response.data.status === 'removed') {
+                    this.perfume.is_favorite = false;
+                } else {
+                    this.perfume.is_favorite = true;
+                }
+            } catch (error) {
+                console.error('Error toggling favorite:', error);
+                // Revert UI on error
+                this.perfume.is_favorite = !this.perfume.is_favorite;
+            }
         }
     }
 };
