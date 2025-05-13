@@ -89,25 +89,25 @@ class DefaultPagesController extends Controller
         ]);
     }
 
-    public function show($slug)
+    public function show(Request $request, $slug)
     {
         $perfume = Perfume::with(['brand', 'category', 'media', 'favorites'])
             ->where('slug', $slug)
             ->firstOrFail();
 
-        // Add favorite status
-        $perfume->is_favorite = auth()->user()
-            ? $perfume->favorites->contains('user_id', auth()->id())
+        // Check if the perfume is in the user's favourites
+        $isFavourite = auth()->check()
+            ? $perfume->favorites->contains('id', auth()->id())
             : false;
 
-        $relatedParfumes = Perfume::with(['brand', 'category', 'media'])
+        $relatedParfumes = Perfume::with(['brand', 'category', 'media', 'favorites'])
             ->where('category_id', $perfume->category->id)
             ->where('id', '!=', $perfume->id)
             ->inRandomOrder()
             ->limit(4)
             ->get()
             ->each(function ($related) {
-                $related->is_favorite = auth()->user()
+                $related->is_favorite = auth()->check()
                     ? $related->favorites->contains('user_id', auth()->id())
                     : false;
             });
@@ -115,6 +115,7 @@ class DefaultPagesController extends Controller
         return Inertia::render('Perfum', [
             'perfume' => $perfume,
             'relatedParfumes' => $relatedParfumes,
+            'is_favourite' => $isFavourite,
         ]);
     }
 }

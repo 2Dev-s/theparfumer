@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData } from '@/types';
@@ -23,6 +23,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const products = ref<Product[]>(props.products);
+const isLoading = ref<Record<number, boolean>>({});
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -35,8 +36,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
-const page = usePage<SharedData>();
-
 const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(price);
 };
@@ -46,34 +45,38 @@ const addToCart = (product: Product) => {
 };
 
 const toggleFavourite = async (product: Product) => {
+    isLoading.value[product.id] = true;
+
     try {
-        // Optimistically update UI
         const originalState = product.is_favorite;
         product.is_favorite = !product.is_favorite;
 
-        // Remove from local list if unfavorited
+        // Optimistic UI update
         if (!product.is_favorite) {
             products.value = products.value.filter(p => p.id !== product.id);
         }
 
-        // Make API call
         const response = await axios.post(`/perfumes/${product.id}/favourite`);
 
-        // Sync with actual response if needed
+        // Sync with server response
         if (response.data.status === 'removed' && originalState) {
-            // If the item was actually removed but we had optimistically kept it
             products.value = products.value.filter(p => p.id !== product.id);
+            console.log(1)
         } else if (response.data.status === 'added' && !originalState) {
-            // If the item was actually added but we had optimistically removed it
-            products.value = [...products.value, product];
+            products.value = [...products.value, { ...product, is_favorite: true }];
         }
+
+        // Optionally emit event to update other components
+        window.location.reload();
     } catch (error) {
         console.error('Error toggling favorite:', error);
         // Revert UI on error
-        product.is_favorite = !product.is_favorite;
-        if (product.is_favorite) {
+        product.is_favorite = originalState;
+        if (product.is_favorite && !products.value.some(p => p.id === product.id)) {
             products.value = [...products.value, product];
         }
+    } finally {
+        isLoading.value[product.id] = false;
     }
 };
 </script>
@@ -142,13 +145,27 @@ const toggleFavourite = async (product: Product) => {
                                         </button>
 
                                         <!-- Remove Button -->
-                                        <button @click="toggleFavourite(product)"
-                                                class="text-amber-500/70 hover:text-amber-300 transition-colors flex items-center">
-                                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        <button
+                                            @click="toggleFavourite(product)"
+                                            :disabled="isLoading[product.id]"
+                                            class="text-amber-500/70 hover:text-amber-300 transition-colors flex items-center"
+                                        >
+                                            <svg
+                                                v-if="!isLoading[product.id]"
+                                                class="w-5 h-5 mr-1"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="1.5"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                />
                                             </svg>
-                                            <span class="text-sm">Elimină</span>
+                                            <span v-if="!isLoading[product.id]" class="text-sm">Elimină</span>
+                                            <span v-else class="text-sm">Se încarcă...</span>
                                         </button>
                                     </div>
                                 </div>

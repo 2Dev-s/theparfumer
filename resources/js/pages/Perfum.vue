@@ -6,30 +6,7 @@ import VueEasyLightbox from 'vue-easy-lightbox';
 import { Button } from '@/components/ui/button';
 
 const props = defineProps<{
-    perfume: {
-        id: number;
-        name: string;
-        slug: string;
-        brand: {
-            name: string;
-        };
-        category: {
-            id: number;
-            name: string;
-        };
-        concentration: string;
-        stock: number;
-        description: string;
-        price: number;
-        size: number;
-        top_notes?: string;
-        middle_notes?: string;
-        base_notes?: string;
-        media: Array<{
-            original_url: string;
-            preview_url?: string;
-        }>;
-    };
+    perfume: Array<string>;
     relatedParfumes?: Array<{
         id: number;
         name: string;
@@ -279,24 +256,18 @@ const showLightbox = (index: number) => {
 
                                 <!-- Add to Favorites Button -->
                                 <button
-                                    v-if="!perfume.is_favorite"
                                     @click="toggleFavourite(perfume)"
-                                    class="flex-1 font-cinzel text-white text-center hover:cursor-pointer hover:scale-105 transition-all bg-black hover:bg-white hover:text-black px-6 py-3 text-xs sm:text-sm font-bold uppercase tracking-wide"
-                                >
-                                    Adaugă la favorite
+                                    :class="[
+                                        'flex-1 font-cinzel text-center hover:cursor-pointer hover:scale-105 transition-all px-6 py-3 text-xs sm:text-sm font-bold uppercase tracking-wide',
+                                        localFavourite
+                                            ? 'bg-amber-500 hover:bg-amber-600 text-black'
+                                            : 'bg-black hover:bg-white hover:text-black text-white'
+                                    ]"
+                                    >
+                                    {{ localFavourite ? 'Favorit' : 'Adaugă la favorite' }}
                                 </button>
 
-                                <button
-                                    v-else
-                                    @click="toggleFavourite(perfume)"
-                                    class="flex-1 font-cinzel text-black text-center hover:cursor-pointer hover:scale-105 transition-all bg-amber-500 hover:bg-amber-600 px-6 py-3 text-xs sm:text-sm font-bold uppercase tracking-wide"
-                                >
-                                    Favorit
-                                </button>
                             </div>
-
-
-
                         </div>
                     </div>
 
@@ -432,7 +403,13 @@ import axios from 'axios';
 export default {
     props: {
         perfume: Object,
-        relatedParfumes: Array
+        relatedParfumes: Array,
+        is_favourite: Boolean
+    },
+    data() {
+        return {
+            localFavourite: this.is_favourite
+        };
     },
     methods: {
         addToCart(perfum) {
@@ -441,24 +418,21 @@ export default {
 
         async toggleFavourite(perfume) {
             try {
-                // Optimistically update UI
-                this.perfume.is_favorite = !this.perfume.is_favorite;
+                console.log(this.localFavourite)
+                // Optimistic update
+                this.localFavourite = !this.localFavourite;
 
-                // Make API call
                 const response = await axios.post(`/perfumes/${perfume.id}/favourite`);
 
-                // Sync with actual response if needed
-                if (response.data.status === 'removed') {
-                    this.perfume.is_favorite = false;
-                } else {
-                    this.perfume.is_favorite = true;
-                }
+                // Adjust based on backend response
+                this.localFavourite = response.data.status !== 'removed';
             } catch (error) {
                 console.error('Error toggling favorite:', error);
-                // Revert UI on error
-                this.perfume.is_favorite = !this.perfume.is_favorite;
+                // Revert on error
+                this.localFavourite = !this.localFavourite;
             }
         }
     }
 };
+
 </script>

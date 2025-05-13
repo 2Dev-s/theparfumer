@@ -152,7 +152,7 @@ import { Button } from '@/components/ui/button';
                                     </button>
                                 </div>
 
-                                <div class="absolute bottom-3 right-3" v-if="perfume.is_favorite">
+                                <div class="absolute bottom-3 right-3" v-if="!perfume.is_favorite">
                                     <button
                                         @click="toggleFavourite(perfume)"
                                         class="font-cinzel text-white text-center hover:cursor-pointer hover:scale-105 transition-all hover:bg-white hover:text-black bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">
