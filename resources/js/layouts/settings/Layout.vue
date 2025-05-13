@@ -92,6 +92,9 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
                                 <path v-if="item.title === 'Comenzi'" stroke-linecap="round" stroke-linejoin="round"
                                       stroke-width="1.5"
                                       d="M16 7V5a3 3 0 00-3-3h-2a3 3 0 00-3 3v2m0 0h14l1 12a2 2 0 01-2 2H6a2 2 0 01-2-2l1-12z" />
+                                <path v-if="item.title === 'Favorite'" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="1.5"
+                                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                             </svg>
                             {{ item.title }}
                         </span>

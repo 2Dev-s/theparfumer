@@ -56,7 +56,9 @@ class ProfileController extends Controller
 
     public function userFavorites(Request $request)
     {
-        return $request->user()->favorites()->with('brand')->get();
+        return Inertia::render('settings/Favourite', [
+            'products' => $request->user()->favorites()->get(),
+        ]);
     }
 
     /**
