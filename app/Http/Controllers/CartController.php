@@ -35,6 +35,7 @@ class CartController extends Controller
             'size' => 'sometimes|numeric',
             'concentration' => 'sometimes|string',
             'brand' => 'sometimes|numeric',
+            'price_id' => 'sometimes|string',
             'brand.name' => 'sometimes|string',
             'image' => 'sometimes|string',
         ]);
@@ -53,6 +54,7 @@ class CartController extends Controller
                 'size' => $validated['size'] ?? 0,
                 'concentration' => $validated['concentration'] ?? null,
                 'slug' => $validated['slug'] ?? null,
+                'price_id' => $validated['price_id'] ?? null,
                 'brand' => $validated['brand'] ?? null,
                 'image' => $validated['image'] ?? null,
             ];

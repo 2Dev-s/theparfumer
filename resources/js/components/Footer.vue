@@ -90,6 +90,11 @@
                     </Link>
                 </div>
             </div>
+
+            <!-- Added "Creeat de catre TwoDevs" text here -->
+            <div class="pt-6 text-center text-sm text-gray-500 flex justify-center items-center">
+                <p>Website realizat de</p><Link href="https://twodevs.ro/" class="ml-1 text-yellow-500 font-bold">TwoDevs</Link>
+            </div>
         </div>
     </footer>
 </template>

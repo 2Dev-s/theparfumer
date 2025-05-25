@@ -30,6 +30,7 @@ class Perfume extends Model implements HasMedia
         'sex',
         'concentration',
         'stock',
+        'price_id',
         'active',
     ];
 

@@ -1,5 +1,7 @@
 <template>
     <AppLayout>
+        <Head title="Cos" />
+
         <div class="min-h-screen pb-20">
             <div class="relative h-screen-90 flex items-center justify-center overflow-hidden" >
                 <div class="relative z-10 text-center px-4" data-aos="fade-in" data-aos-delay="300">
@@ -154,9 +156,8 @@
                             <!-- Checkout Button -->
                             <button @click="proceedToCheckout"
                                     class="mt-8 w-full font-cinzel tracking-wider bg-gradient-to-r from-amber-500/10 to-amber-600/10 border border-amber-500/50 text-amber-200 hover:text-amber-100 px-6 py-4 rounded-full hover:bg-amber-500/20 transition-all group relative overflow-hidden">
-                                <span class="relative z-10">FINALIZEAZĂ COMANDA</span>
-                                <span
-                                    class="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                                <div class="relative z-10">FINALIZEAZĂ COMANDA</div>
+                                <span class="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                             </button>
 
                             <!-- Continue Shopping -->
@@ -192,11 +193,12 @@
 
 <script lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import eventBus from '@/lib/event-bus';
+import axios from 'axios';
 
 export default {
-    components: { Link, AppLayout },
+    components: { Head, Link, AppLayout },
     props: {
         products: Array
     },
@@ -233,8 +235,21 @@ export default {
                 window.location.reload();
             }, 100);
         },
-        proceedToCheckout() {
-            console.log('Proceed to checkout');
+        async proceedToCheckout() {
+            try {
+                const response = await axios.post(route('checkout.create'), {
+                    products: this.products.map(p => ({
+                        price_id: p.price_id,
+                        quantity: p.quantity
+                    }))
+                });
+
+                if (response.data.url) {
+                    window.location.href = response.data.url;
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+            }
         }
     }
 };

@@ -259,6 +259,7 @@ export default {
                     id: product.id,
                     name: product.name,
                     price: product.price,
+                    price_id: product.price_id,
                     image: product.media?.[0]?.original_url,
                     size: product.size,
                     concentration: product.concentration
