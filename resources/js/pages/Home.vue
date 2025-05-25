@@ -40,7 +40,7 @@
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center mb-20" data-aos="fade-down" data-aos-delay="300">
                     <span class="text-amber-500/80 tracking-widest">COLECȚII PRIVATE</span>
-                    <h2 class="font-cinzel text-4xl text-amber-200 mt-4">Semnătura PARFUMÉR</h2>
+                    <h2 class="font-cinzel text-4xl text-amber-200 mt-4">Semnătura PARFUMER</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -50,23 +50,25 @@
                         class="group relative h-[600px] overflow-hidden cursor-pointer"
                         data-aos="fade-down" data-aos-delay="300"
                     >
-                        <img
-                            :src="collection.image"
-                            class="w-full h-full object-cover transform group-hover:scale-105 transition-all duration-700"
-                        />
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-8 flex flex-col justify-end">
-                            <h3 class="font-serif text-2xl text-amber-200 mb-2">{{ collection.name }}</h3>
-                            <p class="text-amber-500/80 text-sm mb-4">{{ collection.items }} Piese Exclusiviste</p>
-                            <button
-                                class="text-left text-amber-500/80 hover:text-amber-300 transition-colors text-sm flex items-center">
-                                Explorează Colecția
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
-                        </div>
+                        <a :href="`/perfumes?collection=${collection.arg}`">
+                            <img
+                                :src="collection.image"
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition-all duration-700"
+                            />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-8 flex flex-col justify-end">
+                                <h3 class="font-serif text-2xl text-amber-200 mb-2">{{ collection.name }}</h3>
+                                <p class="text-amber-500/80 text-sm mb-4">{{ collection.items }} Piese Exclusiviste</p>
+                                <button
+                                    class="text-left text-amber-500/80 hover:text-amber-300 transition-colors text-sm flex items-center">
+                                    Explorează Colecția
+                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -194,23 +196,26 @@
 
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 
 const collections = [
     {
         name: 'Femei',
         image: 'https://img.freepik.com/free-photo/bride-holds-bottle-parfume-her-tender-arms_8353-7217.jpg?t=st=1746664538~exp=1746668138~hmac=ed9f6c9640093aa4e6a52f8a07a4c5a90f2245cd5782c30a0ce945c5b0637d0b&w=740',
-        items: 12
+        items: 12,
+        arg: 'female'
     },
     {
         name: 'Unisex',
         image: 'https://img.freepik.com/free-photo/elegant-vegan-alcohol-arrangement_23-2149337702.jpg?t=st=1746664558~exp=1746668158~hmac=51b8e8ea191acddb851ce96b3f3c17f726f9f79adbb61bfbbfd43216adf231fe&w=740',
-        items: 8
+        items: 8,
+        arg: 'unisex'
     },
     {
         name: 'Bărbați',
         image: 'https://img.freepik.com/premium-photo/man-formal-suit-bottle-perfume-closeup-fragrance-smell-men-perfumes-fashion-cologne-bottle-man-holding-up-bottle-perfume-men-perfume-hand-suit-background_293990-2206.jpg?w=740',
-        items: 5
+        items: 5,
+        arg: 'male'
     }
 ];
 

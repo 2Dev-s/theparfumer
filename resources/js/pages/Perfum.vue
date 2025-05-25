@@ -3,32 +3,10 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import VueEasyLightbox from 'vue-easy-lightbox';
+import { Button } from '@/components/ui/button';
 
 const props = defineProps<{
-    perfume: {
-        id: number;
-        name: string;
-        slug: string;
-        brand: {
-            name: string;
-        };
-        category: {
-            id: number;
-            name: string;
-        };
-        concentration: string;
-        stock: number;
-        description: string;
-        price: number;
-        size: number;
-        top_notes?: string;
-        middle_notes?: string;
-        base_notes?: string;
-        media: Array<{
-            original_url: string;
-            preview_url?: string;
-        }>;
-    };
+    perfume: Array<string>;
     relatedParfumes?: Array<{
         id: number;
         name: string;
@@ -114,8 +92,9 @@ const showLightbox = (index: number) => {
                             </div>
                             <!-- Badge Collection -->
                             <div class="absolute top-4 left-4">
-                                <span class="font-cinzel cursor-default text-white text-center bg-black/80 px-3 py-1 text-xs font-bold uppercase tracking-wide rounded">
-                                    PARFUMÉR
+                                <span
+                                    class="font-cinzel cursor-default text-white text-center bg-black/80 px-3 py-1 text-xs font-bold uppercase tracking-wide rounded">
+                                    PARFUMER
                                 </span>
                             </div>
                         </div>
@@ -143,14 +122,28 @@ const showLightbox = (index: number) => {
                                         <div class="absolute -bottom-1 left-0 right-0 h-px bg-amber-500/30"></div>
                                     </div>
 
-                                    <div v-if="perfume.stock > 0" class="flex items-center">
-                                        <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                                        <span class="text-xs text-gray-300 uppercase tracking-wider">In Stoc</span>
+                                    <div
+                                        class="flex items-center"
+                                        :class="{
+                                            'text-gray-300': perfume.stock > 0,
+                                            'text-gray-400': perfume.stock === 0,
+                                          }"
+                                                                            >
+                                          <span
+                                              :class="{
+                                              'w-2 h-2 rounded-full mr-2 animate-pulse': true,
+                                              'bg-green-400': perfume.stock > 10,
+                                              'bg-yellow-400': perfume.stock <= 10 && perfume.stock > 0,
+                                              'bg-red-400': perfume.stock === 0,
+                                            }"
+                                          ></span>
+                                            <span
+                                                class="text-xs uppercase tracking-wider"
+                                            >
+                                            {{ perfume.stock > 0 ? (perfume.stock > 10 ? 'In Stoc' : 'Stoc Limitat') : 'Stoc Epuizat' }}
+                                          </span>
                                     </div>
-                                    <div v-else class="flex items-center">
-                                        <span class="w-2 h-2 bg-red-400 rounded-full mr-2"></span>
-                                        <span class="text-xs text-gray-400 uppercase tracking-wider">Stoc Epuizat</span>
-                                    </div>
+
                                 </div>
 
                                 <!-- Descriere -->
@@ -171,10 +164,11 @@ const showLightbox = (index: number) => {
 
                                 <!-- Piramida de Note - Versiune Lux -->
                                 <div class="mb-10">
-                                    <div class="flex items-center my-10">
+                                    <div class="flex items-center my-6 md:my-10">
                                         <div
                                             class="flex-grow h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
-                                        <span class="mx-6 font-cinzel text-amber-400 text-xl tracking-widest px-4">
+                                        <span
+                                            class="mx-3 sm:mx-6 font-cinzel text-amber-400 text-sm sm:text-base md:text-xl tracking-widest px-2 sm:px-4">
                                             COMPOZIȚIA AROMATICĂ
                                         </span>
                                         <div
@@ -246,12 +240,34 @@ const showLightbox = (index: number) => {
                             </div>
 
                             <!-- Add to Cart Button -->
-                            <button
-                                class="mt-8 w-full hover:cursor-pointer bg-amber-500 hover:bg-amber-600 text-black font-bold font-cinzel py-3 px-6 uppercase tracking-wider transition-colors duration-300"
-                                @click="addToCart(perfume)"
-                            >
-                                Adaugă în coș
-                            </button>
+                            <div class="relative w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-8">
+
+                                <!-- Add to Cart Button -->
+                                <button
+                                    :class="[
+                                        'flex-1 hover:cursor-pointer bg-amber-500 text-black font-bold font-cinzel py-3 px-6 uppercase tracking-wider transition-colors duration-300 text-center',
+                                        perfume.stock > 0 ? 'hover:bg-amber-600' : 'bg-gray-500 cursor-not-allowed'
+                                    ]"
+                                    :disabled="perfume.stock <= 0"
+                                    @click="perfume.stock > 0 && addToCart(perfume)"
+                                >
+                                    {{ perfume.stock > 0 ? 'Adaugă în coș' : 'Stoc epuizat' }}
+                                </button>
+
+                                <!-- Add to Favorites Button -->
+                                <button
+                                    @click="toggleFavourite(perfume)"
+                                    :class="[
+                                        'flex-1 font-cinzel text-center hover:cursor-pointer hover:scale-105 transition-all px-6 py-3 text-xs sm:text-sm font-bold uppercase tracking-wide',
+                                        localFavourite
+                                            ? 'bg-amber-500 hover:bg-amber-600 text-black'
+                                            : 'bg-black hover:bg-white hover:text-black text-white'
+                                    ]"
+                                    >
+                                    {{ localFavourite ? 'Favorit' : 'Adaugă la favorite' }}
+                                </button>
+
+                            </div>
                         </div>
                     </div>
 
@@ -285,13 +301,13 @@ const showLightbox = (index: number) => {
                                     <!-- Exclusive Badge -->
                                     <div class="absolute top-4 left-4">
                                         <span
-                                            class="font-cinzel cursor-default text-white text-center bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">PARFUMÉR</span>
+                                            class="font-cinzel cursor-default text-white text-center bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">PARFUMER</span>
                                     </div>
 
                                     <div class="absolute top-4 right-4">
                                         <button @click="addToCart(perfume)"
                                                 class="font-cinzel text-white text-center hover:cursor-pointer hover:scale-105 transition-all hover:bg-white hover:text-black bg-black px-3 py-1 text-xs font-bold uppercase tracking-wide">
-                                            ADAUGA IN COS
+                                            ADAUGĂ ÎN COȘ
                                         </button>
                                     </div>
                                 </div>
@@ -321,31 +337,34 @@ const showLightbox = (index: number) => {
             </div>
         </section>
 
-        <section  class="relative py-32 bg-[url('https://img.freepik.com/premium-psd/perfume-bottle-sand_23-2148961294.jpg?w=740')] bg-cover bg-fixed bg-center">
-            <div class="absolute inset-0 bg-gradient-to-b from-black/85 via-black/70 to-black/90" ></div>
+        <section
+            class="relative py-32 bg-[url('https://img.freepik.com/premium-psd/perfume-bottle-sand_23-2148961294.jpg?w=740')] bg-cover bg-fixed bg-center">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/85 via-black/70 to-black/90"></div>
 
             <div class="relative z-10 max-w-5xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-16" >
-                    <h2 class="font-serif text-4xl text-amber-100 mt-6 mb-4"  data-aos="zoom-in-up" data-aos-delay="300">
+                <div class="text-center mb-16">
+                    <h2 class="font-serif text-4xl text-amber-100 mt-6 mb-4" data-aos="zoom-in-up" data-aos-delay="300">
                         <span class="block font-cinzel">Acces Exclusiv</span>
                         <span class="text-amber-300 font-cinzel">Pentru Cunoscători</span>
                     </h2>
-                    <div class="border-t border-amber-500/30 w-24 mx-auto my-6"  data-aos="zoom-in-up" data-aos-delay="300"></div>
-                    <p class="text-lg text-amber-200/80 max-w-2xl mx-auto"  data-aos="zoom-in-up" data-aos-delay="300">
+                    <div class="border-t border-amber-500/30 w-24 mx-auto my-6" data-aos="zoom-in-up"
+                         data-aos-delay="300"></div>
+                    <p class="text-lg text-amber-200/80 max-w-2xl mx-auto" data-aos="zoom-in-up" data-aos-delay="300">
                         Abonează-te la newsletter-ul nostru pentru a primi invitații la lansări private,
                         istorii despre ingrediente rare și oferte personalizate.
                     </p>
                 </div>
 
                 <div class="mt-12 max-w-md mx-auto">
-                    <form class="space-y-6"  data-aos="zoom-in-up" data-aos-delay="300">
+                    <form class="space-y-6" data-aos="zoom-in-up" data-aos-delay="300">
                         <div class="relative">
                             <input
                                 type="email"
                                 placeholder="Adresa ta de email"
                                 class="w-full bg-transparent font-cinzel border-0 border-b border-amber-500/30 text-amber-100 placeholder-amber-500/50 focus:border-amber-300 focus:ring-0 py-4 px-0 font-light tracking-widest transition-all duration-300"
                             >
-                            <div class="absolute bottom-0 left-0 w-0 h-px bg-amber-300 transition-all duration-500 group-focus-within:w-full"></div>
+                            <div
+                                class="absolute bottom-0 left-0 w-0 h-px bg-amber-300 transition-all duration-500 group-focus-within:w-full"></div>
                         </div>
 
                         <div class="flex items-center justify-center space-x-4 pt-4">
@@ -354,12 +373,14 @@ const showLightbox = (index: number) => {
                                 class="relative hover:cursor-pointer overflow-hidden bg-transparent border border-amber-500/50 text-amber-200 px-10 py-3 rounded-full hover:bg-amber-500/10 transition-all font-serif tracking-widest text-sm group"
                             >
                                 <span class="relative font-cinzel font-bold z-10">ABONEAZĂ-TE</span>
-                                <span class="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                                <span
+                                    class="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                             </button>
                         </div>
                     </form>
 
-                    <p class="text-xs text-amber-500/60 text-center mt-8 max-w-xs mx-auto font-cinzel"  data-aos="zoom-in-up" data-aos-delay="300">
+                    <p class="text-xs text-amber-500/60 text-center mt-8 max-w-xs mx-auto font-cinzel"
+                       data-aos="zoom-in-up" data-aos-delay="300">
                         Vă promitem să nu vă inundăm inboxul. Doar conținut exclusiv, la fiecare lună.
                     </p>
                 </div>
@@ -377,16 +398,41 @@ const showLightbox = (index: number) => {
 
 <script lang="ts">
 import eventBus from '@/lib/event-bus';
+import axios from 'axios';
 
 export default {
     props: {
         perfume: Object,
-        relatedParfumes: Array
+        relatedParfumes: Array,
+        is_favourite: Boolean
+    },
+    data() {
+        return {
+            localFavourite: this.is_favourite
+        };
     },
     methods: {
         addToCart(perfum) {
             eventBus.emit('add-to-cart', perfum);
+        },
+
+        async toggleFavourite(perfume) {
+            try {
+                console.log(this.localFavourite)
+                // Optimistic update
+                this.localFavourite = !this.localFavourite;
+
+                const response = await axios.post(`/perfumes/${perfume.id}/favourite`);
+
+                // Adjust based on backend response
+                this.localFavourite = response.data.status !== 'removed';
+            } catch (error) {
+                console.error('Error toggling favorite:', error);
+                // Revert on error
+                this.localFavourite = !this.localFavourite;
+            }
         }
     }
 };
+
 </script>

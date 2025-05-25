@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -26,6 +27,7 @@ class Perfume extends Model implements HasMedia
         'base_notes',
         'price',
         'size',
+        'sex',
         'concentration',
         'stock',
         'active',
@@ -36,9 +38,6 @@ class Perfume extends Model implements HasMedia
         'category_id' => 'integer',
         'price' => 'float',
         'stock' => 'integer',
-        'top_notes' => 'array',
-        'middle_notes' => 'array',
-        'base_notes' => 'array',
     ];
 
     protected $appends = [
@@ -102,5 +101,15 @@ class Perfume extends Model implements HasMedia
         }
 
         $this->attributes['slug'] = $slug;
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class, 'favourites');
+    }
+
+    public function isFavoritedBy(User $user)
+    {
+        return $this->favorites()->where('user_id', $user->id)->exists();
     }
 }

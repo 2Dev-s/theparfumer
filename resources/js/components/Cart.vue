@@ -27,7 +27,7 @@
         >
             <div
                 v-if="isOpen"
-                class="fixed inset-y-0 bg-gray-900 right-0 z-50 w-full max-w-md shadow-2xl flex flex-col border-l border-yellow-500/20"
+                class="fixed inset-y-0 bg-gray-950 right-0 z-50 w-full max-w-md shadow-2xl flex flex-col border-l border-yellow-500/20"
             >
                 <!-- Header cu detalii aurii -->
                 <div class="flex justify-between items-center px-8 py-6 border-b border-yellow-500/10">
@@ -46,7 +46,7 @@
                 </div>
 
                 <!-- Conținut principal -->
-                <div class="flex-1 overflow-y-auto bg-gray-900">
+                <div class="flex-1 overflow-y-auto bg-gray-950">
                     <!-- Stări de încărcare/eroare -->
                     <div v-if="isLoading" class="p-8 text-center">
                         <div class="animate-pulse space-y-6">
@@ -127,9 +127,11 @@
                         <span class="text-sm uppercase tracking-widest text-yellow-500/80">Total</span>
                         <span class="font-cinzel text-xl text-yellow-500">{{ total.toFixed(2) }} RON</span>
                     </div>
-                    <button class="w-full text-yellow-500 py-4 hover:cursor-pointer font-cinzel uppercase tracking-widest text-sm transition-all transform hover:scale-105 border-yellow-500 border">
+                    <Link :href="route('cart.view')" class="w-full block text-yellow-500 py-4 hover:cursor-pointer font-cinzel uppercase tracking-widest text-sm transition-all transform hover:scale-105 border-yellow-500 border text-center">
                         Finalizează Comanda
-                    </button>
+                    </Link>
+
+
                 </div>
             </div>
         </transition>

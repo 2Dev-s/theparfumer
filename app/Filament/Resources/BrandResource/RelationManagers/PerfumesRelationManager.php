@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\BrandResource\RelationManagers;
 
 use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Perfume;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -13,6 +15,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class PerfumesRelationManager extends RelationManager
 {
@@ -22,7 +25,23 @@ class PerfumesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function ($state, $set) {
+                        $set('slug', Str::slug($state));
+                    }),
+                Forms\Components\TextInput::make('slug')
+                    ->required()
+                    ->unique(Perfume::class, 'slug', ignoreRecord: true)->disabled(),
+                Forms\Components\Select::make('category_id')
+                    ->label('Category')
+                    ->options(function () {
+                        return Category::where('active', true)
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+                    ->required()->searchable(),
                 Forms\Components\Select::make('brand_id')
                     ->label('Brand')
                     ->options(function () {
@@ -30,11 +49,40 @@ class PerfumesRelationManager extends RelationManager
                             ->pluck('name', 'id')
                             ->toArray();
                     })
-                    ->required(),
-                Forms\Components\TextInput::make('price')->numeric()->required(),
-                Forms\Components\TextInput::make('stock')->numeric()->required(),
+                    ->required()->searchable(),
+                Forms\Components\Grid::make(3)
+                    ->schema([
+                        Forms\Components\TextInput::make('price')->numeric()->required(),
+                        Forms\Components\TextInput::make('stock')->numeric()->required(),
+                        Forms\Components\TextInput::make('size')->integer()->required(),
+                    ]),
                 Forms\Components\Textarea::make('description')->label('Description')->required()
                     ->columnSpan(2),
+
+                Forms\Components\Grid::make(3)
+                    ->schema([
+                        Forms\Components\TagsInput::make('top_notes')
+                            ->label('Note de vârf')
+                            ->placeholder('Adaugă note de vârf')
+                            ->separator(',')
+                            ->suggestions(['Bergamot', 'Lemon', 'Orange', 'Grapefruit'])
+                            ->nullable(),
+
+                        Forms\Components\TagsInput::make('middle_notes')
+                            ->label('Note de mijloc')
+                            ->placeholder('Adaugă note de mijloc')
+                            ->separator(',')
+                            ->suggestions(['Lavender', 'Rose', 'Jasmine', 'Cardamom'])
+                            ->nullable(),
+
+                        Forms\Components\TagsInput::make('base_notes')
+                            ->label('Note de bază')
+                            ->placeholder('Adaugă note de bază')
+                            ->separator(',')
+                            ->suggestions(['Cedarwood', 'Sandalwood', 'Musk', 'Amber'])
+                            ->nullable(),
+                    ]),
+                Forms\Components\TextInput::make('concentration')->required()->label('Concentration')->columnSpan(2),
                 Forms\Components\Select::make('active')
                     ->options(['1' => 'Active', '0' => 'Inactive'])
                     ->default('1')
@@ -43,6 +91,7 @@ class PerfumesRelationManager extends RelationManager
                     ->options(['male' => 'Male', 'female' => 'Female', 'unisex' => 'Unisex'])
                     ->default('male')
                     ->required(),
+
                 Forms\Components\SpatieMediaLibraryFileUpload::make('images')
                     ->label('Parfum Images')
                     ->multiple()
@@ -59,7 +108,7 @@ class PerfumesRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('name')->label('Name'),
                 TextColumn::make('brand.name')->label('Brand'),
-                TextColumn::make('description')->label('Description'),
+//                TextColumn::make('description')->label('Description'),
                 TextColumn::make('price')
                     ->label('Price')
                     ->formatStateUsing(fn($state) => $state . ' RON'),

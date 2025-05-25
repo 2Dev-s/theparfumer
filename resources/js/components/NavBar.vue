@@ -1,11 +1,11 @@
 <template>
-    <nav class="sticky top-0 bg-gray-950 w-full z-50 shadow">
+    <nav :class="{'sticky top-0 w-full z-50 shadow': true, 'bg-gray-950': !isSettingsPage}">
         <div class="max-w-7xl mx-auto px-6 xl:px-8 py-6">
             <div class="flex justify-between items-center">
                 <!-- Logo Lux -->
                 <Link :href="route('home')" class="flex items-center group">
                     <div class="relative" data-aos="fade-in" data-aos-delay="500">
-                        <span class="font-cinzel text-3xl font-bold text-yellow-500 tracking-wider">PARFUMÉR</span>
+                        <span class="font-cinzel text-3xl font-bold text-yellow-500 tracking-wider">PARFUMER</span>
                         <div
                             class="absolute -bottom-2 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
                     </div>
@@ -187,23 +187,34 @@ export default {
             isLoading: false,
             menuItems: [
                 { label: 'Colecții', href: '/perfumes' },
-                { label: 'Amestec Privat', href: '#amestec-privat' },
-                { label: 'Boutique-uri', href: '#boutique-uri' },
-                { label: 'Lumea PARFUMÉR', href: '#lumea-parfumer' },
-                { label: 'Contact', href: '#contact' }
+                { label: 'FEMEI', href: '/perfumes?collection=female' },
+                { label: 'BARBATI', href: '/perfumes?collection=male' },
+                { label: 'UNISEX', href: '/perfumes?collection=unisex' },
             ],
 
             cartItems: []
         };
+    },
+    computed: {
+        isSettingsPage() {
+            const path = window.location.pathname;
+            return path.includes('settings') || path.includes('cart/view');
+        }
     },
     mounted() {
         this.fetchCart();
     },
     created() {
         eventBus.on('add-to-cart', this.addToCart);
+        eventBus.on('cart-updated', this.handleUpdateQuantity);
+        eventBus.on('remove-item', this.handleRemoveItem);
+        eventBus.on('add-favourite', this.toggleFavorite);
     },
     beforeUnmount() {
         eventBus.off('add-to-cart', this.addToCart);
+        eventBus.off('cart-updated', this.handleUpdateQuantity);
+        eventBus.off('remove-item', this.handleRemoveItem);
+        eventBus.off('add-favourite', this.toggleFavorite);
     },
     methods: {
         toggleMobileMenu() {
@@ -233,6 +244,7 @@ export default {
         },
 
         async handleRemoveItem(productId) {
+            console.log(productId);
             try {
                 const response = await axios.delete(`/cart/remove/${productId}`);
                 this.cartItems = response.data.cart;
@@ -260,6 +272,14 @@ export default {
                 this.isCartOpen = true;
             } catch (error) {
                 console.error('Error adding to cart:', error);
+            }
+        },
+
+        async toggleFavorite(perfume) {
+            try {
+                const response = await axios.post(`/perfumes/${perfume.id}/favourite`)
+            } catch (error) {
+                console.error('Error toggling favorite:', error)
             }
         },
 
