@@ -15,6 +15,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/perfumes/{perfume}/favourite', [ProfileController::class, 'toggleFavourite']);
     Route::get('/settings/favourite', [ProfileController::class, 'userFavorites']);
+    Route::get('/settings/orders', [ProfileController::class, 'userOrders']);
 
     Route::get('settings/password', [PasswordController::class, 'edit'])->name('password.edit');
     Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');

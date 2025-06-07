@@ -61,6 +61,41 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function userOrders(Request $request)
+    {
+        $orders = $request->user()->orders()
+            ->with(['products' => function($query) {
+                $query->with('product'); // Eager load product details
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function($order) {
+                return [
+                    'id' => $order->id,
+                    'order_number' => $order->order_number,
+                    'status' => $order->status,
+                    'total_amount' => $order->total_amount,
+                    'currency' => $order->currency,
+                    'created_at' => $order->created_at->format('d M Y, H:i'),
+                    'products' => $order->products->map(function($product) {
+                        return [
+                            'id' => $product->id,
+                            'name' => $product->name,
+                            'price' => $product->price,
+                            'quantity' => $product->quantity,
+                            'image_url' => $product->product->main_image_url ?? null,
+                            'concentration' => $product->product->concentration ?? '',
+                            'size' => $product->product->size ?? ''
+                        ];
+                    })
+                ];
+            });
+
+        return Inertia::render('settings/Orders', [
+            'orders' => $orders,
+        ]);
+    }
+
     /**
      * Delete the user's profile.
      */

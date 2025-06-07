@@ -23,11 +23,10 @@ Route::prefix('cart')->group(function () {
     Route::delete('/remove/{productId}', [CartController::class, 'removeFromCart']);
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::post('/checkout', [StripeController::class, 'create'])->name('checkout.create');
-    Route::get('/checkout/success', [StripeController::class, 'success'])->name('checkout.success');
-    Route::get('/checkout/canceled', [StripeController::class, 'canceled'])->name('checkout.canceled');
-});
+Route::post('/checkout', [StripeController::class, 'create'])->name('checkout.create');
+Route::get('/checkout/success', [StripeController::class, 'success'])->name('checkout.success');
+Route::get('/checkout/canceled', [StripeController::class, 'canceled'])->name('checkout.canceled');
+Route::get('/checkout/update-address', [StripeController::class, 'update'])->name('addresses.order.update');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

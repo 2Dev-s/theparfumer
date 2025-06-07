@@ -32,9 +32,18 @@ class AddressController extends Controller
 
         $user = auth()->user();
 
+        $company = $user->addresses()->where('type', 'company')->first();
+        if ($company) {
+            $company->update(array_merge($validated, ['is_default' => false]));
+        }
+
         $user->addresses()->updateOrCreate(
             ['type' => 'personal'],
-            array_merge($validated, ['is_default' => true])
+            array_merge($validated, [
+                'is_default' => true,
+                'company_name' => null,
+                'tax_id' => null,
+            ]),
         );
 
         return redirect()->back()->with('success', 'Personal address updated');
@@ -55,9 +64,14 @@ class AddressController extends Controller
 
         $user = auth()->user();
 
+        $personal = $user->addresses()->where('type', 'personal')->first();
+        if ($personal) {
+            $personal->update(array_merge($validated, ['is_default' => false]));
+        }
+
         $user->addresses()->updateOrCreate(
             ['type' => 'company'],
-            $validated
+            array_merge($validated, ['is_default' => true])
         );
 
         return redirect()->back()->with('success', 'Company address updated');

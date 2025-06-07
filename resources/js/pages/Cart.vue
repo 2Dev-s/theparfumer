@@ -155,7 +155,7 @@
 
                             <!-- Checkout Button -->
                             <button @click="proceedToCheckout"
-                                    class="mt-8 w-full font-cinzel tracking-wider bg-gradient-to-r from-amber-500/10 to-amber-600/10 border border-amber-500/50 text-amber-200 hover:text-amber-100 px-6 py-4 rounded-full hover:bg-amber-500/20 transition-all group relative overflow-hidden">
+                                    class="mt-8 w-full cursor-pointer font-cinzel tracking-wider bg-gradient-to-r from-amber-500/10 to-amber-600/10 border border-amber-500/50 text-amber-200 hover:text-amber-100 px-6 py-4 rounded-full hover:bg-amber-500/20 transition-all group relative overflow-hidden">
                                 <div class="relative z-10">FINALIZEAZĂ COMANDA</div>
                                 <span class="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                             </button>
@@ -239,6 +239,7 @@ export default {
             try {
                 const response = await axios.post(route('checkout.create'), {
                     products: this.products.map(p => ({
+                        product_id: p.id,
                         price_id: p.price_id,
                         quantity: p.quantity
                     }))
