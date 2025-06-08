@@ -74,7 +74,6 @@ class StripeController extends Controller
                 'currency' => 'RON', // Default currency, will be updated from Stripe in success callback
                 'customer_name' => auth()->user() ? auth()->user()->name : 'Guest Customer',
                 'customer_email' => auth()->user() ? auth()->user()->email : 'email@address.ro',
-                // Address fields will be filled in success callback
                 'street' => $address->street ?? '',
                 'city' => $address->city ?? '',
                 'state' => $address->state ?? '',
