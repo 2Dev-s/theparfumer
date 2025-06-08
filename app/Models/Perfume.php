@@ -114,9 +114,4 @@ class Perfume extends Model implements HasMedia
     {
         return $this->belongsToMany(User::class, 'favourites');
     }
-
-    public function isFavoritedBy(User $user)
-    {
-        return $this->favorites()->where('user_id', $user->id)->exists();
-    }
 }

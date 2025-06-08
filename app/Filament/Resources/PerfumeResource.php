@@ -103,9 +103,9 @@ class PerfumeResource extends Resource
                     ->columnSpan(2),
 
                 Forms\Components\SpatieMediaLibraryFileUpload::make('images')
-                    ->label('Parfum Images')
+                    ->label('Perfume Images')
                     ->multiple()
-                    ->maxFiles(5)
+                    ->maxFiles(3)
                     ->collection('images')
                     ->columnSpan(2),
             ]);
