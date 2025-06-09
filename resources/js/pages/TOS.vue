@@ -72,8 +72,7 @@
                                 Produsele dumneavoastră vor fi livrate cu aceeași grijă cu care un bijutier transportă diamantele cele mai prețioase.
                             </p>
                             <ul class="text-gray-400 space-y-3 pl-5 list-disc">
-                                <li>Livrare gratuită pentru comenzi peste 500 RON</li>
-                                <li>Opțiune de livrare express cu ambalaj premium (+150 RON)</li>
+                                <li>Livrare gratuită pentru comenzi peste 250 RON</li>
                                 <li>Livrări doar în România - pentru internațional vă rugăm să ne contactați</li>
                                 <li>Termen mediu de livrare: 1-3 zile lucrătoare</li>
                             </ul>
@@ -95,7 +94,6 @@
                             <ul class="text-gray-400 space-y-3 pl-5 list-disc">
                                 <li>Termen de retur: 14 zile de la primirea coletului</li>
                                 <li>Produsele trebuie să fie în ambalaj original, neatins</li>
-                                <li>Taxă de retur: 50 RON (deductibilă din rambursare)</li>
                                 <li>Rambursările se procesează în maxim 5 zile lucrătoare</li>
                             </ul>
                         </div>
@@ -115,7 +113,6 @@
                             </p>
                             <ul class="text-gray-400 space-y-3 pl-5 list-disc">
                                 <li>Garanție autenticitate: toate produsele sunt 100% originale</li>
-                                <li>Asistență clienți premium disponibilă 24/7 prin chat dedicat</li>
                                 <li>Servicii personalizate de consultanță în parfumuri pentru clienții fideli</li>
                             </ul>
                         </div>
@@ -129,22 +126,6 @@
                         <p class="text-gray-400 mt-2">Echipa PARFUMER</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="bg-gradient-to-b from-gray-950 to-black py-20 px-4">
-            <div class="max-w-3xl mx-auto text-center">
-                <h3 class="font-cinzel text-3xl text-amber-300 mb-6">Aveți întrebări suplimentare?</h3>
-                <p class="text-gray-400 mb-8 text-lg">
-                    Echipa noastră de concierge este mereu disponibilă să vă ofere asistență personalizată.
-                </p>
-                <a
-                    href="/contact"
-                    class="inline-block bg-transparent border border-amber-500 text-amber-400 px-10 py-3 rounded-full hover:bg-amber-500/10 transition-all font-cinzel tracking-widest"
-                >
-                    CONTACTEAZĂ-NE
-                </a>
             </div>
         </section>
     </AppLayout>
