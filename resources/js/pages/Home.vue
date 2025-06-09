@@ -19,11 +19,11 @@
             <div class="relative z-10 text-center px-4" data-aos="fade-in" data-aos-delay="300">
                 <h1 class="font-cinzel text-5xl md:text-7xl text-amber-200 mb-6">
                     <span class="block text-xl  text-amber-500/80 mb-4">GUSTUL DESĂVÂRȘIT</span>
-                    Crearea Arte Olfactive
+                    Crearea Artei Olfactive
                 </h1>
                 <div class="border-t border-amber-500/30 w-24 mx-auto my-8"></div>
                 <p class="text-xl font-cinzel text-amber-100/80 max-w-2xl mx-auto">
-                    Descoperă parfumuri personalizate pentru puținii care apreciază
+                    Descoperă parfumuri pentru puținii care apreciază
                 </p>
             </div>
 
@@ -58,7 +58,6 @@
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-8 flex flex-col justify-end">
                                 <h3 class="font-serif text-2xl text-amber-200 mb-2">{{ collection.name }}</h3>
-                                <p class="text-amber-500/80 text-sm mb-4">{{ collection.items }} Piese Exclusiviste</p>
                                 <button
                                     class="text-left text-amber-500/80 hover:text-amber-300 transition-colors text-sm flex items-center">
                                     Explorează Colecția
@@ -81,7 +80,6 @@
                 class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
                 <!-- Coloana Text -->
                 <div class="space-y-8" data-aos="fade-down" data-aos-delay="300">
-                    <div class="text-amber-500/80 tracking-widest font-light">ATELIERUL NOSTRU SECRET</div>
                     <h2 class="font-cinzel text-5xl text-amber-100 leading-tight">
                         <span class="block mb-4">Arta</span>
                         <span class="block text-amber-400">Parfumului</span>
@@ -89,10 +87,9 @@
                     </h2>
 
                     <p class="text-amber-200/80 text-lg leading-relaxed max-w-xl">
-                        În atelierul nostru ascuns în inima Parisului, maeștrii parfumieri lucrează manual fiecare
-                        compoziție,
-                        transformând ingredientele cele mai rare în opere de artă olfactive. Fiecare flacon este o
-                        poveste.
+                        Descoperă o colecție atent selecționată de parfumuri, inspirate din culturi bogate și tradiții olfactive diverse.
+                        Fiecare esență spune o poveste – de la misterul Orientului până la rafinamentul franțuzesc.
+                        Alege parfumul care te reprezintă și transformă fiecare zi într-o experiență memorabilă.
                     </p>
                 </div>
 

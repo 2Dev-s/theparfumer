@@ -1,5 +1,6 @@
 <template>
     <AppLayout>
+        <Head title="Comanda anulata" />
         <!-- Hero Section for Cancelled Page -->
         <div class="relative h-screen-90 flex items-center justify-center overflow-hidden bg-black">
             <!-- Background Video -->
