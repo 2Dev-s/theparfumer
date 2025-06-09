@@ -68,6 +68,14 @@
                             <strong class="text-white">Telefon:</strong><br>
                             <a href="tel:+0751345435" class="hover:text-amber-400 transition duration-300">+40 751 345 435</a>
                         </li>
+                        <li>
+                            <strong class="text-white">CUI:</strong><br>
+                            <a href="tel:+0751345435" class="hover:text-amber-400 transition duration-300">49031026</a>
+                        </li>
+                        <li>
+                            <strong class="text-white">Nr. Registrul Comertului:</strong><br>
+                            <a href="tel:+0751345435" class="hover:text-amber-400 transition duration-300">J33/1859/2023</a>
+                        </li>
                     </ul>
                 </div>
             </div>
