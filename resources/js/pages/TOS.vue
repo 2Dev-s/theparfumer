@@ -93,6 +93,7 @@
                             </p>
                             <ul class="text-gray-400 space-y-3 pl-5 list-disc">
                                 <li>Termen de retur: 14 zile de la primirea coletului</li>
+                                <li>Costurile de transport pentru returnarea produselor sunt suportate de client, cu excepția cazurilor în care produsul primit este deteriorat, defect sau greșit.</li>
                                 <li>Produsele trebuie să fie în ambalaj original, neatins</li>
                                 <li>Rambursările se procesează în maxim 5 zile lucrătoare</li>
                             </ul>
