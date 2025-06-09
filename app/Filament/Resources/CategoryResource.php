@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $navigationGroup = 'System Management';
 

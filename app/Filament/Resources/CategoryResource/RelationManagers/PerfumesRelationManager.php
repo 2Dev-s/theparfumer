@@ -91,6 +91,8 @@ class PerfumesRelationManager extends RelationManager
                     ->options(['male' => 'Male', 'female' => 'Female', 'unisex' => 'Unisex'])
                     ->default('male')
                     ->required(),
+                Forms\Components\TextInput::make('price_id')->label('Stripe Price ID')->required()
+                    ->columnSpan(2),
 
                 Forms\Components\SpatieMediaLibraryFileUpload::make('images')
                     ->label('Parfum Images')

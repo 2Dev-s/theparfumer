@@ -23,7 +23,7 @@ class PerfumeResource extends Resource
 {
     protected static ?string $model = Perfume::class;
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationGroup = 'System Management';
 
@@ -99,11 +99,13 @@ class PerfumeResource extends Resource
                     ->options(['male' => 'Male', 'female' => 'Female', 'unisex' => 'Unisex'])
                     ->default('male')
                     ->required(),
+                Forms\Components\TextInput::make('price_id')->label('Stripe Price ID')->required()
+                    ->columnSpan(2),
 
                 Forms\Components\SpatieMediaLibraryFileUpload::make('images')
-                    ->label('Parfum Images')
+                    ->label('Perfume Images')
                     ->multiple()
-                    ->maxFiles(5)
+                    ->maxFiles(3)
                     ->collection('images')
                     ->columnSpan(2),
             ]);

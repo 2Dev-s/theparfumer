@@ -127,11 +127,9 @@
                         <span class="text-sm uppercase tracking-widest text-yellow-500/80">Total</span>
                         <span class="font-cinzel text-xl text-yellow-500">{{ total.toFixed(2) }} RON</span>
                     </div>
-                    <Link :href="route('cart.view')" class="w-full block text-yellow-500 py-4 hover:cursor-pointer font-cinzel uppercase tracking-widest text-sm transition-all transform hover:scale-105 border-yellow-500 border text-center">
+                    <Link :href="route('cart.view')" class="w-full cursor-pointer block text-yellow-500 py-4 hover:cursor-pointer font-cinzel uppercase tracking-widest text-sm transition-all transform hover:scale-105 border-yellow-500 border text-center">
                         Finalizează Comanda
                     </Link>
-
-
                 </div>
             </div>
         </transition>
