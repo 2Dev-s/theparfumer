@@ -43,12 +43,13 @@
 
                 <!-- Coloană Suport Clienți -->
                 <div>
-                    <h3 class="text-sm font-semibold tracking-wider text-gray-300 uppercase">Suport Clienți</h3>
+                    <h3 class="text-sm font-semibold tracking-wider text-gray-300 uppercase">TOP BRANDURI</h3>
                     <ul class="mt-6 space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-amber-400 text-sm font-light transition duration-300">Comenzi și Plăți</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-amber-400 text-sm font-light transition duration-300">Expediere și Livrare</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-amber-400 text-sm font-light transition duration-300">Retururi și Schimburi</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-amber-400 text-sm font-light transition duration-300">Întrebări Frecvente</a></li>
+                        <li><a href="/perfumes?brand=Lattafa" class="text-gray-400 hover:text-amber-400 text-sm font-light transition duration-300">Lattafa</a></li>
+                        <li><a href="/perfumes?brand=Armaf" class="text-gray-400 hover:text-amber-400 text-sm font-light transition duration-300">Armaf</a></li>
+                        <li><a href="/perfumes?brand=Afnan" class="text-gray-400 hover:text-amber-400 text-sm font-light transition duration-300">Afnan</a></li>
+                        <li><a href="/perfumes?brand=French Avenue" class="text-gray-400 hover:text-amber-400 text-sm font-light transition duration-300">French Avenue</a></li>
+                        <li><a href="/perfumes?brand=Maison Alhambra" class="text-gray-400 hover:text-amber-400 text-sm font-light transition duration-300">Maison Alhambra</a></li>
                     </ul>
                 </div>
 
