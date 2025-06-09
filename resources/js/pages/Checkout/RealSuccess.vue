@@ -1,5 +1,7 @@
 <template>
     <AppLayout>
+        <Head title="Comanda finalizata" />
+        
         <!-- Hero Section for Success Page -->
         <div class="relative h-screen-90 flex items-center justify-center overflow-hidden bg-black">
             <!-- Background Video (same as homepage) -->
