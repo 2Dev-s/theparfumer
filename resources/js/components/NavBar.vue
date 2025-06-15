@@ -1,85 +1,134 @@
 <template>
-    <nav :class="{'sticky top-0 w-full z-50 shadow': true, 'bg-gray-950': !isSettingsPage}">
-        <div class="max-w-7xl mx-auto px-6 xl:px-8 py-6">
-            <div class="flex justify-between items-center">
+    <nav :class="{ 'sticky top-0 z-50 w-full shadow': true, 'bg-gray-950': !isSettingsPage }">
+        <div class="mx-auto max-w-7xl px-6 py-6 xl:px-8">
+            <div class="flex items-center justify-between">
                 <!-- Logo Lux -->
-                <Link :href="route('home')" class="flex items-center group">
+                <Link :href="route('home')" class="group flex items-center">
                     <div class="relative" data-aos="fade-in" data-aos-delay="500">
-                        <span class="font-cinzel text-3xl font-bold text-yellow-500 tracking-wider">PARFUMER</span>
+                        <span class="font-cinzel text-3xl font-bold tracking-wider text-yellow-500">PARFUMER</span>
                         <div
-                            class="absolute -bottom-2 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                            class="via-gold-500 absolute inset-x-0 -bottom-2 h-px bg-gradient-to-r from-transparent to-transparent opacity-50 transition-opacity group-hover:opacity-100"
+                        ></div>
                     </div>
                 </Link>
 
                 <!-- Meniu Desktop - Auriu -->
-                <div class="hidden lg:flex space-x-10">
+                <div class="hidden space-x-10 lg:flex">
                     <Link
                         v-for="(item, index) in menuItems"
                         :key="index"
                         :href="item.href"
                         data-aos="fade-in"
                         :data-aos-delay="100 * (index + 1)"
-                        class="relative text-white hover:scale-105 transition-all duration-300 group"
+                        class="group relative text-white transition-all duration-300 hover:scale-105"
                     >
-                        <span class="text-sm uppercase tracking-widest font-light">{{ item.label }}</span>
+                        <span class="text-sm font-light tracking-widest uppercase">{{ item.label }}</span>
                         <div
-                            class="absolute -bottom-1.5 left-0 right-0 h-px bg-gold-500/30 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
-                        </div>
+                            class="bg-gold-500/30 absolute right-0 -bottom-1.5 left-0 h-px origin-left scale-x-0 transform transition-transform duration-500 group-hover:scale-x-100"
+                        ></div>
                     </Link>
-
                 </div>
 
                 <!-- Iconuri Dreapta - Diamante -->
                 <div class="flex items-center" data-aos="fade-in" data-aos-delay="500">
                     <!-- User Dropdown (shown when logged in) -->
-                    <div v-if="$page.props.auth.user" class="relative group hidden lg:block">
-                        <button class="p-2 hover:cursor-pointer hover:scale-105 rounded-full transition-all duration-300">
-                            <svg class="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <div v-if="$page.props.auth.user" class="group relative hidden lg:block">
+                        <button class="rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer">
+                            <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                />
                             </svg>
                         </button>
 
                         <!-- Dropdown Menu -->
-                        <div class="absolute right-0 mt-2 w-48 bg-gray-950 backdrop-blur-sm border border-amber-800/30 py-1 z-50 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-300">
-                            <Link :href="route('dashboard')" class="font-cinzel block px-4 py-2 text-sm text-amber-200 hover:bg-amber-900/20 transition-colors">
+                        <div
+                            class="invisible absolute right-0 z-50 mt-2 w-48 border border-amber-800/30 bg-gray-950 py-1 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:visible group-hover:opacity-100"
+                        >
+                            <Link
+                                :href="route('dashboard')"
+                                class="font-cinzel block px-4 py-2 text-sm text-amber-200 transition-colors hover:bg-amber-900/20"
+                            >
                                 Profil
                             </Link>
-                            <Link :href="route('logout')" method="post" as="button" class="font-cinzel hover:cursor-pointer w-full text-left px-4 py-2 text-sm text-amber-200 hover:bg-amber-900/20 transition-colors">
+                            <Link
+                                :href="route('logout')"
+                                method="post"
+                                as="button"
+                                class="font-cinzel w-full px-4 py-2 text-left text-sm text-amber-200 transition-colors hover:cursor-pointer hover:bg-amber-900/20"
+                            >
                                 Deconectare
                             </Link>
                         </div>
                     </div>
 
                     <!-- Regular User Button (shown when not logged in) -->
-                    <Link v-else :href="route('login')" class="p-2 hover:cursor-pointer hover:scale-105 rounded-full transition-all duration-300">
-                        <svg class="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <Link v-else :href="route('login')" class="rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer">
+                        <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                            />
                         </svg>
                     </Link>
 
                     <!-- Shopping Cart Button -->
-                    <button @click="toggleCart"
-                            class="relative p-2 hover:cursor-pointer hover:scale-105 rounded-full transition-all duration-300">
-                        <svg class="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    <button @click="toggleCart" class="relative rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer">
+                        <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                            />
                         </svg>
                         <span
-                            class="absolute -top-1 -right-1 bg-gold-500 text-[10px] text-white w-5 h-5 rounded-full flex items-center justify-center font-medium">
+                            class="bg-gold-500 absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-medium text-white"
+                        >
                             {{ cartItems.length }}
                         </span>
                     </button>
 
+                    <button
+                        @click="toggleFavorites"
+                        class="relative mr-2 rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer"
+                    >
+                        <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                            />
+                        </svg>
+                        <span
+                            v-if="favoriteItems.length > 0"
+                            class="bg-gold-500 absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-medium text-white"
+                        >
+                            {{ favoriteItems.length }}
+                        </span>
+                    </button>
+
                     <!-- Hamburger Icon - Mobile -->
-                    <button @click="toggleMobileMenu" v-if="!isMobileMenuOpen"
-                            class="lg:hidden p-2 hover:cursor-pointer text-yellow-500 hover:scale-105 rounded-full transition-all duration-300">
-                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path v-if="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
-                            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                  d="M6 18L18 6M6 6l12 12" />
+                    <button
+                        @click="toggleMobileMenu"
+                        v-if="!isMobileMenuOpen"
+                        class="rounded-full p-2 text-yellow-500 transition-all duration-300 hover:scale-105 hover:cursor-pointer lg:hidden"
+                    >
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path
+                                v-if="!isMobileMenuOpen"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M4 6h16M4 12h16M4 18h16"
+                            />
+                            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -93,29 +142,28 @@
                 leave-from-class="opacity-100 translate-y-0"
                 leave-to-class="opacity-0 -translate-y-4"
             >
-                <div v-show="isMobileMenuOpen" class="lg:hidden fixed inset-0 z-50 bg-gray-950/50 backdrop-blur-sm">
-                    <div class="h-screen flex flex-col justify-between items-center p-6 relative overflow-y-auto">
+                <div v-show="isMobileMenuOpen" class="fixed inset-0 z-50 bg-gray-950/50 backdrop-blur-sm lg:hidden">
+                    <div class="relative flex h-screen flex-col items-center justify-between overflow-y-auto p-6">
                         <!-- Close Button -->
                         <button
                             @click="toggleMobileMenu"
-                            class="absolute top-6 right-6 text-yellow-500 hover:text-yellow-300 transition-colors"
+                            class="absolute top-6 right-6 text-yellow-500 transition-colors hover:text-yellow-300"
                             aria-label="Close menu"
                         >
-                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                      d="M6 18L18 6M6 6l12 12" />
+                            <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
 
                         <!-- Main Menu Items -->
-                        <div class="flex-1 flex flex-col justify-center items-center w-full">
-                            <div class="space-y-6 w-full max-w-xs mx-auto">
+                        <div class="flex w-full flex-1 flex-col items-center justify-center">
+                            <div class="mx-auto w-full max-w-xs space-y-6">
                                 <Link
                                     v-for="(item, index) in menuItems"
                                     :key="index"
                                     :href="item.href"
                                     @click="toggleMobileMenu"
-                                    class="block py-3 text-2xl sm:text-3xl font-cinzel text-white hover:text-yellow-300 transition-colors duration-300 text-center"
+                                    class="font-cinzel block py-3 text-center text-2xl text-white transition-colors duration-300 hover:text-yellow-300 sm:text-3xl"
                                     :class="{ 'border-b border-amber-800/30': index < menuItems.length - 1 }"
                                 >
                                     {{ item.label }}
@@ -124,11 +172,11 @@
                         </div>
 
                         <!-- Bottom Auth Buttons -->
-                        <div class="w-full max-w-xs mx-auto py-6 mb-24 border-t border-amber-800/30">
+                        <div class="mx-auto mb-24 w-full max-w-xs border-t border-amber-800/30 py-6">
                             <template v-if="$page.props.auth.user">
                                 <Link
                                     :href="route('dashboard')"
-                                    class="block mb-4 font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"
+                                    class="font-cinzel mb-4 block text-center text-lg text-amber-200 transition-colors hover:text-amber-300"
                                 >
                                     Profil
                                 </Link>
@@ -136,7 +184,7 @@
                                     :href="route('logout')"
                                     method="post"
                                     as="button"
-                                    class="block w-full font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"
+                                    class="font-cinzel block w-full text-center text-lg text-amber-200 transition-colors hover:text-amber-300"
                                 >
                                     Deconectare
                                 </Link>
@@ -144,16 +192,16 @@
                             <template v-else>
                                 <Link
                                     :href="route('login')"
-                                    class="block mb-4 font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"
+                                    class="font-cinzel mb-4 block text-center text-lg text-amber-200 transition-colors hover:text-amber-300"
                                 >
                                     Autentificare
                                 </Link>
-<!--                                <Link-->
-<!--                                    :href="route('register')"-->
-<!--                                    class="block w-full font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"-->
-<!--                                >-->
-<!--                                    Înregistrare-->
-<!--                                </Link>-->
+                                <!--                                <Link-->
+                                <!--                                    :href="route('register')"-->
+                                <!--                                    class="block w-full font-cinzel text-lg text-amber-200 hover:text-amber-300 transition-colors text-center"-->
+                                <!--                                >-->
+                                <!--                                    Înregistrare-->
+                                <!--                                </Link>-->
                             </template>
                         </div>
                     </div>
@@ -169,52 +217,69 @@
             @update-quantity="handleUpdateQuantity"
             @remove-item="handleRemoveItem"
         />
+
+        <Favourite
+            :isOpen="isFavoritesOpen"
+            :items="favoriteItems"
+            :isLoading="favoritesLoading"
+            @close="isFavoritesOpen = false"
+            @remove-item="removeFavorite"
+        />
     </nav>
 </template>
 
 <script>
 import Cart from '@/components/Cart.vue';
-import axios from 'axios';
-import { Link } from '@inertiajs/vue3';
 import eventBus from '@/lib/event-bus.js';
+import { Link } from '@inertiajs/vue3';
+import axios from 'axios';
+import Favourite from '@/components/Favourite.vue';
 
 export default {
-    components: { Link, Cart },
+    components: { Favourite, Link, Cart },
     data() {
         return {
             isMobileMenuOpen: false,
             isCartOpen: false,
             isLoading: false,
+
+            isFavoritesOpen: false,
+            favoriteItems: [],
+            favoritesLoading: false,
+
             menuItems: [
                 { label: 'Colecții', href: '/perfumes' },
                 { label: 'FEMEI', href: '/perfumes?collection=female' },
                 { label: 'BARBATI', href: '/perfumes?collection=male' },
                 { label: 'UNISEX', href: '/perfumes?collection=unisex' },
+                { label: 'Ambient', href: '/perfumes?collection=unisex' },
+                { label: 'Seturi', href: '/perfumes?collection=unisex' },
             ],
 
-            cartItems: []
+            cartItems: [],
         };
     },
     computed: {
         isSettingsPage() {
             const path = window.location.pathname;
             return path.includes('settings') || path.includes('cart/view');
-        }
+        },
     },
     mounted() {
         this.fetchCart();
+        this.fetchFavorites();
     },
     created() {
         eventBus.on('add-to-cart', this.addToCart);
         eventBus.on('cart-updated', this.handleUpdateQuantity);
         eventBus.on('remove-item', this.handleRemoveItem);
-        eventBus.on('add-favourite', this.toggleFavorite);
+        eventBus.on('add-favourite', this.toggleFavorites);
     },
     beforeUnmount() {
         eventBus.off('add-to-cart', this.addToCart);
         eventBus.off('cart-updated', this.handleUpdateQuantity);
         eventBus.off('remove-item', this.handleRemoveItem);
-        eventBus.off('add-favourite', this.toggleFavorite);
+        eventBus.off('add-favourite', this.toggleFavorites);
     },
     methods: {
         toggleMobileMenu() {
@@ -244,7 +309,6 @@ export default {
         },
 
         async handleRemoveItem(productId) {
-            console.log(productId);
             try {
                 const response = await axios.delete(`/cart/remove/${productId}`);
                 this.cartItems = response.data.cart;
@@ -262,32 +326,48 @@ export default {
                     price_id: product.price_id,
                     image: product.media?.[0]?.original_url,
                     size: product.size,
-                    concentration: product.concentration
+                    concentration: product.concentration,
                 });
 
-                // Make sure response.data.cart is an array
-                this.cartItems = Array.isArray(response.data.cart)
-                    ? response.data.cart
-                    : Object.values(response.data.cart || {});
+                this.cartItems = Array.isArray(response.data.cart) ? response.data.cart : Object.values(response.data.cart || {});
 
                 this.isCartOpen = true;
             } catch (error) {
                 console.error('Error adding to cart:', error);
             }
         },
-
-        async toggleFavorite(perfume) {
+        async fetchFavorites() {
+            this.favoritesLoading = true;
             try {
-                const response = await axios.post(`/perfumes/${perfume.id}/favourite`)
+                const response = await axios.get('/favorites');
+                this.favoriteItems = response.data;
             } catch (error) {
-                console.error('Error toggling favorite:', error)
+                console.error('Error fetching favorites:', error);
+            } finally {
+                this.favoritesLoading = false;
+            }
+        },
+
+        async removeFavorite(perfumeId) {
+            try {
+                await axios.post(`/perfumes/${perfumeId}/favourite`);
+                this.favoriteItems = this.favoriteItems.filter(item => item.id !== perfumeId);
+            } catch (error) {
+                console.error('Error removing favorite:', error);
+            }
+        },
+
+        toggleFavorites() {
+            this.isFavoritesOpen = !this.isFavoritesOpen;
+            if (this.isFavoritesOpen) {
+                this.fetchFavorites();
             }
         },
 
         toggleCart() {
             this.isCartOpen = !this.isCartOpen;
             if (this.isMobileMenuOpen) this.toggleMobileMenu();
-        }
-    }
+        },
+    },
 };
 </script>

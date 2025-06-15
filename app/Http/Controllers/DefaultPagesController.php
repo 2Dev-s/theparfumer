@@ -13,12 +13,28 @@ class DefaultPagesController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Home');
+        $recommendedPerfumes = Perfume::where('active', 1)
+            ->orderBy('price', 'desc')
+            ->take(2)
+            ->with(['brand']) // Eager load brand relationship
+            ->get();
+
+        return Inertia::render('Home', [
+            'recommendedPerfumes' => $recommendedPerfumes,
+        ]);
     }
 
     public function home()
     {
-        return Inertia::render('Home');
+        $recommendedPerfumes = Perfume::where('active', 1)
+            ->orderBy('price', 'desc')
+            ->take(2)
+            ->with(['brand']) // Eager load brand relationship
+            ->get();
+
+        return Inertia::render('Home', [
+            'recommendedPerfumes' => $recommendedPerfumes,
+        ]);
     }
 
     public function tos()
@@ -42,13 +58,18 @@ class DefaultPagesController extends Controller
                 }]);
             });
 
+
         // Apply filters
         if ($request->has('collection')) {
             $perfumes->where('sex', $request->get('collection'));
         }
 
         if ($request->has('brand')) {
-            $perfumes->where('brand_id', $request->get('brand'));
+            $brandParam = $request->get('brand');
+            $perfumes->whereHas('brand', function($query) use ($brandParam) {
+                $query->where('name', $brandParam)
+                    ->orWhere('id', $brandParam);
+            });
         }
 
         if ($request->has('category')) {

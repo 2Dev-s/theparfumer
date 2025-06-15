@@ -310,6 +310,8 @@ export default {
                 } else {
                     this.perfumes[index].is_favorite = true;
                 }
+
+                eventBus.emit('add-favourite', perfume);
             } catch (error) {
                 console.error('Error toggling favorite:', error);
                 // Revert UI on error

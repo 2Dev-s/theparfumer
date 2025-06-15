@@ -11,16 +11,19 @@ class CartController extends Controller
     {
         // Get the cart array from the JsonResponse's original property
         $cart = $this->getCart()->getData(true); // true ensures it returns the actual array data
+        $user = auth()->user();
 
         return Inertia::render('Cart', [
-            'products' =>$cart['cart']
+            'products' =>$cart['cart'],
+            'personalAddress' => $user->addresses()->where('type', 'personal')->first(),
+            'companyAddress' => $user->addresses()->where('type', 'company')->first()
         ]);
     }
 
     public function getCart()
     {
         return response()->json([
-            'cart' => array_values(session()->get('cart', []))
+            'cart' => array_values(session()->get('cart', [])),
         ]);
     }
 

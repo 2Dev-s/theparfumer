@@ -3,6 +3,8 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DefaultPagesController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,9 @@ Route::get('/politica-de-confidentialitate', [DefaultPagesController::class, 'pd
 
 Route::match(['get', 'post'], '/perfumes', [DefaultPagesController::class, 'perfumes'])->name('perfumes');
 Route::get('/perfume/{perfume:slug}', [DefaultPagesController::class, 'show'])->name('perfume.show');
+
+Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites.index');
+Route::post('/perfumes/{perfume}/favourite', [FavoritesController::class, 'toggleFavourite']);
 
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'getCart']);

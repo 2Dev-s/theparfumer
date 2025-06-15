@@ -114,30 +114,42 @@
         </section>
 
         <!-- Testimoniale -->
-        <section class="py-24 bg-gray-950">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-20" data-aos="zoom-in" data-aos-delay="300">
-                    <span class="text-amber-500/80 tracking-widest">GUSTURI REFINATE</span>
-                    <h2 class="font-cinzel text-4xl text-amber-200 mt-4">Preferat de Connoisseur</h2>
+        <section class="bg-gray-950 py-24">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8 mb-14">
+                <div class="mb-20 text-center" data-aos="zoom-in" data-aos-delay="300">
+                    <span class="tracking-widest text-amber-500/80">RECOMANDĂRILE NOASTRE</span>
+                    <h2 class="font-cinzel mt-4 text-4xl text-amber-200">Parfumuri Exquisite</h2>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div
-                        v-for="(testimonial, index) in testimonials"
-                        :key="index"
-                        data-aos="zoom-in" data-aos-delay="300"
-                        class="p-8 bg-gray-950 rounded-lg border border-amber-900/20 hover:border-amber-900/40 transition-colors"
+                <div class="grid grid-cols-1 gap-12" :class="{
+            'md:grid-cols-2': recommendedPerfumes.length === 2,
+            'max-w-3xl mx-auto': recommendedPerfumes.length === 1
+        }">
+                    <a
+                        v-for="perfume in recommendedPerfumes"
+                        :key="perfume.id"
+                        data-aos="zoom-in"
+                        data-aos-delay="300"
+                        :href="route('perfume.show', perfume.slug)"
+                        class="group rounded-lg bg-gray-950 p-8 transition-colors"
                     >
-                        <div class="text-amber-500/80 text-5xl mb-4">“</div>
-                        <p class="text-amber-300/80 italic mb-6">{{ testimonial.quote }}</p>
-                        <div class="flex items-center">
-                            <img :src="testimonial.image" class="w-12 h-12 rounded-full border-2 border-amber-500/30">
-                            <div class="ml-4">
-                                <div class="font-cinzel text-amber-200">{{ testimonial.name }}</div>
-                                <div class="text-sm text-amber-500/80">{{ testimonial.role }}</div>
-                            </div>
+                        <!-- Enlarged image container -->
+                        <div class="relative mb-8 h-full w-full overflow-hidden rounded-lg">
+                            <img
+                                :src="perfume.media?.[0]?.original_url"
+                                :alt="perfume.name"
+                                class="h-full w-full object-contain object-center transition-transform duration-700 group-hover:scale-110"
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-gray-950/10 to-transparent"></div>
                         </div>
-                    </div>
+
+                        <div class="mb-3 flex items-start justify-between">
+                            <h3 class="font-cinzel text-2xl text-amber-200">{{ perfume.name }}</h3>
+                            <span class="text-lg text-amber-500">{{ perfume.price }} RON</span>
+                        </div>
+
+                        <p class="mb-5 text-base text-amber-300/80">{{ perfume.brand.name }}</p>
+                    </a>
                 </div>
             </div>
         </section>
@@ -195,6 +207,29 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
+interface Perfume {
+    id: number;
+    name: string;
+    price: number;
+    slug: string;
+    media: Array<{ original_url: string }>;
+    brand: {
+        name: string;
+    };
+    topNotes?: Array<{
+        id: number;
+        name: string;
+        icon: string;
+    }>;
+    fragranceFamily?: string;
+}
+
+interface Props {
+    recommendedPerfumes: Perfume[];
+}
+
+defineProps<Props>();
+
 const collections = [
     {
         name: 'Femei',
@@ -213,27 +248,6 @@ const collections = [
         image: 'https://img.freepik.com/premium-photo/man-formal-suit-bottle-perfume-closeup-fragrance-smell-men-perfumes-fashion-cologne-bottle-man-holding-up-bottle-perfume-men-perfume-hand-suit-background_293990-2206.jpg?w=740',
         items: 5,
         arg: 'male'
-    }
-];
-
-const testimonials = [
-    {
-        quote: 'Cea mai înaltă formă de sofisticare - purtarea creațiilor lor este ca un lux secret pe care doar câțiva îl înțeleg.',
-        name: 'Sophia Maréchal',
-        role: 'Editor de Lux, Vogue Paris',
-        image: 'https://randomuser.me/api/portraits/women/44.jpg'
-    },
-    {
-        quote: 'Într-o lume plină de parfumuri produse în masă, meșteșugul lor este o revelație a adevăratei arte.',
-        name: 'James Rothschild',
-        role: 'Colector de Artă',
-        image: 'https://randomuser.me/api/portraits/men/32.jpg'
-    },
-    {
-        quote: 'Fiecare parfum spune o poveste mai captivantă decât orice bijuterie din colecția mea.',
-        name: 'Amira Al-Fayed',
-        role: 'Designer de Bijuterii',
-        image: 'https://randomuser.me/api/portraits/women/68.jpg'
     }
 ];
 </script>

@@ -1,30 +1,11 @@
 <template>
-    <AppLayout>
-        <Head title="Comanda finalizata" />
-
+    <section>
         <!-- Hero Section for Success Page -->
-        <div class="relative flex items-center justify-center overflow-hidden bg-black">
+        <div class="">
             <!-- Background Video (same as homepage) -->
-            <div class="absolute inset-0 z-0">
-                <video
-                    autoplay
-                    muted
-                    loop
-                    playsinline
-                    class="h-full w-full object-cover opacity-40"
-                    src="https://videos.pexels.com/video-files/4659830/4659830-uhd_2732_1440_25fps.mp4"
-                ></video>
-                <div class="absolute inset-0 bg-black/60"></div>
-            </div>
-
             <!-- Success Content -->
-            <div class="relative z-10 mx-auto max-w-4xl px-4 text-center" data-aos="fade-in">
-                <!-- Heading -->
-                <h1 class="font-cinzel mb-6 text-3xl text-amber-200 md:text-4xl mt-14">FINALIZEAZĂ COMANDA</h1>
-
-                <div class="mx-auto my-8 w-24 border-t border-amber-500/30"></div>
-
-                <div class="mx-auto mt-14 mb-12 max-w-5xl rounded-xl border border-amber-900/20 p-8 backdrop-blur-sm md:p-10" data-aos="fade-down">
+            <div class="relative mx-auto px-4 text-center" data-aos="fade-in">
+                <div class="mx-auto rounded-xl backdrop-blur-sm" data-aos="fade-down">
                     <div class="mb-10 text-center">
                         <div class="mb-6 flex items-center justify-center">
                             <div class="h-px flex-grow bg-gradient-to-r from-transparent via-amber-500/30 to-transparent"></div>
@@ -137,25 +118,27 @@
                 </div>
             </div>
         </div>
-    </AppLayout>
+    </section>
 </template>
 
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 const routeParams = route().params;
 
+const props = defineProps({
+    personalAddress: Object,
+    companyAddress: Object
+});
+
 const personalForm = useForm({
-    company_name: '',
-    tax_id: '',
-    street: '',
-    city: '',
-    state: '',
-    postal_code: '',
-    country: '',
-    phone: '',
+    street: props.personalAddress?.street || '',
+    city: props.personalAddress?.city || '',
+    state: props.personalAddress?.state || '',
+    postal_code: props.personalAddress?.postal_code || '',
+    country: props.personalAddress?.country || '',
+    phone: props.personalAddress?.phone || '',
     session_id: routeParams.session_id, // Set from props
 });
 
@@ -164,19 +147,4 @@ const submitPersonal = () => {
         preserveScroll: true,
     });
 };
-
-defineProps({
-    customerName: {
-        type: String,
-        default: 'Client',
-    },
-    amount: {
-        type: String,
-        required: true,
-    },
-    currency: {
-        type: String,
-        required: true,
-    },
-});
 </script>

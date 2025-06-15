@@ -43,21 +43,33 @@ class ProfileController extends Controller
 
     public function toggleFavourite(Request $request, Perfume $perfume)
     {
-        $user = $request->user();
+        $favorites = $request->session()->get('favorites', []);
 
-        if ($user->favorites()->where('perfume_id', $perfume->id)->exists()) {
-            $user->favorites()->detach($perfume);
-            return response()->json(['status' => 'removed']);
+        if (in_array($perfume->id, $favorites)) {
+            // Remove from favorites
+            $favorites = array_diff($favorites, [$perfume->id]);
+            $status = 'removed';
         } else {
-            $user->favorites()->attach($perfume);
-            return response()->json(['status' => 'added']);
+            // Add to favorites
+            $favorites[] = $perfume->id;
+            $status = 'added';
         }
+
+        $request->session()->put('favorites', array_values($favorites));
+
+        return response()->json([
+            'status' => $status,
+            'favorites' => $favorites
+        ]);
     }
 
     public function userFavorites(Request $request)
     {
+        $favoriteIds = $request->session()->get('favorites', []);
+        $products = Perfume::whereIn('id', $favoriteIds)->get();
+
         return Inertia::render('settings/Favourite', [
-            'products' => $request->user()->favorites()->get(),
+            'products' => $products,
         ]);
     }
 
