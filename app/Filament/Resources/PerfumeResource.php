@@ -106,7 +106,7 @@ class PerfumeResource extends Resource
                     ->label('Perfume Images')
                     ->multiple()
                     ->maxFiles(3)
-                    //->collection('images')
+                    ->collection('images')
                     ->columnSpan(2),
             ]);
     }
