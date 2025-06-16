@@ -98,7 +98,7 @@ class RoomPerfumeResource extends Resource
                             ->openable()
                             ->downloadable()
                             ->reorderable()
-                            ->collection('images')
+//                            ->collection('images')
                             ->preserveFilenames()
                             ->columnSpanFull(),
                     ]),
