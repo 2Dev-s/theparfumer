@@ -71,10 +71,28 @@ class PerfumeResource extends Resource
 
                 Forms\Components\Section::make('Pricing & Inventory')
                     ->schema([
+                        Forms\Components\TextInput::make('price_old')
+                            ->numeric()
+                            ->default(0)
+                            ->prefix('RON')
+                            ->reactive(),
+
                         Forms\Components\TextInput::make('price')
                             ->numeric()
                             ->required()
-                            ->prefix('RON'),
+                            ->prefix('RON')
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, $set, $get) {
+                                $currentPrice = $get('price');
+                                $currentPriceOld = $get('price_old');
+
+                                if ($currentPriceOld == 0) {
+                                    $set('price_old', $currentPrice);
+                                }
+                                elseif ($currentPrice > $currentPriceOld) {
+                                    $set('price_old', $currentPrice);
+                                }
+                            }),
                         Forms\Components\TextInput::make('stock')
                             ->numeric()
                             ->required()
@@ -82,8 +100,7 @@ class PerfumeResource extends Resource
                         Forms\Components\TextInput::make('size')
                             ->required()
                             ->prefix('ML'),
-                        Forms\Components\TextInput::make('concentration')->required()->label('Concentration')->columnSpan(3),
-                    ])->columns(3),
+                    ])->columns(4),
 
                 Forms\Components\Section::make('Fragrance Details')
                     ->schema([
@@ -109,7 +126,9 @@ class PerfumeResource extends Resource
                                     ->separator(',')
                                     ->suggestions(['Cedarwood', 'Sandalwood', 'Musk', 'Amber'])
                                     ->nullable(),
-                            ])
+                            ]),
+
+                        Forms\Components\TextInput::make('concentration')->required()->label('Concentration')->columnSpan(3),
                     ]),
 
                 Forms\Components\Section::make('Settings')

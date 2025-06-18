@@ -213,77 +213,131 @@
                     <div>
                         <!-- Luxury Summary Card -->
                         <div class="sticky top-6 rounded-xl border border-amber-900/20 bg-[hsl(0_0%_3.9%)] p-6 shadow-xl backdrop-blur-sm md:p-8">
-                            <h2 class="font-cinzel mb-6 flex items-center text-2xl text-amber-200 md:text-3xl">
-                                <svg class="mr-3 h-8 w-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.5"
-                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12a2 2 0 01-2 2H6a2 2 0 01-2-2L5 9z"
-                                    />
-                                </svg>
-                                Sumar Comandă
-                            </h2>
+                            <!-- ... existing header ... -->
 
-                            <div class="space-y-4">
-                                <!-- Subtotal -->
-                                <div class="flex justify-between text-amber-300/90">
-                                    <span>Subtotal</span>
-                                    <span>{{ formatPrice(subtotal) }}</span>
+                            <!-- Payment Method Selector -->
+                            <div class="mb-6">
+                                <h3 class="font-cinzel mb-4 text-lg text-amber-200">Metodă de Plată</h3>
+                                <div class="space-y-4">
+                                    <!-- Card Payment -->
+                                    <label
+                                        class="flex items-center gap-4 p-3 rounded-lg border border-amber-900/20 hover:bg-amber-900/10 cursor-pointer transition-colors"
+                                        :class="{ 'bg-amber-900/20 border-amber-500/50': paymentMethod === 'card' }"
+                                    >
+                                        <div class="relative flex items-center justify-center">
+                                            <input
+                                                type="radio"
+                                                value="card"
+                                                v-model="paymentMethod"
+                                                class="sr-only peer"
+                                            />
+                                            <div
+                                                class="peer border-yellow-500 peer-data-[state=checked]:bg-yellow-500 peer-data-[state=checked]:text-black peer-data-[state=checked]:border-yellow-600 peer-focus-visible:border-yellow-700 peer-focus-visible:ring-yellow-600/50 size-6 shrink-0 border shadow-xs transition-shadow outline-none peer-focus-visible:ring-[3px] peer-disabled:cursor-not-allowed peer-disabled:opacity-50 flex items-center justify-center rounded-full"
+                                                :class="{
+                                    'bg-yellow-500 border-yellow-600': paymentMethod === 'card',
+                                    'border-yellow-500': paymentMethod !== 'card'
+                                }"
+                                            >
+                                                <div
+                                                    v-if="paymentMethod === 'card'"
+                                                    class="flex items-center justify-center text-black transition-none"
+                                                >
+                                                    <div class="w-3 h-3 rounded-full bg-black"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center">
+                                            <svg class="mr-3 h-6 w-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                            </svg>
+                                            <span class="font-cinzel text-amber-300">Card bancar</span>
+                                        </div>
+                                    </label>
+
+                                    <!-- Cash on Delivery -->
+                                    <label
+                                        class="flex items-center gap-4 p-3 rounded-lg border border-amber-900/20 hover:bg-amber-900/10 cursor-pointer transition-colors"
+                                        :class="{ 'bg-amber-900/20 border-amber-500/50': paymentMethod === 'ramburs' }"
+                                    >
+                                        <div class="relative flex items-center justify-center">
+                                            <input
+                                                type="radio"
+                                                value="ramburs"
+                                                v-model="paymentMethod"
+                                                class="sr-only peer"
+                                            />
+                                            <div
+                                                class="peer border-yellow-500 peer-data-[state=checked]:bg-yellow-500 peer-data-[state=checked]:text-black peer-data-[state=checked]:border-yellow-600 peer-focus-visible:border-yellow-700 peer-focus-visible:ring-yellow-600/50 size-6 shrink-0 border shadow-xs transition-shadow outline-none peer-focus-visible:ring-[3px] peer-disabled:cursor-not-allowed peer-disabled:opacity-50 flex items-center justify-center rounded-full"
+                                                :class="{
+                                    'bg-yellow-500 border-yellow-600': paymentMethod === 'ramburs',
+                                    'border-yellow-500': paymentMethod !== 'ramburs'
+                                }"
+                                            >
+                                                <div
+                                                    v-if="paymentMethod === 'ramburs'"
+                                                    class="flex items-center justify-center text-black transition-none"
+                                                >
+                                                    <div class="w-3 h-3 rounded-full bg-black"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center">
+                                            <svg class="mr-3 h-6 w-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                            </svg>
+                                            <span class="font-cinzel text-amber-300">Ramburs la livrare</span>
+                                        </div>
+                                    </label>
                                 </div>
 
-                                <!-- Shipping -->
-                                <div class="flex justify-between text-amber-300/90">
-                                    <span>Livrare</span>
-                                    <span>{{ formatPrice(shipping) }}</span>
+                                <!-- Payment Method Info -->
+                                <div v-if="paymentMethod === 'card'" class="mt-4 rounded-lg border border-amber-900/20 bg-amber-900/10 p-3">
+                                    <div class="flex items-start">
+                                        <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.5"
+                                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                                            />
+                                        </svg>
+                                        <p class="ml-2 text-xs text-amber-500/80">Plata securizată și criptată. Datele tale sunt protejate.</p>
+                                    </div>
                                 </div>
 
-                                <!-- Divider -->
-                                <div class="my-4 border-t border-amber-900/20"></div>
-
-                                <!-- Total -->
-                                <div class="font-cinzel flex justify-between text-lg text-amber-200">
-                                    <span>Total</span>
-                                    <span>{{ formatPrice(total) }}</span>
+                                <div v-if="paymentMethod === 'ramburs'" class="mt-4 rounded-lg border border-amber-900/20 bg-amber-900/10 p-3">
+                                    <div class="flex items-start">
+                                        <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.5"
+                                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                                            />
+                                        </svg>
+                                        <p class="ml-2 text-xs text-amber-500/80">Plătești la primirea coletului. Taxă de ramburs: 10 RON.</p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Checkout Button -->
+                            <div class="space-y-4">
+                                <!-- ... existing order details ... -->
+                            </div>
+
+                            <!-- Updated Checkout Button -->
                             <button
                                 @click="proceedToCheckout"
                                 class="font-cinzel group relative mt-8 w-full cursor-pointer overflow-hidden rounded-full border border-amber-500/50 bg-gradient-to-r from-amber-500/10 to-amber-600/10 px-6 py-4 tracking-wider text-amber-200 transition-all hover:bg-amber-500/20 hover:text-amber-100"
                             >
-                                <div class="relative z-10">FINALIZEAZĂ COMANDA</div>
+                                <div class="relative z-10">
+                                    {{ paymentMethod === 'card' ? 'FINALIZEAZĂ CU CARDUL' : 'FINALIZEAZĂ CU RAMBURS' }}
+                                </div>
                                 <span
                                     class="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                                 ></span>
                             </button>
-
-                            <!-- Continue Shopping -->
-                            <Link
-                                :href="route('perfumes')"
-                                class="mt-4 flex items-center justify-center text-amber-500/80 transition-colors hover:text-amber-300"
-                            >
-                                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-                                </svg>
-                                Continuă cumpărăturile
-                            </Link>
-
-                            <!-- Security Note -->
-                            <div class="mt-6 rounded-lg border border-amber-900/20 bg-amber-900/10 p-3">
-                                <div class="flex items-start">
-                                    <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.5"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                                        />
-                                    </svg>
-                                    <p class="ml-2 text-xs text-amber-500/80">Plata securizată și criptată. Datele tale sunt protejate.</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -294,7 +348,7 @@
 
 <script lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link, router, useForm } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import eventBus from '@/lib/event-bus';
 import axios from 'axios';
 import FillAddress from '@/pages/Checkout/FillAddress.vue';
@@ -320,6 +374,7 @@ export default {
                 country: this.companyAddress?.country || '',
                 phone: this.companyAddress?.phone || ''
             },
+            paymentMethod: 'card',
         };
     },
     computed: {
@@ -327,7 +382,9 @@ export default {
             return this.products.reduce((sum: number, product: any) => sum + product.price * product.quantity, 0);
         },
         shipping() {
-            return this.subtotal > 500 ? 0 : 50;
+            // Add cash on delivery fee
+            const baseShipping = this.subtotal > 250 ? 0 : 50;
+            return this.paymentMethod === 'ramburs' ? baseShipping + 10 : baseShipping;
         },
         total() {
             return this.subtotal + this.shipping;
@@ -378,20 +435,48 @@ export default {
             }
 
             try {
-                const response = await axios.post(route('checkout.create'), {
-                    products: this.products.map((p) => ({
-                        product_id: p.id,
-                        price_id: p.price_id,
-                        quantity: p.quantity,
-                    })),
-                    address: this.companyForm // Include address data
-                });
+                if (this.paymentMethod === 'card') {
+                    // Existing Stripe flow
+                    const response = await axios.post(route('checkout.create'), {
+                        products: this.products.map((p) => ({
+                            product_id: p.id,
+                            price_id: p.price_id,
+                            quantity: p.quantity,
+                        })),
+                        address: this.companyForm,
+                        payment_method: 'card'
+                    });
 
-                if (response.data.url) {
-                    window.location.href = response.data.url;
+                    if (response.data.url) {
+                        localStorage.setItem('checkout_address', JSON.stringify(this.companyForm));
+                        window.location.href = response.data.url;
+                    }
+                } else {
+                    // Cash on delivery flow
+                    const response = await axios.post(route('checkout.cod'), {
+                        products: this.products.map((p) => ({
+                            product_id: p.id,
+                            quantity: p.quantity,
+                            price_id: p.price_id,
+                            price: p.price
+                        })),
+                        address: this.companyForm,
+                        total: this.total,
+                        name: this.companyForm.name,          // ✅ pentru guest checkout
+                        email: this.companyForm.email,        // ✅ pentru guest checkout
+                        currency: 'RON'                       // sau orice alegi
+                    });
+
+                    if (response.data.success) {
+                        // Redirect to success page
+                        router.visit(route('checkout.cod-success', {
+                            order: response.data.order
+                        }));
+                    }
                 }
             } catch (error) {
                 console.error('Checkout error:', error);
+                alert('A apărut o eroare la procesarea comenzii. Te rugăm să încerci din nou.');
             }
         },
     },

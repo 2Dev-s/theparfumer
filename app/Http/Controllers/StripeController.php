@@ -18,6 +18,15 @@ class StripeController extends Controller
             'products' => 'required|array',
             'products.*.price_id' => 'required|string',
             'products.*.quantity' => 'required|integer|min:1',
+            'address' => 'required|array',
+            'address.street' => 'required|string',
+            'address.city' => 'required|string',
+            'address.state' => 'required|string',
+            'address.postal_code' => 'required|string',
+            'address.country' => 'required|string',
+            'address.phone' => 'required|string',
+            'address.company_name' => 'nullable|string',
+            'address.tax_id' => 'nullable|string',
         ]);
 
         $stripe = new StripeClient(env('STRIPE_SECRET'));
@@ -27,7 +36,6 @@ class StripeController extends Controller
             $lineItems = [];
 
             foreach ($validated['products'] as $item) {
-
                 $lineItems[] = [
                     'price' => $item['price_id'],
                     'quantity' => $item['quantity']
@@ -43,10 +51,12 @@ class StripeController extends Controller
                 'allow_promotion_codes' => true,
                 'metadata' => [
                     'user_id' => auth()->id() ?? 'guest',
+                    'address' => json_encode($validated['address']) // Store address in metadata
                 ]
             ]);
 
-            session()->forget('cart');
+            // Store address in session for later retrieval
+            session()->put('checkout_address_' . $checkout_session->id, $validated['address']);
 
             return response()->json([
                 'url' => $checkout_session->url,
@@ -59,94 +69,125 @@ class StripeController extends Controller
         }
     }
 
+    public function rambursSuccess(Order $order)
+    {
+        return Inertia::render('Checkout/RealSuccess', [
+            'customerName' => $order->customer_name,
+            'orderNumber' => $order->order_number,
+            'amount' => $order->total_amount,
+            'currency' => $order->currency,
+        ]);
+    }
+
+    public function checkoutRamburs(Request $request)
+    {
+        $user = auth()->user();
+
+        $orderNumber = 'ORD-' . now()->format('Ymd') . '-' . str_pad(Order::max('id') + 1, 4, '0', STR_PAD_LEFT);
+
+        $address = $request->input('address', []);
+
+        $orderData = [
+            'user_id' => $user?->id,
+            'order_number' => $orderNumber,
+            'stripe_session_id' => $orderNumber, // Poate fi folosit ca identificator unic
+            'status' => 'pending',
+            'payment_method' => 'ramburs',
+            'total_amount' => $request->get('total'),
+            'currency' => strtoupper($request->get('currency', 'RON')),
+            'customer_name' => $user ? $user->name : $request->get('name', 'Customer'),
+            'customer_email' => $user ? $user->email : $request->get('email', ''),
+            'street' => $address['street'] ?? '',
+            'city' => $address['city'] ?? '',
+            'state' => $address['state'] ?? '',
+            'postal_code' => $address['postal_code'] ?? '',
+            'country' => $address['country'] ?? '',
+            'phone' => $address['phone'] ?? '',
+            'company_name' => $address['company_name'] ?? null,
+            'tax_id' => $address['tax_id'] ?? null,
+        ];
+
+        $order = Order::create($orderData);
+
+        foreach ($request->get('products', []) as $item) {
+            OrderProduct::create([
+                'order_id' => $order->id,
+                'product_id' => $item['product_id'],
+                'stripe_price_id' => $item['price_id'],
+                'name' => '', // poți completa dacă ai descrierea produsului
+                'price' => $item['price'],
+                'quantity' => $item['quantity'],
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'order' => $order->id,
+        ]);
+    }
+
+
+
     public function success(Request $request)
     {
         $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $sessionId = $request->get('session_id');
 
         try {
             $session = $stripe->checkout->sessions->retrieve(
-                $request->get('session_id'),
+                $sessionId,
                 ['expand' => ['line_items']]
             );
 
-            // Check if payment was successful
             if ($session->payment_status !== 'paid') {
-                return redirect()->route('checkout.canceled', [
-                    'session_id' => $session->id
-                ]);
+                return redirect()->route('checkout.canceled', ['session_id' => $sessionId]);
             }
 
-            $order = Order::where('stripe_session_id', $session->id)->first();
+            $order = Order::where('stripe_session_id', $sessionId)->first();
 
             if (!$order) {
                 $orderNumber = 'ORD-' . now()->format('Ymd') . '-' . str_pad(Order::max('id') + 1, 4, '0', STR_PAD_LEFT);
 
+                // Retrieve address from session storage
+                $address = session()->get('checkout_address_' . $sessionId, []);
+
                 $orderData = [
                     'user_id' => auth()->id() ?? null,
                     'order_number' => $orderNumber,
-                    'stripe_session_id' => $session->id,
-                    'status' => 'pending',
+                    'stripe_session_id' => $sessionId,
+                    'status' => 'completed',
+                    'payment_method' => 'card',
                     'total_amount' => $session->amount_total / 100,
                     'currency' => strtoupper($session->currency),
                     'customer_name' => $session->customer_details->name ?? 'Customer',
                     'customer_email' => $session->customer_details->email ?? '',
+                    // Address fields
+                    'street' => $address['street'] ?? '',
+                    'city' => $address['city'] ?? '',
+                    'state' => $address['state'] ?? '',
+                    'postal_code' => $address['postal_code'] ?? '',
+                    'country' => $address['country'] ?? '',
+                    'phone' => $address['phone'] ?? '',
+                    'company_name' => $address['company_name'] ?? null,
+                    'tax_id' => $address['tax_id'] ?? null,
                 ];
-
-                // Add address if user is authenticated
-                if (auth()->check()) {
-                    $address = auth()->user()->addresses()->where('is_default', true)->first();
-                    if ($address) {
-                        $orderData = array_merge($orderData, [
-                            'street' => $address->street,
-                            'city' => $address->city,
-                            'state' => $address->state,
-                            'postal_code' => $address->postal_code,
-                            'country' => $address->country,
-                            'phone' => $address->phone,
-                            'company_name' => $address->company_name,
-                            'tax_id' => $address->tax_id,
-                        ]);
-                    }
-                }
 
                 $order = Order::create($orderData);
 
                 foreach ($session->line_items->data as $item) {
-                    $product = Perfume::where('price_id', $item->price->id)->first();
-
-                    if ($product) {
-                        OrderProduct::create([
-                            'order_id' => $order->id,
-                            'product_id' => $product->id,
-                            'stripe_price_id' => $item->price->id,
-                            'name' => $product->name,
-                            'price' => $item->price->unit_amount / 100,
-                            'quantity' => $item->quantity,
-                        ]);
-                    }
+                    OrderProduct::create([
+                        'order_id' => $order->id,
+                        'product_id' => $this->getProductId($item->price->id),
+                        'stripe_price_id' => $item->price->id,
+                        'name' => $item->description, // Use Stripe description
+                        'price' => $item->price->unit_amount / 100,
+                        'quantity' => $item->quantity,
+                    ]);
                 }
 
+                // Clear session address after successful order creation
+                session()->forget('checkout_address_' . $sessionId);
                 session()->forget('cart');
-            }
-
-            if (auth()->check() && !$order->street) {
-                return Inertia::render('Checkout/FillAddress', [
-                    'customerName' => $order->customer_name,
-                    'orderNumber' => $order->order_number,
-                    'amount' => number_format($order->total_amount, 2),
-                    'currency' => $order->currency,
-                    'session_id' => $session->id
-                ]);
-            }
-
-            // Handle guest users
-            if (!auth()->check() && !$order->street) {
-                return Inertia::render('Checkout/FillAddress', [
-                    'customerName' => $order->customer_name,
-                    'amount' => number_format($order->total_amount, 2),
-                    'currency' => $order->currency,
-                    'session_id' => $session->id
-                ]);
             }
 
             return Inertia::render('Checkout/RealSuccess', [
@@ -156,10 +197,15 @@ class StripeController extends Controller
                 'currency' => $order->currency,
             ]);
 
-        } catch (ApiErrorException $e) {
+        } catch (\Exception $e) {
             return redirect()->route('home')
                 ->with('error', 'Failed to verify payment: ' . $e->getMessage());
         }
+    }
+
+    private function getProductId($priceId)
+    {
+        return \App\Models\Perfume::where('price_id', $priceId)->value('id') ?? null;
     }
 
     public function update(Request $request)

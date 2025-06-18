@@ -26,6 +26,8 @@ class Perfume extends Model implements HasMedia
         'top_notes',
         'middle_notes',
         'base_notes',
+        'price_old',
+        'price',
         'price',
         'size',
         'sex',

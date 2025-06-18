@@ -38,6 +38,14 @@ class OrderResource extends Resource
                 ->default('pending')
                 ->required(),
 
+            Forms\Components\Select::make('payment_method')
+                ->options([
+                    'card' => 'Card',
+                    'ramburs' => 'Ramburs',
+                ])
+                ->default('ramburs')
+                ->required(),
+
             Forms\Components\TextInput::make('total_amount')->numeric()->required(),
             Forms\Components\TextInput::make('currency')->required(),
 

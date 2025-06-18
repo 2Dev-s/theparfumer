@@ -31,7 +31,8 @@ Route::prefix('cart')->group(function () {
 Route::post('/checkout', [StripeController::class, 'create'])->name('checkout.create');
 Route::get('/checkout/success', [StripeController::class, 'success'])->name('checkout.success');
 Route::get('/checkout/canceled', [StripeController::class, 'canceled'])->name('checkout.canceled');
-Route::get('/checkout/update-address', [StripeController::class, 'update'])->name('addresses.order.update');
+Route::post('/checkout/ramburs', [StripeController::class, 'checkoutRamburs'])->name('checkout.cod');
+Route::get('/checkout/success-ramburs/{order}', [StripeController::class, 'rambursSuccess'])->name('checkout.cod-success');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
