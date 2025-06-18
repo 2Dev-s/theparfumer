@@ -120,7 +120,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="backdrop-blur-sm border border-amber-900/20 rounded-xl p-8 md:p-10">
+                        <div class="backdrop-blur-sm border border-amber-900/20 rounded-xl p-8 md:p-10 mt-4">
                             <div class="mb-10 text-center">
                                 <div class="flex items-center justify-center mb-6">
                                     <div class="flex-grow h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent"></div>
@@ -213,7 +213,24 @@
                     <div>
                         <!-- Luxury Summary Card -->
                         <div class="sticky top-6 rounded-xl border border-amber-900/20 bg-[hsl(0_0%_3.9%)] p-6 shadow-xl backdrop-blur-sm md:p-8">
-                            <!-- ... existing header ... -->
+                            <div class="space-y-4">
+                                <!-- Subtotal -->
+                                <div class="flex justify-between text-amber-300/90">
+                                    <span>Subtotal</span>
+                                    <span>{{ formatPrice(subtotal) }}</span>
+                                </div>
+
+                                <!-- Shipping -->
+                                <div class="flex justify-between text-amber-300/90">
+                                    <span>Livrare</span>
+                                    <span>{{ formatPrice(shipping) }}</span>
+                                </div>
+
+                                <!-- Divider -->
+                                <div class="border-t border-amber-900/20 my-4"></div>
+
+                                <!-- Total -->
+                            </div>
 
                             <!-- Payment Method Selector -->
                             <div class="mb-6">
@@ -320,16 +337,17 @@
                                         <p class="ml-2 text-xs text-amber-500/80">Plătești la primirea coletului. Taxă de ramburs: 10 RON.</p>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="space-y-4">
-                                <!-- ... existing order details ... -->
+                                <div class="flex justify-between mt-4 font-cinzel text-lg text-amber-200">
+                                    <span>Total</span>
+                                    <span>{{ formatPrice(total) }}</span>
+                                </div>
                             </div>
 
                             <!-- Updated Checkout Button -->
                             <button
                                 @click="proceedToCheckout"
-                                class="font-cinzel group relative mt-8 w-full cursor-pointer overflow-hidden rounded-full border border-amber-500/50 bg-gradient-to-r from-amber-500/10 to-amber-600/10 px-6 py-4 tracking-wider text-amber-200 transition-all hover:bg-amber-500/20 hover:text-amber-100"
+                                class="font-cinzel group relative w-full cursor-pointer overflow-hidden rounded-full border border-amber-500/50 bg-gradient-to-r from-amber-500/10 to-amber-600/10 px-6 py-4 tracking-wider text-amber-200 transition-all hover:bg-amber-500/20 hover:text-amber-100"
                             >
                                 <div class="relative z-10">
                                     {{ paymentMethod === 'card' ? 'FINALIZEAZĂ CU CARDUL' : 'FINALIZEAZĂ CU RAMBURS' }}

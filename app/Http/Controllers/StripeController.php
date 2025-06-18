@@ -114,11 +114,13 @@ class StripeController extends Controller
                 'order_id' => $order->id,
                 'product_id' => $item['product_id'],
                 'stripe_price_id' => $item['price_id'],
-                'name' => '', // poți completa dacă ai descrierea produsului
+                'name' => $this->getProduct($item['price_id'])->name,
                 'price' => $item['price'],
                 'quantity' => $item['quantity'],
             ]);
         }
+
+        session()->forget('cart');
 
         return response()->json([
             'success' => true,
@@ -177,9 +179,9 @@ class StripeController extends Controller
                 foreach ($session->line_items->data as $item) {
                     OrderProduct::create([
                         'order_id' => $order->id,
-                        'product_id' => $this->getProductId($item->price->id),
+                        'product_id' => $this->getProduct($item['price_id'])->id,
                         'stripe_price_id' => $item->price->id,
-                        'name' => $item->description, // Use Stripe description
+                        'name' => $item->description,
                         'price' => $item->price->unit_amount / 100,
                         'quantity' => $item->quantity,
                     ]);
@@ -205,7 +207,12 @@ class StripeController extends Controller
 
     private function getProductId($priceId)
     {
-        return \App\Models\Perfume::where('price_id', $priceId)->value('id') ?? null;
+        return Perfume::where('price_id', $priceId)->value('id') ?? null;
+    }
+
+    private function getProduct($priceId)
+    {
+        return Perfume::where('price_id', $priceId)->first();
     }
 
     public function update(Request $request)
