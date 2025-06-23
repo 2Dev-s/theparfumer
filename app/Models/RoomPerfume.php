@@ -11,11 +11,11 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Perfume extends Model implements HasMedia
+class RoomPerfume extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
-    protected $table = 'perfumes';
+    protected $table = 'room_perfumes';
 
     protected $fillable = [
         'name',
@@ -23,15 +23,11 @@ class Perfume extends Model implements HasMedia
         'brand_id',
         'category_id',
         'description',
-        'top_notes',
-        'middle_notes',
-        'base_notes',
-        'price_old',
-        'price',
+        'fragrance_notes',
         'price',
         'size',
-        'sex',
-        'concentration',
+        'duration_hours',
+        'room_type',
         'stock',
         'price_id',
         'active',
@@ -42,6 +38,8 @@ class Perfume extends Model implements HasMedia
         'category_id' => 'integer',
         'price' => 'float',
         'stock' => 'integer',
+        'duration_hours' => 'integer',
+        'active' => 'boolean',
     ];
 
     protected $appends = [
@@ -66,7 +64,6 @@ class Perfume extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null): void
     {
-        // Define conversions for both collections
         $this->addMediaConversion('thumb')
             ->width(300)
             ->height(300)
@@ -82,7 +79,7 @@ class Perfume extends Model implements HasMedia
     public function getMainImageUrlAttribute(): string
     {
         return $this->getFirstMediaUrl('images', 'medium')
-            ?? '/images/default-parfum.jpg';
+            ?? '/images/default-room-perfume.jpg';
     }
 
     public function getGalleryImagesAttribute(): array

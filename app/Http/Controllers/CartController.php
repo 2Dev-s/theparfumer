@@ -9,18 +9,30 @@ class CartController extends Controller
 {
     public function view()
     {
-        // Get the cart array from the JsonResponse's original property
-        $cart = $this->getCart()->getData(true); // true ensures it returns the actual array data
+        $cart = $this->getCart()->getData(true);
+        $user = auth()->user();
 
-        return Inertia::render('Cart', [
-            'products' =>$cart['cart']
-        ]);
+        $addresses = [
+            'personalAddress' => null,
+            'companyAddress' => null
+        ];
+
+        if ($user) {
+            $addresses = [
+                'personalAddress' => $user->addresses()->where('type', 'personal')->first(),
+                'companyAddress' => $user->addresses()->where('type', 'company')->first()
+            ];
+        }
+
+        return Inertia::render('Cart', array_merge([
+            'products' => $cart['cart'],
+        ], $addresses));
     }
 
     public function getCart()
     {
         return response()->json([
-            'cart' => array_values(session()->get('cart', []))
+            'cart' => array_values(session()->get('cart', [])),
         ]);
     }
 

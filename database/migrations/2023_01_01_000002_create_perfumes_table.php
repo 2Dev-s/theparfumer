@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('base_notes')->nullable(); // Note de bază (JSON)
 
             $table->text('price_id')->nullable(); // Stripe price id
+            $table->decimal('price_old')->nullable()->default(0); // Preț
             $table->decimal('price')->default(0); // Preț
             $table->string('size')->nullable(); // Ex: 100ml
             $table->enum('sex', ['male', 'female', 'unisex'])->default('male');

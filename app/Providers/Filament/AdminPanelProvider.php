@@ -55,4 +55,15 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+
+    // In your PanelProvider.php
+    protected function getNavigationGroups(): array
+    {
+        return [
+            'Product Management', // For brands and categories
+            'System Management', // For perfumes and room perfumes
+            'Sales',
+            'User Management',
+        ];
+    }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('stripe_session_id')->unique();
             $table->enum('status', ['pending', 'completed', 'cancelled', 'shipped', 'processing'])->default('pending');
             $table->decimal('total_amount', 10, 2)->nullable();
+            $table->enum('payment_method', ['card', 'ramburs'])->default('ramburs');
             $table->string('currency')->nullable();
             $table->string('customer_name')->nullable();
             $table->string('customer_email')->nullable();

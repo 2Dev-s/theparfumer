@@ -3,6 +3,8 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DefaultPagesController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +17,9 @@ Route::get('/politica-de-confidentialitate', [DefaultPagesController::class, 'pd
 Route::match(['get', 'post'], '/perfumes', [DefaultPagesController::class, 'perfumes'])->name('perfumes');
 Route::get('/perfume/{perfume:slug}', [DefaultPagesController::class, 'show'])->name('perfume.show');
 
+Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites.index');
+Route::post('/perfumes/{perfume}/favourite', [FavoritesController::class, 'toggleFavourite']);
+
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'getCart']);
     Route::get('/view', [CartController::class, 'view'])->name('cart.view');
@@ -26,7 +31,8 @@ Route::prefix('cart')->group(function () {
 Route::post('/checkout', [StripeController::class, 'create'])->name('checkout.create');
 Route::get('/checkout/success', [StripeController::class, 'success'])->name('checkout.success');
 Route::get('/checkout/canceled', [StripeController::class, 'canceled'])->name('checkout.canceled');
-Route::get('/checkout/update-address', [StripeController::class, 'update'])->name('addresses.order.update');
+Route::post('/checkout/ramburs', [StripeController::class, 'checkoutRamburs'])->name('checkout.cod');
+Route::get('/checkout/success-ramburs/{order}', [StripeController::class, 'rambursSuccess'])->name('checkout.cod-success');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

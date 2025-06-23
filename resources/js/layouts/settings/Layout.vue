@@ -18,10 +18,10 @@ const sidebarNavItems: NavItem[] = [
         title: 'Adrese',
         href: '/settings/addresses'
     },
-    {
-        title: 'Favorite',
-        href: '/settings/favourite'
-    },
+    // {
+    //     title: 'Favorite',
+    //     href: '/settings/favourite'
+    // },
     {
         title: 'Comenzi',
         href: '/settings/orders'
