@@ -91,16 +91,12 @@ class RoomPerfumeResource extends Resource
 
                 Forms\Components\Section::make('Images')
                     ->schema([
-                        Forms\Components\FileUpload::make('images')
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('images')
+                            ->label('Room Perfume Images')
                             ->multiple()
-                            ->image()
-                            ->imageEditor()
-                            ->openable()
-                            ->downloadable()
-                            ->reorderable()
-//                            ->collection('images')
-                            ->preserveFilenames()
-                            ->columnSpanFull(),
+                            ->maxFiles(5)
+                            ->collection('images')
+                            ->columns(1),
                     ]),
             ]);
     }
