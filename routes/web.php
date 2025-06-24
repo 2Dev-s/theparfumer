@@ -15,6 +15,7 @@ Route::get('/politica-de-confidentialitate', [DefaultPagesController::class, 'pd
 
 
 Route::match(['get', 'post'], '/perfumes', [DefaultPagesController::class, 'perfumes'])->name('perfumes');
+Route::match(['get', 'post'], '/room-perfumes', [DefaultPagesController::class, 'roomPerfumes'])->name('room-perfumes');
 Route::get('/perfume/{perfume:slug}', [DefaultPagesController::class, 'show'])->name('perfume.show');
 
 Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites.index');

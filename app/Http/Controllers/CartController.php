@@ -38,37 +38,23 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-        $validated = $request->validate([
-            'id' => 'required|integer',
-            'name' => 'required|string',
-            'price' => 'required|numeric',
-            'quantity' => 'sometimes|integer|min:1',
-            'slug' => 'sometimes|string',
-            'size' => 'sometimes|numeric',
-            'concentration' => 'sometimes|string',
-            'brand' => 'sometimes|numeric',
-            'price_id' => 'sometimes|string',
-            'brand.name' => 'sometimes|string',
-            'image' => 'sometimes|string',
-        ]);
-
         $cart = session()->get('cart', []);
-        $productId = $validated['id'];
+        $productId = $request->get('slug');
 
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity'] += $validated['quantity'] ?? 1;
         } else {
             $cart[$productId] = [
                 'id' => $productId,
-                'name' => $validated['name'],
-                'price' => $validated['price'],
-                'quantity' => $validated['quantity'] ?? 1,
-                'size' => $validated['size'] ?? 0,
-                'concentration' => $validated['concentration'] ?? null,
-                'slug' => $validated['slug'] ?? null,
-                'price_id' => $validated['price_id'] ?? null,
-                'brand' => $validated['brand'] ?? null,
-                'image' => $validated['image'] ?? null,
+                'name' => $request->get('name'),
+                'price' => $request->get('price'),
+                'quantity' => $request->get('quantity') ?? 1,
+                'size' => $request->get('size') ?? 0,
+                'concentration' => $request->get('concentration') ?? null,
+                'slug' => $request->get('slug') ?? null,
+                'price_id' => $request->get('price_id') ?? null,
+                'brand' => $request->get('brand') ?? null,
+                'image' => $request->get('image') ?? null,
             ];
         }
 

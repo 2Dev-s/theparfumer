@@ -48,7 +48,6 @@ class Perfume extends Model implements HasMedia
         'main_image_url',
         'gallery_images'
     ];
-    
 
     public function brand(): BelongsTo
     {
@@ -111,10 +110,5 @@ class Perfume extends Model implements HasMedia
         }
 
         $this->attributes['slug'] = $slug;
-    }
-
-    public function favorites()
-    {
-        return $this->belongsToMany(User::class, 'favourites');
     }
 }

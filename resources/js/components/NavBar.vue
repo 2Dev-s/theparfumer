@@ -252,7 +252,7 @@ export default {
                 { label: 'FEMEI', href: '/perfumes?collection=female' },
                 { label: 'BARBATI', href: '/perfumes?collection=male' },
                 { label: 'UNISEX', href: '/perfumes?collection=unisex' },
-                { label: 'Ambient', href: '/perfumes?collection=unisex' },
+                { label: 'Ambient', href: '/room-perfumes' },
                 { label: 'Seturi', href: '/perfumes?collection=unisex' },
             ],
 
@@ -323,6 +323,7 @@ export default {
                     id: product.id,
                     name: product.name,
                     price: product.price,
+                    slug: product.slug,
                     price_id: product.price_id,
                     image: product.media?.[0]?.original_url,
                     size: product.size,
@@ -350,7 +351,7 @@ export default {
 
         async removeFavorite(perfumeId) {
             try {
-                await axios.post(`/perfumes/${perfumeId}/favourite`);
+                await axios.post(`/favorites/toggle/${perfumeId}`);
                 this.favoriteItems = this.favoriteItems.filter(item => item.id !== perfumeId);
             } catch (error) {
                 console.error('Error removing favorite:', error);

@@ -108,9 +108,4 @@ class RoomPerfume extends Model implements HasMedia
 
         $this->attributes['slug'] = $slug;
     }
-
-    public function favorites()
-    {
-        return $this->belongsToMany(User::class, 'favourites');
-    }
 }

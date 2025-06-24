@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Parfum;
 use Illuminate\Http\Request;
 use App\Models\Perfume;
+use App\Models\RoomPerfume;
 use Inertia\Inertia;
 
 class DefaultPagesController extends Controller
@@ -47,16 +48,58 @@ class DefaultPagesController extends Controller
         return Inertia::render('PDC');
     }
 
+    public function roomPerfumes(Request $request)
+    {
+        $user = $request->user();
+
+        $perfumes = RoomPerfume::where('active', 1)
+                    ->with(['brand', 'category']);
+
+        if ($request->has('brand')) {
+            $brandParam = $request->get('brand');
+            $perfumes->whereHas('brand', function($query) use ($brandParam) {
+                $query->where('name', $brandParam)
+                    ->orWhere('id', $brandParam);
+            });
+        }
+
+        if ($request->has('category')) {
+            $perfumes->where('category_id', $request->get('category'));
+        }
+
+        if ($request->has('search')) {
+            $perfumes->where('name', 'like', '%' . $request->get('search') . '%');
+        }
+
+        switch ($request->get('sort')) {
+            case 'price_asc':
+                $perfumes->orderBy('price');
+                break;
+            case 'price_desc':
+                $perfumes->orderBy('price', 'desc');
+                break;
+            case 'new_arrival':
+                $perfumes->where('created_at', '>=', now()->subDays(30));
+                break;
+        }
+
+        $brands = Brand::where('active', 1)->get();
+        $categories = Category::where('active', 1)->get();
+
+
+        return Inertia::render('RoomPerfumes', [
+            'perfumes' => $perfumes->get(),
+            'brands' => $brands,
+            'categories' => $categories,
+            'filters' => $request->only(['search', 'collection', 'brand', 'category', 'sort'])
+        ]);
+    }
+
     public function perfumes(Request $request)
     {
         $user = $request->user();
         $perfumes = Perfume::where('active', 1)
-            ->with(['brand', 'category'])
-            ->when($user, function ($query) use ($user) {
-                $query->with(['favorites' => function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                }]);
-            });
+            ->with(['brand', 'category']);
 
 
         // Apply filters
@@ -93,17 +136,11 @@ class DefaultPagesController extends Controller
                 break;
         }
 
-        // Get results with favorite status
-        $perfumes = $perfumes->get()->map(function ($perfume) use ($user) {
-            $perfume->is_favorite = $user ? $perfume->favorites->isNotEmpty() : false;
-            return $perfume;
-        });
-
         $brands = Brand::where('active', 1)->get();
         $categories = Category::where('active', 1)->get();
 
         return Inertia::render('Perfumes', [
-            'perfumes' => $perfumes,
+            'perfumes' => $perfumes->get(),
             'brands' => $brands,
             'categories' => $categories,
             'filters' => $request->only(['search', 'collection', 'brand', 'category', 'sort'])
