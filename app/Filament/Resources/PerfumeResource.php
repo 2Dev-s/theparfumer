@@ -141,28 +141,28 @@ class PerfumeResource extends Resource
                             ->required(),
                     ])->columns(2),
 
-//                Forms\Components\Section::make('Images')
-//                    ->schema([
-//                        Forms\Components\SpatieMediaLibraryFileUpload::make('images')
-//                            ->label('Perfume Images')
-//                            ->multiple()
-//                            ->maxFiles(5)
-//                            ->collection('images')
-//                            ->columnSpanFull(),
-//                    ]),
-                Forms\Components\Section::make('Images')
-                    ->schema([
-                        Forms\Components\FileUpload::make('images')
-                            ->multiple()
-                            ->image()
-                            ->imageEditor()
-                            ->openable()
-                            ->downloadable()
-                            ->reorderable()
-//                            ->collection('images')
-                            ->preserveFilenames()
-                            ->columnSpanFull(),
-                    ]),
+               Forms\Components\Section::make('Images')
+                   ->schema([
+                       Forms\Components\SpatieMediaLibraryFileUpload::make('images')
+                           ->label('Perfume Images')
+                           ->multiple()
+                           ->maxFiles(5)
+                           ->collection('images')
+                           ->columnSpanFull(),
+                   ]),
+//                 Forms\Components\Section::make('Images')
+//                     ->schema([
+//                         Forms\Components\FileUpload::make('images')
+//                             ->multiple()
+//                             ->image()
+//                             ->imageEditor()
+//                             ->openable()
+//                             ->downloadable()
+//                             ->reorderable()
+//                             ->collection('images')
+//                             ->preserveFilenames()
+//                             ->columnSpanFull(),
+//                     ]),
             ]);
     }
 
