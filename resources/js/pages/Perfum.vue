@@ -418,11 +418,12 @@ export default {
 
         async toggleFavourite(perfume) {
             try {
-                console.log(this.localFavourite)
                 // Optimistic update
                 this.localFavourite = !this.localFavourite;
 
-                const response = await axios.post(`/perfumes/${perfume.id}/favourite`);
+                const response = await axios.post(`/perfumes/${perfume.slug}/favourite`, {
+                    type: 'perfume'
+                });
 
                 // Adjust based on backend response
                 this.localFavourite = response.data.status !== 'removed';
