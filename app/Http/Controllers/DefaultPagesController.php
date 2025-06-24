@@ -17,7 +17,7 @@ class DefaultPagesController extends Controller
         $recommendedPerfumes = Perfume::where('active', 1)
             ->orderBy('price', 'desc')
             ->take(2)
-            ->with(['brand']) // Eager load brand relationship
+            ->with(['brand'])
             ->get();
 
         return Inertia::render('Home', [
@@ -30,7 +30,7 @@ class DefaultPagesController extends Controller
         $recommendedPerfumes = Perfume::where('active', 1)
             ->orderBy('price', 'desc')
             ->take(2)
-            ->with(['brand']) // Eager load brand relationship
+            ->with(['brand'])
             ->get();
 
         return Inertia::render('Home', [
@@ -50,8 +50,6 @@ class DefaultPagesController extends Controller
 
     public function roomPerfumes(Request $request)
     {
-        $user = $request->user();
-
         $perfumes = RoomPerfume::where('active', 1)
                     ->with(['brand', 'category']);
 
@@ -95,9 +93,8 @@ class DefaultPagesController extends Controller
         ]);
     }
 
-    public function perfumes(Request $request)
+    public function perfumes(Request $request): \Inertia\Response
     {
-        $user = $request->user();
         $perfumes = Perfume::where('active', 1)
             ->with(['brand', 'category']);
 
@@ -149,16 +146,11 @@ class DefaultPagesController extends Controller
 
     public function show(Request $request, $slug)
     {
-        $perfume = Perfume::with(['brand', 'category', 'media', 'favorites'])
+        $perfume = Perfume::with(['brand', 'category', 'media'])
             ->where('slug', $slug)
             ->firstOrFail();
 
-        // Check if the perfume is in the user's favourites
-        $isFavourite = auth()->check()
-            ? $perfume->favorites->contains('id', auth()->id())
-            : false;
-
-        $relatedParfumes = Perfume::with(['brand', 'category', 'media', 'favorites'])
+        $relatedParfumes = Perfume::with(['brand', 'category', 'media'])
             ->where('category_id', $perfume->category->id)
             ->where('id', '!=', $perfume->id)
             ->inRandomOrder()
@@ -173,7 +165,6 @@ class DefaultPagesController extends Controller
         return Inertia::render('Perfum', [
             'perfume' => $perfume,
             'relatedParfumes' => $relatedParfumes,
-            'is_favourite' => $isFavourite,
         ]);
     }
 }

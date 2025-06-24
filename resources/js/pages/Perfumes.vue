@@ -304,7 +304,9 @@ export default {
                 this.perfumes[index].is_favorite = !this.perfumes[index].is_favorite;
 
                 // Make API call
-                const response = await axios.post(`/perfumes/${perfume.id}/favourite`);
+                const response = await axios.post(`/perfumes/${perfume.slug}/favourite`, {
+                    type: 'perfume'
+                });
 
                 // Sync with actual response if needed
                 if (response.data.status === 'removed') {
@@ -313,6 +315,7 @@ export default {
                     this.perfumes[index].is_favorite = true;
                 }
 
+                console.log(response.data);
                 eventBus.emit('add-favourite', perfume);
             } catch (error) {
                 console.error('Error toggling favorite:', error);

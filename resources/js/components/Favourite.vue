@@ -101,7 +101,7 @@
                                             Vezi detalii
                                         </Link>
                                         <button
-                                            @click="$emit('remove-item', item.id)"
+                                            @click="$emit('remove-item', item.slug)"
                                             class="text-xs uppercase tracking-widest text-amber-500/60 transition-colors hover:cursor-pointer hover:text-amber-300"
                                         >
                                             Elimină

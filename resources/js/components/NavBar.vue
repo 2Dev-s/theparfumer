@@ -349,10 +349,13 @@ export default {
             }
         },
 
-        async removeFavorite(perfumeId) {
+        async removeFavorite(perfumeSlug) {
             try {
-                await axios.post(`/favorites/toggle/${perfumeId}`);
-                this.favoriteItems = this.favoriteItems.filter(item => item.id !== perfumeId);
+                await axios.post(`/perfumes/${perfumeSlug}/favourite`, {
+                    type: 'remove'
+                });
+
+                this.favoriteItems = this.favoriteItems.filter(item => item.slug !== perfumeSlug);
             } catch (error) {
                 console.error('Error removing favorite:', error);
             }

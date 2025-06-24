@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Perfume;
+use App\Models\RoomPerfume;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,45 +11,56 @@ class FavoritesController extends Controller
 {
     public function index(Request $request)
     {
-        // For guests - get from session
-        if (!Auth::check()) {
-            $favorites = $request->session()->get('favorites', []);
-            $perfumes = Perfume::whereIn('id', $favorites)->get();
-            return response()->json($perfumes);
-        }
+        $favorites = $request->session()->get('favorites', []);
 
-        // For authenticated users - get from database
-        $perfumes = $request->user()->favorites()->get();
-        return response()->json($perfumes);
+        $perfumes = Perfume::whereIn('slug', $favorites)->get();
+        $roomPerfumes = RoomPerfume::whereIn('slug', $favorites)->get();
+
+        // Merge collections and add type indicator
+        $allItems = $perfumes->map(fn($item) => $item->setAttribute('type', 'perfume'))
+            ->concat(
+                $roomPerfumes->map(fn($item) => $item->setAttribute('type', 'room_perfume'))
+            );
+
+        return response()->json($allItems);
     }
 
-    public function toggleFavourite(Request $request, Perfume $perfume)
+    public function toggleFavourite(Request $request, $perfume)
     {
-        // For guests - use session
-        if (!Auth::check()) {
-            $favorites = $request->session()->get('favorites', []);
+        $favorites = $request->session()->get('favorites', []);
 
-            if (in_array($perfume->id, $favorites)) {
-                $favorites = array_diff($favorites, [$perfume->id]);
-                $status = 'removed';
-            } else {
-                $favorites[] = $perfume->id;
-                $status = 'added';
-            }
+        $perfume = Perfume::where('slug', $perfume)->first()
+            ?? RoomPerfume::where('slug', $perfume)->first();
 
-            $request->session()->put('favorites', array_values($favorites));
-            return response()->json(['status' => $status]);
+        if (!$perfume) {
+            throw new \InvalidArgumentException("No perfume found with slug: {$perfume}");
         }
 
-        // For authenticated users - use database
-        $user = $request->user();
-
-        if ($user->favorites()->where('perfume_id', $perfume->id)->exists()) {
-            $user->favorites()->detach($perfume);
-            return response()->json(['status' => 'removed']);
+        if (in_array($perfume->slug, $favorites)) {
+            $favorites = array_diff($favorites, [$perfume->slug]);
+            $status = 'removed';
+        } else {
+            $favorites[] = $perfume->slug;
+            $status = 'added';
         }
 
-        $user->favorites()->attach($perfume);
-        return response()->json(['status' => 'added']);
+        $request->session()->put('favorites', array_values($favorites));
+
+        return response()->json([
+            'status' => $status,
+            'list' => $request->session()->get('favorites', []),
+        ]);
+    }
+
+    private function handleRemoveAction(Request $request, $perfume)
+    {
+        $favorites = $request->session()->get('favorites', []);
+
+        $favorites = array_diff($favorites, [$perfume->slug]);
+        $status = 'removed';
+
+        $request->session()->put('favorites', array_values($favorites));
+
+        return response()->json(['status' => $status,]);
     }
 }

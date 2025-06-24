@@ -287,18 +287,21 @@ export default {
         async toggleFavourite(perfume) {
             try {
                 // Optimistically update UI
-                const index = this.perfumes.findIndex((p) => p.id === perfume.id);
+                const index = this.perfumes.findIndex((p) => p.slug === perfume.slug);
                 this.perfumes[index].is_favorite = !this.perfumes[index].is_favorite;
 
                 // Make API call
-                const response = await axios.post(`/perfumes/${perfume.id}/favourite`);
+                const response = await axios.post(`/perfumes/${perfume.slug}/favourite`, {
+                    type: 'room-perfume'
+                });
 
-                // Sync with actual response if needed
                 if (response.data.status === 'removed') {
                     this.perfumes[index].is_favorite = false;
                 } else {
                     this.perfumes[index].is_favorite = true;
                 }
+
+                console.log(response.data);
 
                 eventBus.emit('add-favourite', perfume);
             } catch (error) {
