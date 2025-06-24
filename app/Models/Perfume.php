@@ -48,6 +48,7 @@ class Perfume extends Model implements HasMedia
         'main_image_url',
         'gallery_images'
     ];
+    
 
     public function brand(): BelongsTo
     {
