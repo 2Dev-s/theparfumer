@@ -21,7 +21,7 @@ class DefaultPagesController extends Controller
             ->with(['brand'])
             ->get();
 
-        $promotionalCode = Settings::all()->first()->promotional_code;
+        $promotionalCode = Settings::all()->first()->promotional_code ?? null;
 
         return Inertia::render('Home', [
             'recommendedPerfumes' => $recommendedPerfumes,
