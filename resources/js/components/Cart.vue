@@ -85,7 +85,7 @@
                                 <!-- Product details - updated to match your cart structure -->
                                 <div class="flex-1 min-w-0">
                                     <h4 class="font-cinzel text-gold-300 mb-1">{{ item.name }}</h4>
-                                    <p v-if="item.size" class="text-sm text-gold-500/80 mb-3">{{ item.size }} ml • {{ item.concentration || 'Eau de Parfum' }}</p>
+                                    <p v-if="item.size" class="text-sm text-gold-500/80 mb-3">{{ item.size }} ml • {{ item.concentration || item.room_type }}</p>
 
                                     <!-- Quantity controls -->
                                     <div class="flex items-center gap-3 mb-4">
@@ -164,6 +164,7 @@ export default {
     },
     computed: {
         total() {
+            console.log(this.items)
             return this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         }
     }

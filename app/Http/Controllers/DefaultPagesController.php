@@ -36,7 +36,7 @@ class DefaultPagesController extends Controller
             ->take(2)
             ->with(['brand'])
             ->get();
-        
+
         $promotionalCode = Settings::all()->first()->promotional_code ?? null;
 
         return Inertia::render('Home', [
@@ -151,7 +151,7 @@ class DefaultPagesController extends Controller
         ]);
     }
 
-    public function show(Request $request, $slug)
+    public function perfum(Request $request, $slug)
     {
         $perfume = Perfume::with(['brand', 'category', 'media'])
             ->where('slug', $slug)
@@ -170,6 +170,30 @@ class DefaultPagesController extends Controller
             });
 
         return Inertia::render('Perfum', [
+            'perfume' => $perfume,
+            'relatedParfumes' => $relatedParfumes,
+        ]);
+    }
+
+    public function perfumRoom(Request $request, $slug)
+    {
+        $perfume = RoomPerfume::with(['brand', 'category', 'media'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $relatedParfumes = RoomPerfume::with(['brand', 'category', 'media'])
+            ->where('category_id', $perfume->category->id)
+            ->where('id', '!=', $perfume->id)
+            ->inRandomOrder()
+            ->limit(4)
+            ->get()
+            ->each(function ($related) {
+                $related->is_favorite = auth()->check()
+                    ? $related->favorites->contains('user_id', auth()->id())
+                    : false;
+            });
+
+        return Inertia::render('PerfumRoom', [
             'perfume' => $perfume,
             'relatedParfumes' => $relatedParfumes,
         ]);

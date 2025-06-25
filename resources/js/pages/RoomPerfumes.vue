@@ -113,7 +113,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         <div v-for="perfume in perfumes" :href="route('home')" :key="perfume.id" class="transition-all hover:scale-105">
                             <div class="relative overflow-hidden" data-aos="fade-in" data-aos-delay="300">
-                                <a :href="route('perfume.show', perfume.slug)">
+                                <a :href="route('perfumeRoom.show', perfume.slug)">
                                     <img :src="perfume.media?.[0]?.original_url" alt="Luxury Perfume" class="perfume-image" />
                                 </a>
 
@@ -300,8 +300,6 @@ export default {
                 } else {
                     this.perfumes[index].is_favorite = true;
                 }
-
-                console.log(response.data);
 
                 eventBus.emit('add-favourite', perfume);
             } catch (error) {
