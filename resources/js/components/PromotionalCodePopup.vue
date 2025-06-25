@@ -2,7 +2,7 @@
     <transition name="fade">
         <div v-if="showPopup" class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
             <div
-                class="relative w-full max-w-lg border border-amber-400 bg-gray-900 px-8 py-10 shadow-[0_0_60px_rgba(212,175,55,0.25)]"
+                class="relative w-full max-w-lg border border-amber-400 bg-gray-950 px-8 py-10 shadow-[0_0_60px_rgba(212,175,55,0.25)]"
             >
                 <div class="absolute -inset-1 rounded-3xl border-2 border-amber-400 opacity-20 blur-md"></div>
 
@@ -13,9 +13,9 @@
                     </p>
 
                     <p class="my-6 text-2xl font-semibold">
-                        Folosește codul:
-                        <span class="ml-2 inline-block bg-amber-400 px-4 py-1 font-bold tracking-widest text-gray-900 shadow">
-                            {{ promotionalCode }}
+                        Folosește codul pentru {{promotionalCode.discount}}% reducere
+                        <span class="ml-2 mt-4 inline-block bg-amber-400 px-4 py-1 font-bold tracking-widest text-gray-900 shadow">
+                            {{ promotionalCode.code }}
                         </span>
                     </p>
 

@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Parfum;
 use App\Models\Settings;
+use App\Models\Code;
 use Illuminate\Http\Request;
 use App\Models\Perfume;
 use App\Models\RoomPerfume;
@@ -21,7 +22,7 @@ class DefaultPagesController extends Controller
             ->with(['brand'])
             ->get();
 
-        $promotionalCode = Settings::all()->first()->promotional_code ?? null;
+        $promotionalCode = Code::where('popup', true)->first() ?? null;
 
         return Inertia::render('Home', [
             'recommendedPerfumes' => $recommendedPerfumes,
@@ -37,7 +38,7 @@ class DefaultPagesController extends Controller
             ->with(['brand'])
             ->get();
 
-        $promotionalCode = Settings::all()->first()->promotional_code ?? null;
+        $promotionalCode = Code::where('popup', true)->first() ?? null;
 
         return Inertia::render('Home', [
             'recommendedPerfumes' => $recommendedPerfumes,
