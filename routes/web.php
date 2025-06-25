@@ -21,6 +21,7 @@ Route::get('/perfume-room/{perfume:slug}', [DefaultPagesController::class, 'perf
 
 Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites.index');
 Route::post('/perfumes/{perfume}/favourite', [FavoritesController::class, 'toggleFavourite']);
+Route::post('/discount/apply', [CartController::class, 'applyDiscount'])->name('discount.apply');
 
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'getCart']);

@@ -215,21 +215,20 @@
                         <div class="sticky top-6 rounded-xl border border-amber-900/20 bg-[hsl(0_0%_3.9%)] p-6 shadow-xl backdrop-blur-sm md:p-8">
                             <div class="space-y-4">
                                 <!-- Subtotal -->
-                                <div class="flex justify-between text-amber-300/90">
-                                    <span>Subtotal</span>
-                                    <span>{{ formatPrice(subtotal) }}</span>
-                                </div>
-
-                                <!-- Shipping -->
-                                <div class="flex justify-between text-amber-300/90">
-                                    <span>Livrare</span>
-                                    <span>{{ formatPrice(shipping) }}</span>
+                                <!-- Discount -->
+                                <div v-if="appliedDiscount" class="flex justify-between text-amber-300/90">
+                                    <span>Reducere ({{ appliedDiscount.discount }}%)</span>
+                                    <span class="text-amber-400">-{{ formatPrice(discountAmount) }}</span>
                                 </div>
 
                                 <!-- Divider -->
                                 <div class="border-t border-amber-900/20 my-4"></div>
 
                                 <!-- Total -->
+                                <div class="flex justify-between mt-4 font-cinzel text-lg text-amber-200">
+                                    <span>Total</span>
+                                    <span>{{ formatPrice(total) }}</span>
+                                </div>
                             </div>
 
                             <!-- Payment Method Selector -->
@@ -309,6 +308,85 @@
                                     </label>
                                 </div>
 
+                                <div v-if="paymentMethod === 'ramburs'" class="mt-6">
+                                    <!-- Discount Code Section -->
+                                    <div class="relative overflow-hidden rounded-xl border border-amber-900/30 bg-gradient-to-br from-amber-900/10 to-amber-900/20 p-5 shadow-lg backdrop-blur-sm">
+                                        <!-- Decorative elements -->
+                                        <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-amber-500/10 blur-xl"></div>
+                                        <div class="absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-amber-400/10 blur-xl"></div>
+
+                                        <!-- Title with decorative icon -->
+                                        <div class="relative z-10 mb-4 flex items-center">
+                                            <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-amber-500/20">
+                                                <svg class="h-5 w-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
+                                                </svg>
+                                            </div>
+                                            <h3 class="font-cinzel text-lg tracking-wide text-amber-200">Reducere Exclusivă</h3>
+                                            <button
+                                                v-if="appliedDiscount"
+                                                @click="removeDiscount"
+                                                class="ml-auto text-xs font-medium text-amber-500/80 hover:text-amber-300 transition-colors"
+                                            >
+                                                Elimină
+                                            </button>
+                                        </div>
+
+                                        <!-- Input or Applied Code Display -->
+                                        <div class="relative z-10">
+                                            <div v-if="!appliedDiscount" class="flex items-stretch overflow-hidden rounded-lg border border-amber-900/30 bg-amber-900/15 shadow-inner">
+                                                <input
+                                                    v-model="discountCode"
+                                                    placeholder="Introdu codul"
+                                                    class="flex-1 bg-transparent px-4 py-3 font-cinzel text-amber-200 placeholder-amber-500/60 outline-none focus:ring-1 focus:ring-amber-500/50"
+                                                />
+
+                                            </div>
+
+                                            <div v-else class="flex items-center justify-between rounded-lg border border-amber-500/30 bg-amber-900/20 p-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500/20">
+                                                        <svg class="h-5 w-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                    </div>
+                                                    <div class="ml-3">
+                                                        <p class="font-cinzel text-amber-300">{{ appliedDiscount.code }}</p>
+                                                        <p class="text-xs text-amber-500/80">Cod aplicat cu succes</p>
+                                                    </div>
+                                                </div>
+                                                <span class="font-cinzel text-lg font-medium text-amber-300">-{{ appliedDiscount.discount }}%</span>
+                                            </div>
+
+                                            <div v-if="!appliedDiscount">
+                                                <button
+                                                    @click="applyDiscount"
+                                                    class="rounded-full mt-4 border border-amber-500/50 bg-amber-500/10 px-4 py-2 text-amber-200 transition-colors hover:bg-amber-500/20"
+                                                >
+                                                    Aplică
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Error Message -->
+                                        <transition
+                                            enter-active-class="transition-opacity duration-200"
+                                            enter-from-class="opacity-0"
+                                            enter-to-class="opacity-100"
+                                            leave-active-class="transition-opacity duration-200"
+                                            leave-from-class="opacity-100"
+                                            leave-to-class="opacity-0"
+                                        >
+                                            <p v-if="discountError" class="relative z-10 mt-3 flex items-start text-xs text-amber-400">
+                                                <svg class="mr-1.5 mt-0.5 h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                {{ discountError }}
+                                            </p>
+                                        </transition>
+                                    </div>
+                                </div>
+
                                 <!-- Payment Method Info -->
                                 <div v-if="paymentMethod === 'card'" class="mt-4 rounded-lg border border-amber-900/20 bg-amber-900/10 p-3">
                                     <div class="flex items-start">
@@ -365,6 +443,7 @@ export default {
     props: {
         products: Array,
         companyAddress: Object,
+        promotionalCode: Object,
     },
     data() {
         return {
@@ -379,6 +458,9 @@ export default {
                 phone: this.companyAddress?.phone || ''
             },
             paymentMethod: 'card',
+            discountCode: '',
+            appliedDiscount: null,
+            discountError: '',
         };
     },
     computed: {
@@ -386,12 +468,15 @@ export default {
             return this.products.reduce((sum: number, product: any) => sum + product.price * product.quantity, 0);
         },
         shipping() {
-            // Add cash on delivery fee
             const baseShipping = this.subtotal > 250 ? 0 : 50;
             return this.paymentMethod === 'ramburs' ? baseShipping + 10 : baseShipping;
         },
+        discountAmount() {
+            if (!this.appliedDiscount) return 0;
+            return (this.subtotal * this.appliedDiscount.discount) / 100;
+        },
         total() {
-            return this.subtotal + this.shipping;
+            return this.subtotal + this.shipping - this.discountAmount;
         },
     },
     methods: {
@@ -416,6 +501,40 @@ export default {
                 window.location.reload();
             }, 100);
         },
+
+        async applyDiscount() {
+            this.discountError = '';
+
+            if (!this.discountCode.trim()) {
+                this.discountError = 'Te rugăm să introduci un cod promoțional';
+                return;
+            }
+
+            try {
+                const response = await axios.post(route('discount.apply'), {
+                    code: this.discountCode
+                });
+
+                if (response.data.valid) {
+                    this.appliedDiscount = {
+                        code: response.data.code,
+                        discount: response.data.discount
+                    };
+                    this.discountCode = '';
+                } else {
+                    this.discountError = response.data.message || 'Cod promoțional invalid';
+                }
+            } catch (error) {
+                this.discountError = 'A apărut o eroare. Te rugăm să încerci din nou.';
+                console.error('Discount error:', error);
+            }
+        },
+
+        removeDiscount() {
+            this.appliedDiscount = null;
+            this.discountCode = '';
+        },
+
         async proceedToCheckout() {
             // Required address fields
             const requiredFields = [
@@ -439,40 +558,33 @@ export default {
             }
 
             try {
-                if (this.paymentMethod === 'card') {
-                    // Existing Stripe flow
-                    const response = await axios.post(route('checkout.create'), {
-                        products: this.products.map((p) => ({
-                            product_id: p.id,
-                            price_id: p.price_id,
-                            quantity: p.quantity,
-                        })),
-                        address: this.companyForm,
-                        payment_method: 'card'
-                    });
+                const payload = {
+                    products: this.products.map((p) => ({
+                        product_id: p.id,
+                        price_id: p.price_id,
+                        quantity: p.quantity,
+                    })),
+                    address: this.companyForm,
+                    payment_method: this.paymentMethod,
+                    discount_code: this.appliedDiscount?.code || null
+                };
 
+                if (this.paymentMethod === 'card') {
+                    const response = await axios.post(route('checkout.create'), payload);
                     if (response.data.url) {
                         localStorage.setItem('checkout_address', JSON.stringify(this.companyForm));
                         window.location.href = response.data.url;
                     }
                 } else {
-                    // Cash on delivery flow
                     const response = await axios.post(route('checkout.cod'), {
-                        products: this.products.map((p) => ({
-                            product_id: p.id,
-                            quantity: p.quantity,
-                            price_id: p.price_id,
-                            price: p.price
-                        })),
-                        address: this.companyForm,
+                        ...payload,
                         total: this.total,
-                        name: this.companyForm.name,          // ✅ pentru guest checkout
-                        email: this.companyForm.email,        // ✅ pentru guest checkout
-                        currency: 'RON'                       // sau orice alegi
+                        name: this.companyForm.name,
+                        email: this.companyForm.email,
+                        currency: 'RON'
                     });
 
                     if (response.data.success) {
-                        // Redirect to success page
                         router.visit(route('checkout.cod-success', {
                             order: response.data.order
                         }));
@@ -483,6 +595,15 @@ export default {
                 alert('A apărut o eroare la procesarea comenzii. Te rugăm să încerci din nou.');
             }
         },
+        mounted() {
+            // Auto-apply promotional code if available
+            if (this.promotionalCode) {
+                this.appliedDiscount = {
+                    code: this.promotionalCode.code,
+                    discount: this.promotionalCode.discount
+                };
+            }
+        }
     },
 };
 </script>

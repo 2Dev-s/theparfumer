@@ -23,6 +23,9 @@ class CodeResource extends Resource
 
     protected static ?string $navigationLabel = 'Discount Codes';
 
+    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'System Management';
+
     public static function form(Form $form): Form
     {
         return $form

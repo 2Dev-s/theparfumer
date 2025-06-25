@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Code;
 
 class CartController extends Controller
 {
@@ -24,8 +25,11 @@ class CartController extends Controller
             ];
         }
 
+        $promotionalCode = Code::where('popup', true)->first() ?? null;
+
         return Inertia::render('Cart', array_merge([
             'products' => $cart['cart'],
+            'promotionalCode' => $promotionalCode
         ], $addresses));
     }
 
@@ -93,5 +97,29 @@ class CartController extends Controller
         }
 
         return $this->getCart();
+    }
+
+    public function applyDiscount(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string'
+        ]);
+
+        $code = Code::where('code', $request->code)
+                    ->where('active', true)
+                    ->first();
+
+        if (!$code) {
+            return response()->json([
+                'valid' => false,
+                'message' => 'Cod promoțional invalid'
+            ]);
+        }
+
+        return response()->json([
+            'valid' => true,
+            'code' => $code->code,
+            'discount' => $code->discount
+        ]);
     }
 }
