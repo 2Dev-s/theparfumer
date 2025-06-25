@@ -418,6 +418,7 @@ export default {
 
         async toggleFavourite(perfume) {
             try {
+                console.log(this.localFavourite)
                 // Optimistic update
                 this.localFavourite = !this.localFavourite;
 
@@ -427,6 +428,8 @@ export default {
 
                 // Adjust based on backend response
                 this.localFavourite = response.data.status !== 'removed';
+
+                eventBus.emit('add-favourite', perfume);
             } catch (error) {
                 console.error('Error toggling favorite:', error);
                 // Revert on error

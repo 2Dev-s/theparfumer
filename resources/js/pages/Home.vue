@@ -1,6 +1,8 @@
 <template>
     <Head title="Acasă" />
 
+    <PromotionalCodePopup :promotionalCode="promotionalCode" />
+
     <AppLayout>
         <!-- Secțiunea Hero -->
         <div class="relative h-screen-90 flex items-center justify-center overflow-hidden" >
@@ -206,6 +208,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import PromotionalCodePopup from '@/components/PromotionalCodePopup.vue';
 
 interface Perfume {
     id: number;
@@ -226,6 +229,7 @@ interface Perfume {
 
 interface Props {
     recommendedPerfumes: Perfume[];
+    promotionalCode: string
 }
 
 defineProps<Props>();

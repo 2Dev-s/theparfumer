@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Parfum;
+use App\Models\Settings;
 use Illuminate\Http\Request;
 use App\Models\Perfume;
 use App\Models\RoomPerfume;
@@ -20,8 +21,11 @@ class DefaultPagesController extends Controller
             ->with(['brand'])
             ->get();
 
+        $promotionalCode = Settings::all()->first()->promotional_code;
+
         return Inertia::render('Home', [
             'recommendedPerfumes' => $recommendedPerfumes,
+            'promotionalCode' => $promotionalCode,
         ]);
     }
 

@@ -66,7 +66,6 @@ class Perfume extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null): void
     {
-        // Define conversions for both collections
         $this->addMediaConversion('thumb')
             ->width(300)
             ->height(300)
