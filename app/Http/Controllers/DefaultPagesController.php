@@ -46,6 +46,11 @@ class DefaultPagesController extends Controller
         ]);
     }
 
+   public function search()
+   {
+        return Inertia::render('Search');
+   }
+
     public function tos()
     {
         return Inertia::render('TOS');

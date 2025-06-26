@@ -12,6 +12,7 @@ Route::get('/', [DefaultPagesController::class, 'index'])->name('welcome');
 Route::get('/home', [DefaultPagesController::class, 'home'])->name('home');
 Route::get('/termeni-si-conditii', [DefaultPagesController::class, 'tos'])->name('tos');
 Route::get('/politica-de-confidentialitate', [DefaultPagesController::class, 'pdc'])->name('pdc');
+Route::get('/search', [DefaultPagesController::class, 'search'])->name('search');
 
 
 Route::match(['get', 'post'], '/perfumes', [DefaultPagesController::class, 'perfumes'])->name('perfumes');

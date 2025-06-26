@@ -30,10 +30,22 @@
                 </div>
 
                 <!-- Iconuri Dreapta - Diamante -->
+                <!-- Înlocuiește secțiunea cu icon-urile din dreapta cu aceasta: -->
                 <div class="flex items-center" data-aos="fade-in" data-aos-delay="500">
+                    <!-- Buton Search -->
+                    <Link
+                        :href="route('search')"
+                        class="relative mr-2 rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer"
+                        title="Căutare"
+                    >
+                        <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </Link>
+
                     <!-- User Dropdown (shown when logged in) -->
                     <div v-if="$page.props.auth.user" class="group relative hidden lg:block">
-                        <button class="rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer">
+                        <button class="rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer" title="Profil">
                             <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path
                                     stroke-linecap="round"
@@ -66,7 +78,7 @@
                     </div>
 
                     <!-- Regular User Button (shown when not logged in) -->
-                    <Link v-else :href="route('login')" class="rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer">
+                    <Link v-else :href="route('login')" class="rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer" title="Autentificare">
                         <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
                                 stroke-linecap="round"
@@ -78,7 +90,7 @@
                     </Link>
 
                     <!-- Shopping Cart Button -->
-                    <button @click="toggleCart" class="relative rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer">
+                    <button @click="toggleCart" class="relative rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer" title="Coș">
                         <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
                                 stroke-linecap="round"
@@ -90,13 +102,14 @@
                         <span
                             class="bg-gold-500 absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-medium text-white"
                         >
-                            {{ cartItems.length }}
-                        </span>
+            {{ cartItems.length }}
+        </span>
                     </button>
 
                     <button
                         @click="toggleFavorites"
                         class="relative mr-2 rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer"
+                        title="Favorite"
                     >
                         <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
@@ -110,8 +123,8 @@
                             v-if="favoriteItems.length > 0"
                             class="bg-gold-500 absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-medium text-white"
                         >
-                            {{ favoriteItems.length }}
-                        </span>
+            {{ favoriteItems.length }}
+        </span>
                     </button>
 
                     <!-- Hamburger Icon - Mobile -->
@@ -119,6 +132,7 @@
                         @click="toggleMobileMenu"
                         v-if="!isMobileMenuOpen"
                         class="rounded-full p-2 text-yellow-500 transition-all duration-300 hover:scale-105 hover:cursor-pointer lg:hidden"
+                        title="Meniu"
                     >
                         <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
