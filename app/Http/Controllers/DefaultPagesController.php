@@ -168,12 +168,7 @@ class DefaultPagesController extends Controller
             ->where('id', '!=', $perfume->id)
             ->inRandomOrder()
             ->limit(4)
-            ->get()
-            ->each(function ($related) {
-                $related->is_favorite = auth()->check()
-                    ? $related->favorites->contains('user_id', auth()->id())
-                    : false;
-            });
+            ->get());
 
         return Inertia::render('Perfum', [
             'perfume' => $perfume,
@@ -192,12 +187,7 @@ class DefaultPagesController extends Controller
             ->where('id', '!=', $perfume->id)
             ->inRandomOrder()
             ->limit(4)
-            ->get()
-            ->each(function ($related) {
-                $related->is_favorite = auth()->check()
-                    ? $related->favorites->contains('user_id', auth()->id())
-                    : false;
-            });
+            ->get());
 
         return Inertia::render('PerfumRoom', [
             'perfume' => $perfume,
