@@ -168,7 +168,7 @@ class DefaultPagesController extends Controller
             ->where('id', '!=', $perfume->id)
             ->inRandomOrder()
             ->limit(4)
-            ->get());
+            ->get();
 
         return Inertia::render('Perfum', [
             'perfume' => $perfume,
@@ -187,7 +187,7 @@ class DefaultPagesController extends Controller
             ->where('id', '!=', $perfume->id)
             ->inRandomOrder()
             ->limit(4)
-            ->get());
+            ->get();
 
         return Inertia::render('PerfumRoom', [
             'perfume' => $perfume,
