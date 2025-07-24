@@ -5,7 +5,9 @@
                 <!-- Logo Lux -->
                 <Link :href="route('home')" class="group flex items-center">
                     <div class="relative" data-aos="fade-in" data-aos-delay="500">
-                        <span class="font-cinzel text-3xl font-bold tracking-wider text-yellow-500">PARFUMER</span>
+                        <span class="font-cinzel text-xs sm:text-sm md:text-lg lg:text-xl xl:text-2xl font-bold tracking-wider text-yellow-500">
+                            PARFUMER
+                        </span>
                         <div
                             class="via-gold-500 absolute inset-x-0 -bottom-2 h-px bg-gradient-to-r from-transparent to-transparent opacity-50 transition-opacity group-hover:opacity-100"
                         ></div>
@@ -252,8 +254,8 @@ export default {
                 { label: 'FEMEI', href: '/perfumes?collection=female' },
                 { label: 'BARBATI', href: '/perfumes?collection=male' },
                 { label: 'UNISEX', href: '/perfumes?collection=unisex' },
-                { label: 'Ambient', href: '/perfumes?collection=unisex' },
-                { label: 'Seturi', href: '/perfumes?collection=unisex' },
+                { label: 'Ambient', href: '/perfumes?category=ambient' },
+                { label: 'Nișă', href: '/perfumes?category=nisa' },
             ],
 
             cartItems: [],
