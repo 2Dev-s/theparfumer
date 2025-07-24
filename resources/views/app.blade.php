@@ -20,6 +20,8 @@
             })();
         </script>
 
+        <script type="text/javascript" charset="UTF-8" src="//cdn.cookie-script.com/s/1cddc30c694f7f93f8582db6778359b4.js"></script>
+
         {{-- Inline style to set the HTML background color based on our theme in app.css --}}
         <style>
             html {
