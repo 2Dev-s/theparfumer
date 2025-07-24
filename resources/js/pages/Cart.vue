@@ -468,7 +468,7 @@ export default {
             return this.products.reduce((sum: number, product: any) => sum + product.price * product.quantity, 0);
         },
         shipping() {
-            const baseShipping = this.subtotal > 250 ? 0 : 50;
+            const baseShipping = this.subtotal > 250 ? 0 : 19.99;
             return this.paymentMethod === 'ramburs' ? baseShipping + 10 : baseShipping;
         },
         discountAmount() {

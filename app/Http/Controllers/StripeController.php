@@ -30,19 +30,24 @@ class StripeController extends Controller
         ]);
 
         $stripe = new StripeClient(env('STRIPE_SECRET'));
-        $domain = env('STRIPE_DOMAIN', 'https://theparfumer.test');
+        $domain = env('STRIPE_DOMAIN', 'https://theparfumer.ro');
 
         try {
             $lineItems = [];
+            $totalAmount = 0;
 
             foreach ($validated['products'] as $item) {
+                $price = $stripe->prices->retrieve($item['price_id']);
+                $itemAmount = $price->unit_amount * $item['quantity'];
+                $totalAmount += $itemAmount;
+
                 $lineItems[] = [
                     'price' => $item['price_id'],
                     'quantity' => $item['quantity']
                 ];
             }
 
-            $checkout_session = $stripe->checkout->sessions->create([
+            $checkoutParams = [
                 'line_items' => $lineItems,
                 'mode' => 'payment',
                 'success_url' => $domain . '/checkout/success?session_id={CHECKOUT_SESSION_ID}',
@@ -53,7 +58,18 @@ class StripeController extends Controller
                     'user_id' => auth()->id() ?? 'guest',
                     'address' => json_encode($validated['address']) // Store address in metadata
                 ]
-            ]);
+            ];
+
+            // Add shipping rate if total is less than 250 LEI (25000 bani)
+            if ($totalAmount < 25000) { // Stripe amounts are in cents/bani
+                $checkoutParams['shipping_options'] = [
+                    [
+                        'shipping_rate' => env("STRIPE_SHIPPING_RATE_KEY", 'shr_1RoQNHEYJsdE0qkqblq4U38Y')
+                    ]
+                ];
+            }
+
+            $checkout_session = $stripe->checkout->sessions->create($checkoutParams);
 
             // Store address in session for later retrieval
             session()->put('checkout_address_' . $checkout_session->id, $validated['address']);
