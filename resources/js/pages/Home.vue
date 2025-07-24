@@ -99,7 +99,7 @@
                 <div class="relative h-[500px] rounded-xl overflow-hidden shadow-2xl" data-aos="fade-down" data-aos-delay="300">
                     <!-- Imagine principala -->
                     <img
-                        src="https://img.freepik.com/premium-psd/logo-mockup-luxury-perfume-bottle_206274-276.jpg?w=740"
+                        src="https://i.imgur.com/VdKKSKK.jpeg"
                         class="absolute inset-0 w-full h-full object-cover" alt="Atelier de parfum">
 
 

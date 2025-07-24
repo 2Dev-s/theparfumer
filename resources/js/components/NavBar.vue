@@ -5,7 +5,9 @@
                 <!-- Logo Lux -->
                 <Link :href="route('home')" class="group flex items-center">
                     <div class="relative" data-aos="fade-in" data-aos-delay="500">
-                        <span class="font-cinzel text-3xl font-bold tracking-wider text-yellow-500">PARFUMER</span>
+                        <span class="font-cinzel text-xs sm:text-sm md:text-lg lg:text-xl xl:text-2xl font-bold tracking-wider text-yellow-500">
+                            PARFUMER
+                        </span>
                         <div
                             class="via-gold-500 absolute inset-x-0 -bottom-2 h-px bg-gradient-to-r from-transparent to-transparent opacity-50 transition-opacity group-hover:opacity-100"
                         ></div>
@@ -30,22 +32,10 @@
                 </div>
 
                 <!-- Iconuri Dreapta - Diamante -->
-                <!-- Înlocuiește secțiunea cu icon-urile din dreapta cu aceasta: -->
                 <div class="flex items-center" data-aos="fade-in" data-aos-delay="500">
-                    <!-- Buton Search -->
-                    <Link
-                        :href="route('search')"
-                        class="relative mr-2 rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer"
-                        title="Căutare"
-                    >
-                        <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </Link>
-
                     <!-- User Dropdown (shown when logged in) -->
                     <div v-if="$page.props.auth.user" class="group relative hidden lg:block">
-                        <button class="rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer" title="Profil">
+                        <button class="rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer">
                             <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path
                                     stroke-linecap="round"
@@ -78,7 +68,7 @@
                     </div>
 
                     <!-- Regular User Button (shown when not logged in) -->
-                    <Link v-else :href="route('login')" class="rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer" title="Autentificare">
+                    <Link v-else :href="route('login')" class="rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer">
                         <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
                                 stroke-linecap="round"
@@ -90,7 +80,7 @@
                     </Link>
 
                     <!-- Shopping Cart Button -->
-                    <button @click="toggleCart" class="relative rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer" title="Coș">
+                    <button @click="toggleCart" class="relative rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer">
                         <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
                                 stroke-linecap="round"
@@ -102,14 +92,13 @@
                         <span
                             class="bg-gold-500 absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-medium text-white"
                         >
-            {{ cartItems.length }}
-        </span>
+                            {{ cartItems.length }}
+                        </span>
                     </button>
 
                     <button
                         @click="toggleFavorites"
                         class="relative mr-2 rounded-full p-2 transition-all duration-300 hover:scale-105 hover:cursor-pointer"
-                        title="Favorite"
                     >
                         <svg class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
@@ -123,8 +112,8 @@
                             v-if="favoriteItems.length > 0"
                             class="bg-gold-500 absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-medium text-white"
                         >
-            {{ favoriteItems.length }}
-        </span>
+                            {{ favoriteItems.length }}
+                        </span>
                     </button>
 
                     <!-- Hamburger Icon - Mobile -->
@@ -132,7 +121,6 @@
                         @click="toggleMobileMenu"
                         v-if="!isMobileMenuOpen"
                         class="rounded-full p-2 text-yellow-500 transition-all duration-300 hover:scale-105 hover:cursor-pointer lg:hidden"
-                        title="Meniu"
                     >
                         <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
@@ -267,7 +255,7 @@ export default {
                 { label: 'BARBATI', href: '/perfumes?collection=male' },
                 { label: 'UNISEX', href: '/perfumes?collection=unisex' },
                 { label: 'Ambient', href: '/room-perfumes' },
-                { label: 'Seturi', href: '/perfumes?collection=unisex' },
+                { label: 'Nișă', href: '/perfumes?category=2' },
             ],
 
             cartItems: [],
@@ -337,7 +325,6 @@ export default {
                     id: product.id,
                     name: product.name,
                     price: product.price,
-                    slug: product.slug,
                     price_id: product.price_id,
                     image: product.media?.[0]?.original_url,
                     size: product.size,
@@ -363,13 +350,10 @@ export default {
             }
         },
 
-        async removeFavorite(perfumeSlug) {
+        async removeFavorite(perfumeId) {
             try {
-                await axios.post(`/perfumes/${perfumeSlug}/favourite`, {
-                    type: 'remove'
-                });
-
-                this.favoriteItems = this.favoriteItems.filter(item => item.slug !== perfumeSlug);
+                await axios.post(`/perfumes/${perfumeId}/favourite`);
+                this.favoriteItems = this.favoriteItems.filter(item => item.id !== perfumeId);
             } catch (error) {
                 console.error('Error removing favorite:', error);
             }
