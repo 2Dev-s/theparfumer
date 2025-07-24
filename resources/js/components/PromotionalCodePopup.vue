@@ -19,7 +19,7 @@
                         </span>
                     </p>
 
-                    <p class="text-sm text-amber-300 italic">Valabil doar pentru o perioadă limitată. Răsfață-te cum meriți.</p>
+                    <p class="text-sm text-amber-300 italic">Valabil doar pentru prima comandă. Răsfață-te cum meriți.</p>
 
                     <button
                         class="font-cinzel mt-8 flex w-full items-center justify-center gap-2 bg-amber-500 px-6 py-3 font-bold tracking-wider text-black uppercase transition-colors duration-300 hover:cursor-pointer hover:bg-amber-600"
