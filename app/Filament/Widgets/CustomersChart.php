@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\User;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Facades\DB;
 
 class CustomersChart extends ChartWidget
 {
@@ -13,9 +14,9 @@ class CustomersChart extends ChartWidget
 
     protected function getData(): array
     {
-        // Get the number of new customers created each month in the current year
-        $newCustomersPerMonth = User::selectRaw('MONTH(created_at) as month, count(*) as total')
-            ->whereYear('created_at', now()->year) // Filter by current year
+        // SQLite: folosește strftime pentru a extrage luna
+        $newCustomersPerMonth = User::selectRaw("strftime('%m', created_at) as month, count(*) as total")
+            ->whereRaw("strftime('%Y', created_at) = ?", [now()->year])
             ->groupBy('month')
             ->orderBy('month')
             ->pluck('total', 'month')
@@ -26,6 +27,8 @@ class CustomersChart extends ChartWidget
 
         // Map new customers per month to the data array
         foreach ($newCustomersPerMonth as $month => $count) {
+            // Elimină zeroul din față (ex: '01' -> 1)
+            $month = (int) $month;
             $data[$month] = $count;
         }
 
@@ -33,7 +36,7 @@ class CustomersChart extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'New Customers',
-                    'data' => $data, // This will display new customers data per month
+                    'data' => array_values($data), // Returnează doar valorile
                     'backgroundColor' => '#36A2EB',
                     'borderColor' => '#9BD0F5',
                     'fill' => false,
@@ -45,6 +48,6 @@ class CustomersChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'line'; // Use line chart
+        return 'line';
     }
 }
