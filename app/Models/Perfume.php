@@ -4,17 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Perfume extends Model implements HasMedia
+class Perfume extends Model
 {
-    use InteractsWithMedia;
-
     protected $table = 'perfumes';
 
     protected $fillable = [
@@ -27,7 +21,6 @@ class Perfume extends Model implements HasMedia
         'middle_notes',
         'base_notes',
         'price_old',
-        'price',
         'price',
         'size',
         'sex',
@@ -64,34 +57,14 @@ class Perfume extends Model implements HasMedia
         return $this->hasMany(OrderProduct::class);
     }
 
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-            ->width(300)
-            ->height(300)
-            ->sharpen(10)
-            ->performOnCollections('images', 'gallery');
-
-        $this->addMediaConversion('medium')
-            ->width(600)
-            ->height(600)
-            ->performOnCollections('images', 'gallery');
-    }
-
     public function getMainImageUrlAttribute(): string
     {
-        return $this->getFirstMediaUrl('images', 'medium')
-            ?? '/images/default-parfum.jpg';
+        return asset('images/default-parfum.jpg');
     }
 
     public function getGalleryImagesAttribute(): array
     {
-        return $this->getMedia('images')->map(function ($media) {
-            return [
-                'url' => $media->getFullUrl('medium'),
-                'thumb' => $media->getFullUrl('thumb'),
-            ];
-        })->toArray();
+        return [];
     }
 
     public function setNameAttribute($value)
