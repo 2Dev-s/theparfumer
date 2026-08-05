@@ -83,4 +83,9 @@ class Perfume extends Model
 
         $this->attributes['slug'] = $slug;
     }
+
+    public function media()
+    {
+        return $this->morphMany(config('media-library.media_model'), 'model');
+    }
 }
