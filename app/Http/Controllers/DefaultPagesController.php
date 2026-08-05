@@ -159,11 +159,11 @@ class DefaultPagesController extends Controller
 
     public function perfum(Request $request, $slug)
     {
-        $perfume = Perfume::with(['brand', 'category'])
+        $perfume = Perfume::with(['brand', 'category', 'media'])
             ->where('slug', $slug)
             ->firstOrFail();
 
-        $relatedParfumes = Perfume::with(['brand', 'category'])
+        $relatedParfumes = Perfume::with(['brand', 'category', 'media'])
             ->where('category_id', $perfume->category->id)
             ->where('id', '!=', $perfume->id)
             ->inRandomOrder()
@@ -178,11 +178,11 @@ class DefaultPagesController extends Controller
 
     public function perfumRoom(Request $request, $slug)
     {
-        $perfume = RoomPerfume::with(['brand', 'category'])
+        $perfume = RoomPerfume::with(['brand', 'category', 'media'])
             ->where('slug', $slug)
             ->firstOrFail();
 
-        $relatedParfumes = RoomPerfume::with(['brand', 'category'])
+        $relatedParfumes = RoomPerfume::with(['brand', 'category', 'media'])
             ->where('category_id', $perfume->category->id)
             ->where('id', '!=', $perfume->id)
             ->inRandomOrder()
