@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Perfume extends Model
+class Perfume extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     protected $table = 'perfumes';
 
     protected $fillable = [
@@ -42,6 +47,61 @@ class Perfume extends Model
         'gallery_images'
     ];
 
+    // Register media collections
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('main_image')
+            ->singleFile()
+            ->useDisk('public');
+
+        $this->addMediaCollection('gallery_images')
+            ->useDisk('public');
+    }
+
+    // Optional: Register media conversions
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(100)
+            ->height(100)
+            ->sharpen(10);
+
+        $this->addMediaConversion('medium')
+            ->width(300)
+            ->height(300)
+            ->sharpen(10);
+
+        $this->addMediaConversion('large')
+            ->width(600)
+            ->height(600)
+            ->sharpen(10);
+    }
+
+    // Update your accessors to use media library
+    public function getMainImageUrlAttribute(): string
+    {
+        $media = $this->getFirstMedia('main_image');
+
+        if ($media) {
+            return $media->getUrl();
+        }
+
+        return asset('images/default-parfum.jpg');
+    }
+
+    public function getGalleryImagesAttribute(): array
+    {
+        $mediaCollection = $this->getMedia('gallery_images');
+
+        if ($mediaCollection->isNotEmpty()) {
+            return $mediaCollection->map(function ($media) {
+                return $media->getUrl();
+            })->toArray();
+        }
+
+        return [];
+    }
+
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
@@ -55,16 +115,6 @@ class Perfume extends Model
     public function orderProducts(): HasMany
     {
         return $this->hasMany(OrderProduct::class);
-    }
-
-    public function getMainImageUrlAttribute(): string
-    {
-        return asset('images/default-parfum.jpg');
-    }
-
-    public function getGalleryImagesAttribute(): array
-    {
-        return [];
     }
 
     public function setNameAttribute($value)
